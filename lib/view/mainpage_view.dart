@@ -18,11 +18,16 @@ final TextEditingController detailController = TextEditingController();
 
 class _MainpageViewState extends State<MainpageView> {
   TodoFilter filter = TodoFilter.ALL;
+
+  List<TaskModel> liste = [];
   @override
-  void initState() {
+  initState() {
     // TODO: implement initState
     super.initState();
+    //Hive.registerAdapter(TaskModelAdapter());
     todoBox = Hive.box<TaskModel>(ApplicationConstants.TASKBOX_NAME);
+    print(liste.length.toString());
+    //liste = todoBox.values.toList();
   }
 
   @override
@@ -30,7 +35,7 @@ class _MainpageViewState extends State<MainpageView> {
     return MaterialApp(
       home: Scaffold(
         appBar: _buildAppbar,
-        floatingActionButton: _buildFloatinActionButton(context),
+
         body: Container(
           color: Colors.amber,
           height: 500,
@@ -38,33 +43,22 @@ class _MainpageViewState extends State<MainpageView> {
             children: <Widget>[
               ValueListenableBuilder(
                 valueListenable: todoBox.listenable(),
-                builder: (context, Box<TaskModel> todos, _) {
+                builder: (context, Box<TaskModel> liste, _) {
+                  print(liste.length.toString());
                   List<int> keys;
-
-                  if (filter == TodoFilter.ALL) {
-                    keys = todos.keys.cast<int>().toList();
-                  } else if (filter == TodoFilter.COMPLETED) {
-                    keys = todos.keys
-                        .cast<int>()
-                        .where((key) => todos.get(key)!.isCompleted)
-                        .toList();
-                  } else {
-                    keys = todos.keys
-                        .cast<int>()
-                        .where((key) => !todos.get(key)!.isCompleted)
-                        .toList();
-                  }
-
+                  keys = liste.keys.cast<int>().toList();
+                  
                   return ListView.separated(
                     shrinkWrap: true,
-                    itemCount: keys.length,
+                    itemCount: liste.length,
                     separatorBuilder: (BuildContext context, int index) {
                       return const Divider();
                     },
                     itemBuilder: (BuildContext context, int index) {
-                      //final int key = keys[index];
                       //final TaskModel todo = todos.get(key)!;
-                      return Text('data $index');
+                      final int key = keys[index];
+                      // final Box<TaskModel> data = liste.get(key);
+                      return Text('data ${liste.get(key)?.detail}');
                     },
                   );
                 },
@@ -155,14 +149,4 @@ class _MainpageViewState extends State<MainpageView> {
       ],
     );
   }
-}
-
-FloatingActionButton _buildFloatinActionButton(BuildContext context) {
-  return FloatingActionButton(onPressed: () {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog();
-        });
-  });
 }
