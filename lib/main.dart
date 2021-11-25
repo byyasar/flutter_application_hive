@@ -3,15 +3,25 @@ import 'package:flutter_application_hive/constants/app_constants.dart';
 import 'package:flutter_application_hive/model/task_model.dart';
 import 'package:flutter_application_hive/view/mainpage_view.dart';
 import 'package:hive/hive.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final document = await getApplicationDocumentsDirectory();
-  Hive.init(document.path);
+   await Hive.initFlutter();
   Hive.registerAdapter(TaskModelAdapter());
   await Hive.openBox<TaskModel>(ApplicationConstants.TASKBOX_NAME);
-  runApp(const MainpageView());
+  runApp(MyApp());
 }
 
+class MyApp extends StatelessWidget {
+  static final String title = 'Hive Expense App';
 
+  @override
+  Widget build(BuildContext context) => MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: title,
+        theme: ThemeData(primarySwatch: Colors.indigo),
+        home: MainpageView(),
+      );
+}

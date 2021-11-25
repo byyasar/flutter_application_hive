@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_hive/constants/app_constants.dart';
 import 'package:flutter_application_hive/model/task_model.dart';
-import 'package:flutter_application_hive/view/todo_filter.dart';
+import 'package:flutter_application_hive/transaction_dialog.dart';
+import 'package:flutter_application_hive/view/boxes.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -12,141 +12,157 @@ class MainpageView extends StatefulWidget {
   _MainpageViewState createState() => _MainpageViewState();
 }
 
-late Box<TaskModel> todoBox;
-final TextEditingController titleController = TextEditingController();
-final TextEditingController detailController = TextEditingController();
-
 class _MainpageViewState extends State<MainpageView> {
-  TodoFilter filter = TodoFilter.ALL;
-
-  List<TaskModel> liste = [];
   @override
-  initState() {
-    // TODO: implement initState
-    super.initState();
-    //Hive.registerAdapter(TaskModelAdapter());
-    todoBox = Hive.box<TaskModel>(ApplicationConstants.TASKBOX_NAME);
-    print(liste.length.toString());
-    //liste = todoBox.values.toList();
+  void dispose() {
+    Hive.close();
+    super.dispose();
+  }
+
+  void editTransaction(
+    TaskModel transaction,
+    String title,
+    String detail,
+    bool isCompleted,
+  ) {
+    transaction.title = title;
+    transaction.detail = detail;
+    transaction.isCompleted = isCompleted;
+    transaction.save();
+  }
+
+  void deleteTransaction(TaskModel transaction) {
+    // final box = Boxes.getTransactions();
+    // box.delete(transaction.key);
+
+    transaction.delete();
+    //setState(() {});
   }
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: _buildAppbar,
-
-        body: Container(
-          color: Colors.amber,
-          height: 500,
-          child: Column(
-            children: <Widget>[
-              ValueListenableBuilder(
-                valueListenable: todoBox.listenable(),
-                builder: (context, Box<TaskModel> liste, _) {
-                  print(liste.length.toString());
-                  List<int> keys;
-                  keys = liste.keys.cast<int>().toList();
-                  
-                  return ListView.separated(
-                    shrinkWrap: true,
-                    itemCount: liste.length,
-                    separatorBuilder: (BuildContext context, int index) {
-                      return const Divider();
-                    },
-                    itemBuilder: (BuildContext context, int index) {
-                      //final TaskModel todo = todos.get(key)!;
-                      final int key = keys[index];
-                      // final Box<TaskModel> data = liste.get(key);
-                      return Text('data ${liste.get(key)?.detail}');
-                    },
-                  );
-                },
-              )
-            ],
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          title: const Text('Hive Expense Tracker'),
+          centerTitle: true,
+        ),
+        body: ValueListenableBuilder<Box<TaskModel>>(
+          valueListenable: Boxes.getTransactions().listenable(),
+          builder: (context, box, _) {
+            final transactions = box.values.toList().cast<TaskModel>();
+            print(transactions.length);
+            //return Text(transactions[1].detail);
+            return buildContent(transactions);
+          },
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.add),
+          onPressed: () => showDialog(
+            context: context,
+            builder: (context) => TransactionDialog(
+              onClickedDone: addTransaction,
+            ),
           ),
         ),
+      );
 
-        /*floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            showDialog(
-                context: context,
-                child: Dialog(
-                    child: Container(
-                  padding: EdgeInsets.all(16),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      TextField(
-                        decoration: InputDecoration(hintText: "Title"),
-                        controller: titleController,
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      TextField(
-                        decoration: InputDecoration(hintText: "Detail"),
-                        controller: detailController,
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      FlatButton(
-                        child: Text("Add Todo"),
-                        onPressed: () {
-                          ///Todo : Add Todo in hive
-                          final String title = titleController.text;
-                          final String detail = detailController.text;
+  Widget buildContent(List<TaskModel> transactions) {
+    if (transactions.isEmpty) {
+      return Center(
+        child: Text(
+          'No expenses yet!',
+          style: TextStyle(fontSize: 24),
+        ),
+      );
+    } else {
+      //return Text(transactions.length.toString());
+      return Column(
+        children: [
+          SizedBox(height: 24),
+          Expanded(
+            child: ListView.builder(
+              padding: EdgeInsets.all(8),
+              itemCount: transactions.length,
+              itemBuilder: (BuildContext context, int index) {
+                final transaction = transactions[index];
 
-                          TaskModel todo = TaskModel(
-                              title: title, detail: detail, isCompleted: false);
+                return buildTransaction(context, transaction);
+                //return Text(transactions.length.toString());
+              },
+            ),
+          ),
+          SizedBox(height: 24),
+        ],
+      );
+    }
+  }
 
-                          todoBox.add(todo);
+  Widget buildTransaction(
+    BuildContext context,
+    TaskModel transaction,
+  ) {
+    final color = transaction.isCompleted ? Colors.red : Colors.green;
+    final date =
+        DateTime.now(); //DateFormat.yMMMd().format(transaction.createdDate);
+    //final amount = '\$' + transaction.amount.toStringAsFixed(2);
 
-                          Navigator.pop(context);
-                        },
-                      )
-                    ],
-                  ),
-                )),
-                builder: (BuildContext context) {});
-          },
-          child: Icon(Icons.add),
-        ), */ // This trailing comma makes auto-formatting nicer for build methods.
+    return Card(
+      color: Colors.white,
+      child: ExpansionTile(
+        tilePadding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+        title: Text(
+          transaction.title,
+          maxLines: 2,
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+        ),
+        subtitle: Text(transaction.detail),
+        trailing:
+            Checkbox(value: transaction.isCompleted, onChanged: (onChanged) {}),
+        children: [
+          buildButtons(context, transaction),
+        ],
       ),
     );
   }
 
-  AppBar get _buildAppbar {
-    return AppBar(
-      title: const Text('Hive Todo App'),
-      actions: <Widget>[
-        PopupMenuButton<String>(
-          onSelected: (value) {
-            if (value.compareTo("All") == 0) {
-              setState(() {
-                filter = TodoFilter.ALL;
-              });
-            } else if (value.compareTo("Compeleted") == 0) {
-              setState(() {
-                filter = TodoFilter.COMPLETED;
-              });
-            } else {
-              setState(() {
-                filter = TodoFilter.INCOMPLETED;
-              });
-            }
-          },
-          itemBuilder: (BuildContext context) {
-            return ["Hepsi", "Tamamlananlar", "Yapılacaklar"].map((option) {
-              return PopupMenuItem(
-                value: option,
-                child: Text(option),
-              );
-            }).toList();
-          },
-        )
-      ],
-    );
+  Future addTransaction(String title, String detail, bool isCompleted) async {
+    final transaction =
+        TaskModel(title: title, detail: detail, isCompleted: isCompleted);
+
+    final box = Boxes.getTransactions();
+    box.add(transaction);
+    //box.put('mykey', transaction);
+
+    // final mybox = Boxes.getTransactions();
+    // final myTransaction = mybox.get('key');
+    // mybox.values;
+    // mybox.keys;
   }
+
+  Widget buildButtons(BuildContext context, TaskModel transaction) => Row(
+        children: [
+          Expanded(
+            child: TextButton.icon(
+              label: Text('Edit'),
+              icon: Icon(Icons.edit),
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => TransactionDialog(
+                    transaction: transaction,
+                    onClickedDone: (title, detail, isCompleted) =>
+                        editTransaction(
+                            transaction, title, detail, isCompleted),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: TextButton.icon(
+              label: Text('Delete'),
+              icon: Icon(Icons.delete),
+              onPressed: () => deleteTransaction(transaction),
+            ),
+          )
+        ],
+      );
 }
