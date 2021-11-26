@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_hive/ogrenci/model/ogrenci_model.dart';
+import 'package:flutter_application_hive/view/boxes.dart';
 
 class OgrenciDialog extends StatefulWidget {
   final OgrenciModel? transaction;
+
   final Function(int id, String name, int nu) onClickedDone;
 
   const OgrenciDialog({
@@ -45,6 +47,9 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
   Widget build(BuildContext context) {
     final isEditing = widget.transaction != null;
     final title = isEditing ? 'Öğrenciyi Düzenle' : 'Öğrenci Ekle';
+    //final ogrenciModel = widget.transaction;
+    final box = OgrenciBoxes.getTransactions();
+    int sonId = isEditing ?  widget.transaction!.id:box.values.last.id + 1;
 
     return AlertDialog(
       title: Text(title),
@@ -65,7 +70,7 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
       ),
       actions: <Widget>[
         buildCancelButton(context),
-        buildAddButton(context, isEditing: isEditing),
+        buildAddButton(context, sonId, isEditing: isEditing),
       ],
     );
   }
@@ -95,7 +100,8 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
         onPressed: () => Navigator.of(context).pop(),
       );
 
-  Widget buildAddButton(BuildContext context, {required bool isEditing}) {
+  Widget buildAddButton(BuildContext context, int? sonId,
+      {required bool isEditing}) {
     final text = isEditing ? 'Kaydet' : 'Ekle';
 
     return TextButton(
@@ -106,7 +112,8 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
         if (isValid) {
           String? name = nameController.text.toUpperCase();
           int? nu = int.parse(nuController.text);
-          int? id = 0;
+
+          int id = sonId ?? 0;
 
           widget.onClickedDone(id, name, nu);
 

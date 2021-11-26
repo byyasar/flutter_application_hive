@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_hive/ogrenci/dialog/ogrenci_dialog.dart';
 import 'package:flutter_application_hive/ogrenci/model/ogrenci_model.dart';
 import 'package:flutter_application_hive/transaction_dialog.dart';
+import 'package:flutter_application_hive/ui/widget/ogrenci_card.dart';
 import 'package:flutter_application_hive/view/boxes.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -95,21 +96,10 @@ class _OgrencipageViewState extends State<OgrencipageView> {
 
   Widget buildTransaction(
       BuildContext context, OgrenciModel transaction, int index) {
-    return Card(
-      color: Colors.white,
-      child: ExpansionTile(
-        tilePadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-        title: Text(
-          (index + 1).toString() + " - " + transaction.name,
-          maxLines: 2,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-        ),
-        subtitle: Text("Nu:  ${transaction.nu}"),
-        children: [
-          buildButtons(context, transaction),
-        ],
-      ),
-    );
+    return OgrenciCard(
+        transaction: transaction,
+        index: index,
+        butons: buildButtons(context, transaction));
   }
 
   Future addTransaction(int id, String name, int nu) async {
@@ -123,8 +113,8 @@ class _OgrencipageViewState extends State<OgrencipageView> {
         children: [
           Expanded(
             child: TextButton.icon(
-              label: Text('Edit'),
-              icon: Icon(Icons.edit),
+              label: const Text('Düzenle'),
+              icon: const Icon(Icons.edit),
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => OgrenciDialog(
@@ -138,8 +128,8 @@ class _OgrencipageViewState extends State<OgrencipageView> {
           ),
           Expanded(
             child: TextButton.icon(
-              label: Text('Delete'),
-              icon: Icon(Icons.delete),
+              label: const Text('Sil'),
+              icon: const Icon(Icons.delete),
               onPressed: () => deleteTransaction(transaction),
             ),
           )

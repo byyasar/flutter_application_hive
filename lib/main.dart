@@ -27,6 +27,6 @@ class MyApp extends StatelessWidget {
         title: title,
         theme: ThemeData(primarySwatch: Colors.indigo),
         //home: MainpageView(),//OgrencipageView
-        home: OgrencipageView(),//OgrencipageView
+        home:const OgrencipageView(),//OgrencipageView
       );
 }
