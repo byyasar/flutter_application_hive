@@ -49,7 +49,17 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
     final title = isEditing ? 'Öğrenciyi Düzenle' : 'Öğrenci Ekle';
     //final ogrenciModel = widget.transaction;
     final box = OgrenciBoxes.getTransactions();
-    int sonId = isEditing ?  widget.transaction!.id:box.values.last.id + 1;
+    int sonId;
+    //int sonId = isEditing ?  (widget.transaction.?id==null?0:widget.transaction.id):box.values.last.id + 1;
+    if (widget.transaction?.id == null) {
+      isEditing
+          ? sonId = widget.transaction!.id
+          : (box.values.length == 0
+              ? sonId = 1
+              : sonId = box.values.last.id + 1);
+    } else {
+      sonId = isEditing ? widget.transaction!.id : 1;
+    }
 
     return AlertDialog(
       title: Text(title),

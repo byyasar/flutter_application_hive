@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_hive/ogrenci/dialog/ogrenci_dialog.dart';
 import 'package:flutter_application_hive/ogrenci/model/ogrenci_model.dart';
-import 'package:flutter_application_hive/transaction_dialog.dart';
 import 'package:flutter_application_hive/ui/widget/ogrenci_card.dart';
 import 'package:flutter_application_hive/view/boxes.dart';
 import 'package:hive/hive.dart';
@@ -52,12 +51,18 @@ class _OgrencipageViewState extends State<OgrencipageView> {
             return buildContent(transactions);
           },
         ),
-        floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.add),
-          onPressed: () => showDialog(
-            context: context,
-            builder: (context) => OgrenciDialog(
-              onClickedDone: addTransaction,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: FloatingActionButton(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            child: const Icon(Icons.add),
+            onPressed: () => showDialog(
+              context: context,
+              builder: (context) => OgrenciDialog(
+                onClickedDone: addTransaction,
+              ),
             ),
           ),
         ),
