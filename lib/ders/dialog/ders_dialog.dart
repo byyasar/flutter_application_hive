@@ -1,27 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_hive/ogrenci/model/ogrenci_model.dart';
 import 'package:flutter_application_hive/core/boxes.dart';
+import 'package:flutter_application_hive/ders/model/ders_model.dart';
 
-class OgrenciDialog extends StatefulWidget {
-  final OgrenciModel? transaction;
+class DersDialog extends StatefulWidget {
+  final DersModel? transaction;
 
-  final Function(int id, String name, int nu) onClickedDone;
+  final Function(int id, String dersad) onClickedDone;
 
-  const OgrenciDialog({
+  const DersDialog({
     Key? key,
     this.transaction,
     required this.onClickedDone,
   }) : super(key: key);
 
   @override
-  _OgrenciDialogState createState() => _OgrenciDialogState();
+  _DersDialogState createState() => _DersDialogState();
 }
 
-class _OgrenciDialogState extends State<OgrenciDialog> {
+class _DersDialogState extends State<DersDialog> {
   final formKey = GlobalKey<FormState>();
-  final nameController = TextEditingController();
-  final nuController = TextEditingController();
-  //final isCompletedController=
+  final dersadController = TextEditingController();
 
   @override
   void initState() {
@@ -29,26 +27,22 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
 
     if (widget.transaction != null) {
       final transaction = widget.transaction!;
-
-      nameController.text = transaction.name;
-      nuController.text = transaction.nu.toString();
+      dersadController.text = transaction.dersad;
     }
   }
 
   @override
   void dispose() {
-    nameController.dispose();
-    nuController.dispose();
-
+    dersadController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final isEditing = widget.transaction != null;
-    final title = isEditing ? 'Öğrenciyi Düzenle' : 'Öğrenci Ekle';
-    //final ogrenciModel = widget.transaction;
-    final box = OgrenciBoxes.getTransactions();
+    final title = isEditing ? 'Dersi Düzenle' : 'Ders Ekle';
+    //final DersModel = widget.transaction;
+    final box = DersBoxes.getTransactions();
     int sonId;
     //int sonId = isEditing ?  (widget.transaction.?id==null?0:widget.transaction.id):box.values.last.id + 1;
     if (widget.transaction?.id == null) {
@@ -70,9 +64,7 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               SizedBox(height: 8),
-              buildName(),
-              SizedBox(height: 8),
-              buildNu(),
+              builddersad(),
               SizedBox(height: 8),
             ],
           ),
@@ -85,24 +77,14 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
     );
   }
 
-  Widget buildName() => TextFormField(
-        controller: nameController,
+  Widget builddersad() => TextFormField(
+        controller: dersadController,
         decoration: const InputDecoration(
           border: OutlineInputBorder(),
-          hintText: 'Öğrenci Adını Giriniz',
+          hintText: 'Ders Adını Giriniz',
         ),
-        validator: (name) =>
-            name != null && name.isEmpty ? 'Öğrenci Adını' : null,
-      );
-
-  Widget buildNu() => TextFormField(
-        decoration: const InputDecoration(
-          border: OutlineInputBorder(),
-          hintText: 'Numarayı Giriniz',
-        ),
-        keyboardType: TextInputType.number,
-        validator: (name) => name != null && name.isEmpty ? 'Nu' : null,
-        controller: nuController,
+        validator: (dersad) =>
+            dersad != null && dersad.isEmpty ? 'Öğrenci Adını' : null,
       );
 
   Widget buildCancelButton(BuildContext context) => TextButton(
@@ -120,12 +102,12 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
         final isValid = formKey.currentState!.validate();
 
         if (isValid) {
-          String? name = nameController.text.toUpperCase();
-          int? nu = int.parse(nuController.text);
+          String? dersad = dersadController.text.toUpperCase();
+          // int? nu = int.parse(nuController.text);
 
           int id = sonId ?? 0;
 
-          widget.onClickedDone(id, name, nu);
+          widget.onClickedDone(id, dersad);
 
           Navigator.of(context).pop();
         }

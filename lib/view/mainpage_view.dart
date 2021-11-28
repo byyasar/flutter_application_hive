@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_hive/model/task_model.dart';
 import 'package:flutter_application_hive/transaction_dialog.dart';
-import 'package:flutter_application_hive/view/boxes.dart';
+import 'package:flutter_application_hive/core/boxes.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 

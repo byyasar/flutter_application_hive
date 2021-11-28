@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_hive/ogrenci/dialog/ogrenci_dialog.dart';
-import 'package:flutter_application_hive/ogrenci/model/ogrenci_model.dart';
-import 'package:flutter_application_hive/ui/widget/ogrenci_card.dart';
 import 'package:flutter_application_hive/core/boxes.dart';
+import 'package:flutter_application_hive/ders/dialog/ders_dialog.dart';
+import 'package:flutter_application_hive/ders/model/ders_model.dart';
+import 'package:flutter_application_hive/ders/widget/ders_card.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-class OgrencipageView extends StatefulWidget {
-  const OgrencipageView({Key? key}) : super(key: key);
+class DerspageView extends StatefulWidget {
+  const DerspageView({Key? key}) : super(key: key);
 
   @override
-  _OgrencipageViewState createState() => _OgrencipageViewState();
+  _DerspageViewState createState() => _DerspageViewState();
 }
 
-class _OgrencipageViewState extends State<OgrencipageView> {
+class _DerspageViewState extends State<DerspageView> {
   @override
   void dispose() {
     Hive.close();
@@ -21,31 +21,29 @@ class _OgrencipageViewState extends State<OgrencipageView> {
   }
 
   void editTransaction(
-    OgrenciModel transaction,
+    DersModel transaction,
     int id,
-    String name,
-    int nu,
+    String dersad,
   ) {
     transaction.id = id;
-    transaction.name = name;
-    transaction.nu = nu;
+    transaction.dersad = dersad;
     transaction.save();
   }
 
-  void deleteTransaction(OgrenciModel transaction) {
+  void deleteTransaction(DersModel transaction) {
     transaction.delete();
   }
 
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          title: const Text('Öğrenci Listesi'),
+          title: const Text('Ders Listesi'),
           centerTitle: true,
         ),
-        body: ValueListenableBuilder<Box<OgrenciModel>>(
-          valueListenable: OgrenciBoxes.getTransactions().listenable(),
+        body: ValueListenableBuilder<Box<DersModel>>(
+          valueListenable: DersBoxes.getTransactions().listenable(),
           builder: (context, box, _) {
-            final transactions = box.values.toList().cast<OgrenciModel>();
+            final transactions = box.values.toList().cast<DersModel>();
             print(transactions.length);
             //return Text(transactions[1].detail);
             return buildContent(transactions);
@@ -60,7 +58,7 @@ class _OgrencipageViewState extends State<OgrencipageView> {
             child: const Icon(Icons.add),
             onPressed: () => showDialog(
               context: context,
-              builder: (context) => OgrenciDialog(
+              builder: (context) => DersDialog(
                 onClickedDone: addTransaction,
               ),
             ),
@@ -68,11 +66,11 @@ class _OgrencipageViewState extends State<OgrencipageView> {
         ),
       );
 
-  Widget buildContent(List<OgrenciModel> transactions) {
+  Widget buildContent(List<DersModel> transactions) {
     if (transactions.isEmpty) {
       return const Center(
         child: Text(
-          'Henüz öğrenci yok!',
+          'Henüz ders yok!',
           style: TextStyle(fontSize: 24),
         ),
       );
@@ -100,21 +98,21 @@ class _OgrencipageViewState extends State<OgrencipageView> {
   }
 
   Widget buildTransaction(
-      BuildContext context, OgrenciModel transaction, int index) {
-    return OgrenciCard(
+      BuildContext context, DersModel transaction, int index) {
+    return DersCard(
         transaction: transaction,
         index: index,
         butons: buildButtons(context, transaction));
   }
 
-  Future addTransaction(int id, String name, int nu) async {
-    final transaction = OgrenciModel(id: id, name: name, nu: nu);
+  Future addTransaction(int id, String dersad) async {
+    final transaction = DersModel(id: id, dersad: dersad);
 
-    final box = OgrenciBoxes.getTransactions();
+    final box = DersBoxes.getTransactions();
     box.add(transaction);
   }
 
-  Widget buildButtons(BuildContext context, OgrenciModel transaction) => Row(
+  Widget buildButtons(BuildContext context, DersModel transaction) => Row(
         children: [
           Expanded(
             child: TextButton.icon(
@@ -122,10 +120,10 @@ class _OgrencipageViewState extends State<OgrencipageView> {
               icon: const Icon(Icons.edit),
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => OgrenciDialog(
+                  builder: (context) => DersDialog(
                     transaction: transaction,
-                    onClickedDone: (id, name, nu) =>
-                        editTransaction(transaction, id, name, nu),
+                    onClickedDone: (id, dersad) =>
+                        editTransaction(transaction, id, dersad),
                   ),
                 ),
               ),
