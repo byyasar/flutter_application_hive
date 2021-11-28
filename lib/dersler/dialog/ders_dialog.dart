@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_hive/core/boxes.dart';
-import 'package:flutter_application_hive/ders/model/ders_model.dart';
+import 'package:flutter_application_hive/dersler/model/ders_model.dart';
 
 class DersDialog extends StatefulWidget {
   final DersModel? transaction;

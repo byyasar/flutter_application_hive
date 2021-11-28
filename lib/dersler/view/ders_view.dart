@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_hive/core/boxes.dart';
-import 'package:flutter_application_hive/ders/dialog/ders_dialog.dart';
-import 'package:flutter_application_hive/ders/model/ders_model.dart';
-import 'package:flutter_application_hive/ders/widget/ders_card.dart';
+import 'package:flutter_application_hive/dersler/dialog/ders_dialog.dart';
+import 'package:flutter_application_hive/dersler/model/ders_model.dart';
+import 'package:flutter_application_hive/dersler/widget/ders_card.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 

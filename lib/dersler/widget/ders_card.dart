@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_hive/ders/model/ders_model.dart';
+import 'package:flutter_application_hive/dersler/model/ders_model.dart';
 
 class DersCard extends StatelessWidget {
   final DersModel transaction;
