@@ -49,6 +49,7 @@ class _MainpageViewState extends State<MainpageView> {
           valueListenable: Boxes.getTransactions().listenable(),
           builder: (context, box, _) {
             final transactions = box.values.toList().cast<TaskModel>();
+            // ignore: avoid_print
             print(transactions.length);
             //return Text(transactions[1].detail);
             return buildContent(transactions);
@@ -67,7 +68,7 @@ class _MainpageViewState extends State<MainpageView> {
 
   Widget buildContent(List<TaskModel> transactions) {
     if (transactions.isEmpty) {
-      return Center(
+      return const Center(
         child: Text(
           'No expenses yet!',
           style: TextStyle(fontSize: 24),
@@ -77,10 +78,10 @@ class _MainpageViewState extends State<MainpageView> {
       //return Text(transactions.length.toString());
       return Column(
         children: [
-          SizedBox(height: 24),
+          const SizedBox(height: 24),
           Expanded(
             child: ListView.builder(
-              padding: EdgeInsets.all(8),
+              padding: const EdgeInsets.all(8),
               itemCount: transactions.length,
               itemBuilder: (BuildContext context, int index) {
                 final transaction = transactions[index];
@@ -90,7 +91,7 @@ class _MainpageViewState extends State<MainpageView> {
               },
             ),
           ),
-          SizedBox(height: 24),
+          const SizedBox(height: 24),
         ],
       );
     }
@@ -100,19 +101,17 @@ class _MainpageViewState extends State<MainpageView> {
     BuildContext context,
     TaskModel transaction,
   ) {
-    final color = transaction.isCompleted ? Colors.red : Colors.green;
-    final date =
-        DateTime.now(); //DateFormat.yMMMd().format(transaction.createdDate);
+//DateFormat.yMMMd().format(transaction.createdDate);
     //final amount = '\$' + transaction.amount.toStringAsFixed(2);
 
     return Card(
       color: Colors.white,
       child: ExpansionTile(
-        tilePadding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+        tilePadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
         title: Text(
           transaction.title,
           maxLines: 2,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
         subtitle: Text(transaction.detail),
         trailing:
@@ -142,8 +141,8 @@ class _MainpageViewState extends State<MainpageView> {
         children: [
           Expanded(
             child: TextButton.icon(
-              label: Text('Edit'),
-              icon: Icon(Icons.edit),
+              label: const Text('Edit'),
+              icon: const Icon(Icons.edit),
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => TransactionDialog(
@@ -158,8 +157,8 @@ class _MainpageViewState extends State<MainpageView> {
           ),
           Expanded(
             child: TextButton.icon(
-              label: Text('Delete'),
-              icon: Icon(Icons.delete),
+              label: const Text('Delete'),
+              icon: const Icon(Icons.delete),
               onPressed: () => deleteTransaction(transaction),
             ),
           )

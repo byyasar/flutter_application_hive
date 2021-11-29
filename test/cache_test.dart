@@ -43,7 +43,7 @@ void main() {
   test('model kaydetme', () async {
     Hive.registerAdapter(TaskModelAdapter());
     final box =
-        await Hive.openBox<TaskModel>(ApplicationConstants.TASKBOX_NAME);
+        await Hive.openBox<TaskModel>(ApplicationConstants.taskBoxName);
     box.clear();
     TaskModel mData1 =
         TaskModel(title: 'data.title1', detail: 'data.1', isCompleted: false);
@@ -61,9 +61,11 @@ void main() {
   test('modelleri listeleme', () async {
     Hive.registerAdapter(TaskModelAdapter());
     final box =
-        await Hive.openBox<TaskModel>(ApplicationConstants.TASKBOX_NAME);
+        await Hive.openBox<TaskModel>(ApplicationConstants.taskBoxName);
+    // ignore: avoid_print
     print(box.keys);
     for (var item in box.values) {
+      // ignore: avoid_print
       print(item);
     }
 

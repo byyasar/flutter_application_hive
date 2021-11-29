@@ -1,8 +1,9 @@
 //öğrenci adı-soyadı-no
+import 'package:flutter_application_hive/constants/hive_constans.dart';
 import 'package:hive/hive.dart';
 part 'ogrenci_model.g.dart';
 
-@HiveType(typeId: 1)
+@HiveType(typeId: HiveConstants.ogrenciTypeId)
 class OgrenciModel extends HiveObject {
   @HiveField(0)
   int id;

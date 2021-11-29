@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_hive/ogrenci/dialog/ogrenci_dialog.dart';
-import 'package:flutter_application_hive/ogrenci/model/ogrenci_model.dart';
-import 'package:flutter_application_hive/ui/widget/ogrenci_card.dart';
 import 'package:flutter_application_hive/core/boxes.dart';
+import 'package:flutter_application_hive/siniflar/dialog/sinif_dialog.dart';
+import 'package:flutter_application_hive/siniflar/model/sinif_model.dart';
+import 'package:flutter_application_hive/siniflar/widget/sinif_card.dart';
+
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-class OgrencipageView extends StatefulWidget {
-  const OgrencipageView({Key? key}) : super(key: key);
+class SinifpageView extends StatefulWidget {
+  const SinifpageView({Key? key}) : super(key: key);
 
   @override
-  _OgrencipageViewState createState() => _OgrencipageViewState();
+  _SinifpageViewState createState() => _SinifpageViewState();
 }
 
-class _OgrencipageViewState extends State<OgrencipageView> {
+class _SinifpageViewState extends State<SinifpageView> {
   @override
   void dispose() {
     Hive.close();
@@ -21,31 +22,29 @@ class _OgrencipageViewState extends State<OgrencipageView> {
   }
 
   void editTransaction(
-    OgrenciModel transaction,
+    SinifModel transaction,
     int id,
-    String name,
-    int nu,
+    String sinifAd,
   ) {
     transaction.id = id;
-    transaction.name = name;
-    transaction.nu = nu;
+    transaction.sinifAd = sinifAd;
     transaction.save();
   }
 
-  void deleteTransaction(OgrenciModel transaction) {
+  void deleteTransaction(SinifModel transaction) {
     transaction.delete();
   }
 
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          title: const Text('Öğrenci Listesi'),
+          title: const Text('Sınıf Listesi'),
           centerTitle: true,
         ),
-        body: ValueListenableBuilder<Box<OgrenciModel>>(
-          valueListenable: OgrenciBoxes.getTransactions().listenable(),
+        body: ValueListenableBuilder<Box<SinifModel>>(
+          valueListenable: SinifBoxes.getTransactions().listenable(),
           builder: (context, box, _) {
-            final transactions = box.values.toList().cast<OgrenciModel>();
+            final transactions = box.values.toList().cast<SinifModel>();
             // ignore: avoid_print
             print(transactions.length);
             //return Text(transactions[1].detail);
@@ -61,7 +60,7 @@ class _OgrencipageViewState extends State<OgrencipageView> {
             child: const Icon(Icons.add),
             onPressed: () => showDialog(
               context: context,
-              builder: (context) => OgrenciDialog(
+              builder: (context) => SinifDialog(
                 onClickedDone: addTransaction,
               ),
             ),
@@ -69,11 +68,11 @@ class _OgrencipageViewState extends State<OgrencipageView> {
         ),
       );
 
-  Widget buildContent(List<OgrenciModel> transactions) {
+  Widget buildContent(List<SinifModel> transactions) {
     if (transactions.isEmpty) {
       return const Center(
         child: Text(
-          'Henüz öğrenci yok!',
+          'Henüz Sinif yok!',
           style: TextStyle(fontSize: 24),
         ),
       );
@@ -101,21 +100,21 @@ class _OgrencipageViewState extends State<OgrencipageView> {
   }
 
   Widget buildTransaction(
-      BuildContext context, OgrenciModel transaction, int index) {
-    return OgrenciCard(
+      BuildContext context, SinifModel transaction, int index) {
+    return SinifCard(
         transaction: transaction,
         index: index,
         butons: buildButtons(context, transaction));
   }
 
-  Future addTransaction(int id, String name, int nu) async {
-    final transaction = OgrenciModel(id: id, name: name, nu: nu);
+  Future addTransaction(int id, String sinifAd) async {
+    final transaction = SinifModel(id: id, sinifAd: sinifAd);
 
-    final box = OgrenciBoxes.getTransactions();
+    final box = SinifBoxes.getTransactions();
     box.add(transaction);
   }
 
-  Widget buildButtons(BuildContext context, OgrenciModel transaction) => Row(
+  Widget buildButtons(BuildContext context, SinifModel transaction) => Row(
         children: [
           Expanded(
             child: TextButton.icon(
@@ -123,10 +122,10 @@ class _OgrencipageViewState extends State<OgrencipageView> {
               icon: const Icon(Icons.edit),
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => OgrenciDialog(
+                  builder: (context) => SinifDialog(
                     transaction: transaction,
-                    onClickedDone: (id, name, nu) =>
-                        editTransaction(transaction, id, name, nu),
+                    onClickedDone: (id, sinifAd) =>
+                        editTransaction(transaction, id, sinifAd),
                   ),
                 ),
               ),

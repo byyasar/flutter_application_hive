@@ -1,5 +1,6 @@
 class ApplicationConstants {
-  static const TASKBOX_NAME = "todo";
-  static const BOX_OGRENCI = "ogrenci";
-  static const BOX_DERS = "ders";
+  static const taskBoxName = "todo";
+  static const boxOgrenci = "ogrenci";
+  static const boxDers = "ders";
+  static const boxSinif = "sinif";
 }

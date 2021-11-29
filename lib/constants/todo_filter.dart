@@ -1,1 +1,1 @@
-enum TodoFilter { ALL, COMPLETED, INCOMPLETED }
+enum TodoFilter { all, completed, incompleted }

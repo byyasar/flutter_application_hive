@@ -54,7 +54,7 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
     if (widget.transaction?.id == null) {
       isEditing
           ? sonId = widget.transaction!.id
-          : (box.values.length == 0
+          : (box.values.isEmpty
               ? sonId = 1
               : sonId = box.values.last.id + 1);
     } else {
@@ -69,11 +69,11 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               buildName(),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               buildNu(),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
             ],
           ),
         ),

@@ -57,11 +57,11 @@ class _TransactionDialogState extends State<TransactionDialog> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               buildTitle(),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               buildDetail(),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               buildRadioButtons(),
             ],
           ),
@@ -98,13 +98,13 @@ class _TransactionDialogState extends State<TransactionDialog> {
   Widget buildRadioButtons() => Column(
         children: [
           RadioListTile<bool>(
-            title: Text('Tamamlandı'),
+            title: const Text('Tamamlandı'),
             value: true,
             groupValue: isCompleted,
             onChanged: (value) => setState(() => isCompleted = value!),
           ),
           RadioListTile<bool>(
-            title: Text('Tamamlanmadı'),
+            title: const Text('Tamamlanmadı'),
             value: false,
             groupValue: isCompleted,
             onChanged: (value) => setState(() => isCompleted = value!),
@@ -113,7 +113,7 @@ class _TransactionDialogState extends State<TransactionDialog> {
       );
 
   Widget buildCancelButton(BuildContext context) => TextButton(
-        child: Text('Cancel'),
+        child: const Text('Cancel'),
         onPressed: () => Navigator.of(context).pop(),
       );
 

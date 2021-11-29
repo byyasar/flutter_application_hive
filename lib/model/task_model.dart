@@ -1,7 +1,8 @@
+import 'package:flutter_application_hive/constants/hive_constans.dart';
 import 'package:hive/hive.dart';
 part 'task_model.g.dart';
 
-@HiveType(typeId: 0)
+@HiveType(typeId: HiveConstants.todoTypeId)
 class TaskModel extends HiveObject {
   @HiveField(0)
   String title;

@@ -44,6 +44,7 @@ class _DerspageViewState extends State<DerspageView> {
           valueListenable: DersBoxes.getTransactions().listenable(),
           builder: (context, box, _) {
             final transactions = box.values.toList().cast<DersModel>();
+            // ignore: avoid_print
             print(transactions.length);
             //return Text(transactions[1].detail);
             return buildContent(transactions);
