@@ -25,10 +25,12 @@ class _OgrencipageViewState extends State<OgrencipageView> {
     int id,
     String name,
     int nu,
+    int sinifId
   ) {
     transaction.id = id;
     transaction.name = name;
     transaction.nu = nu;
+    transaction.sinifId = sinifId;
     transaction.save();
   }
 
@@ -108,8 +110,9 @@ class _OgrencipageViewState extends State<OgrencipageView> {
         butons: buildButtons(context, transaction));
   }
 
-  Future addTransaction(int id, String name, int nu) async {
-    final transaction = OgrenciModel(id: id, name: name, nu: nu);
+  Future addTransaction(int id, String name, int nu, int sinifId) async {
+    final transaction =
+        OgrenciModel(id: id, name: name, nu: nu, sinifId: sinifId);
 
     final box = OgrenciBoxes.getTransactions();
     box.add(transaction);
@@ -125,8 +128,8 @@ class _OgrencipageViewState extends State<OgrencipageView> {
                 MaterialPageRoute(
                   builder: (context) => OgrenciDialog(
                     transaction: transaction,
-                    onClickedDone: (id, name, nu) =>
-                        editTransaction(transaction, id, name, nu),
+                    onClickedDone: (id, name, nu, sinifId) =>
+                        editTransaction(transaction, id, name, nu, sinifId),
                   ),
                 ),
               ),

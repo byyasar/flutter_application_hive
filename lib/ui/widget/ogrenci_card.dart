@@ -24,8 +24,8 @@ class OgrenciCard extends StatelessWidget {
           maxLines: 2,
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
-        subtitle:
-            Text("id: ${transaction.id.toString()} Nu:  ${transaction.nu}"),
+        subtitle: Text(
+            "id: ${transaction.id.toString()} Nu:  ${transaction.nu} Sınıf ıd:  ${transaction.sinifId}"),
         children: [butons],
       ),
     );

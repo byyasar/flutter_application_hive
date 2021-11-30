@@ -4,6 +4,7 @@ import 'package:flutter_application_hive/core/boxes.dart';
 import 'package:flutter_application_hive/dersler/model/ders_model.dart';
 import 'package:flutter_application_hive/model/task_model.dart';
 import 'package:flutter_application_hive/ogrenci/model/ogrenci_model.dart';
+import 'package:flutter_application_hive/ogrenci/view/ogrenci_view.dart';
 import 'package:flutter_application_hive/siniflar/model/sinif_model.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -55,6 +56,7 @@ class MyStatefulWidget extends StatefulWidget {
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   List<SinifModel> transactions = [];
   String dropdownValue = "";
+  int selectedId = 1;
 
   @override
   void dispose() {
@@ -70,7 +72,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         .values
         .map((e) => e.sinifAd.toString())
         .toList(); */
-    transactions = SinifBoxes.getTransactions().values.toList().cast<SinifModel>();
+    transactions =
+        SinifBoxes.getTransactions().values.toList().cast<SinifModel>();
     // ignore: avoid_print
     print(transactions);
     dropdownValue = transactions.first.sinifAd;
@@ -78,27 +81,48 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButton<String>(
-      value: dropdownValue,
-      icon: const Icon(Icons.arrow_downward),
-      iconSize: 24,
-      elevation: 16,
-      style: const TextStyle(color: Colors.deepPurple),
-      underline: Container(
-        height: 2,
-        color: Colors.deepPurpleAccent,
-      ),
-      onChanged: (String? newValue) {
-        setState(() {
-          dropdownValue = newValue!;
-        });
-      },
-      items: transactions.map<DropdownMenuItem<String>>((SinifModel value) {
-        return DropdownMenuItem<String>(
-          value: value.sinifAd,
-          child: Text(value.sinifAd),
-        );
-      }).toList(),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        DropdownButton<String>(
+          value: dropdownValue,
+          icon: const Icon(Icons.arrow_downward),
+          iconSize: 24,
+          elevation: 16,
+          style: const TextStyle(color: Colors.deepPurple),
+          underline: Container(
+            height: 2,
+            color: Colors.deepPurpleAccent,
+          ),
+          onChanged: (String? newValue) {
+            setState(() {
+              dropdownValue = newValue!;
+              // ignore: avoid_print
+              print(transactions
+                  .singleWhere((element) => element.sinifAd == dropdownValue)
+                  .id);
+            });
+          },
+          items: transactions.map<DropdownMenuItem<String>>((SinifModel value) {
+            return DropdownMenuItem<String>(
+              value: value.sinifAd,
+              child: Text(value.sinifAd),
+            );
+          }).toList(),
+        ),
+        const SizedBox(
+          width: 10,
+        ),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const OgrencipageView()),
+            );
+          },
+          child: const Text('Git'),
+        )
+      ],
     );
   }
 }

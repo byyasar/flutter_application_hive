@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_hive/ogrenci/model/ogrenci_model.dart';
 import 'package:flutter_application_hive/core/boxes.dart';
+import 'package:flutter_application_hive/siniflar/model/sinif_model.dart';
 
 class OgrenciDialog extends StatefulWidget {
   final OgrenciModel? transaction;
 
-  final Function(int id, String name, int nu) onClickedDone;
+  final Function(int id, String name, int nu, int sinifId) onClickedDone;
 
   const OgrenciDialog({
     Key? key,
@@ -21,8 +22,10 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
   final formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final nuController = TextEditingController();
+  int sinifId = 0;
   //final isCompletedController=
-
+  List<SinifModel> transactionsSinif = [];
+  String dropdownValue = "";
   @override
   void initState() {
     super.initState();
@@ -32,6 +35,9 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
 
       nameController.text = transaction.name;
       nuController.text = transaction.nu.toString();
+      transactionsSinif =
+          SinifBoxes.getTransactions().values.toList().cast<SinifModel>();
+      dropdownValue = transactionsSinif.first.sinifAd;
     }
   }
 
@@ -49,14 +55,16 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
     final title = isEditing ? 'Öğrenciyi Düzenle' : 'Öğrenci Ekle';
     //final ogrenciModel = widget.transaction;
     final box = OgrenciBoxes.getTransactions();
+
     int sonId;
+    sinifId = transactionsSinif
+        .singleWhere((element) => element.sinifAd == dropdownValue)
+        .id;
     //int sonId = isEditing ?  (widget.transaction.?id==null?0:widget.transaction.id):box.values.last.id + 1;
     if (widget.transaction?.id == null) {
       isEditing
           ? sonId = widget.transaction!.id
-          : (box.values.isEmpty
-              ? sonId = 1
-              : sonId = box.values.last.id + 1);
+          : (box.values.isEmpty ? sonId = 1 : sonId = box.values.last.id + 1);
     } else {
       sonId = isEditing ? widget.transaction!.id : 1;
     }
@@ -74,16 +82,48 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
               const SizedBox(height: 8),
               buildNu(),
               const SizedBox(height: 8),
+              buildSinif(context, transactionsSinif, dropdownValue, sinifId)
             ],
           ),
         ),
       ),
       actions: <Widget>[
         buildCancelButton(context),
-        buildAddButton(context, sonId, isEditing: isEditing),
+        buildAddButton(context, sonId, sinifId, isEditing: isEditing),
       ],
     );
   }
+
+  Widget buildSinif(BuildContext context, List<SinifModel> transactionsSinif,
+          dropdownValue, int sinifId) =>
+      DropdownButton<String>(
+        value: dropdownValue,
+        icon: const Icon(Icons.arrow_downward),
+        iconSize: 24,
+        elevation: 16,
+        style: const TextStyle(color: Colors.deepPurple),
+        underline: Container(
+          height: 2,
+          color: Colors.deepPurpleAccent,
+        ),
+        onChanged: (String? newValue) {
+          setState(() {
+            dropdownValue = newValue!;
+            // ignore: avoid_print
+            sinifId = transactionsSinif
+                .singleWhere((element) => element.sinifAd == dropdownValue)
+                .id;
+            print("sinifId: $sinifId");
+          });
+        },
+        items:
+            transactionsSinif.map<DropdownMenuItem<String>>((SinifModel value) {
+          return DropdownMenuItem<String>(
+            value: value.sinifAd,
+            child: Text(value.sinifAd),
+          );
+        }).toList(),
+      );
 
   Widget buildName() => TextFormField(
         controller: nameController,
@@ -110,7 +150,7 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
         onPressed: () => Navigator.of(context).pop(),
       );
 
-  Widget buildAddButton(BuildContext context, int? sonId,
+  Widget buildAddButton(BuildContext context, int? sonId, int? secilensinifId,
       {required bool isEditing}) {
     final text = isEditing ? 'Kaydet' : 'Ekle';
 
@@ -124,8 +164,9 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
           int? nu = int.parse(nuController.text);
 
           int id = sonId ?? 0;
+          int sinifId = secilensinifId ?? 0;
 
-          widget.onClickedDone(id, name, nu);
+          widget.onClickedDone(id, name, nu, sinifId);
 
           Navigator.of(context).pop();
         }

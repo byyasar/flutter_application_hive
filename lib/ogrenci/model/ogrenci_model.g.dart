@@ -20,19 +20,22 @@ class OgrenciModelAdapter extends TypeAdapter<OgrenciModel> {
       id: fields[0] as int,
       name: fields[1] as String,
       nu: fields[2] as int,
+      sinifId: fields[3] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, OgrenciModel obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
       ..write(obj.name)
       ..writeByte(2)
-      ..write(obj.nu);
+      ..write(obj.nu)
+      ..writeByte(3)
+      ..write(obj.sinifId);
   }
 
   @override

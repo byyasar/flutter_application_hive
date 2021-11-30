@@ -11,6 +11,11 @@ class OgrenciModel extends HiveObject {
   String name;
   @HiveField(2)
   int nu;
-
-  OgrenciModel({required this.id, required this.name, required this.nu});
+  @HiveField(3)
+  int sinifId;
+  OgrenciModel(
+      {required this.id,
+      required this.name,
+      required this.nu,
+      required this.sinifId});
 }
