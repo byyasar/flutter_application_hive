@@ -6,6 +6,8 @@ import 'package:flutter_application_hive/model/task_model.dart';
 import 'package:flutter_application_hive/ogrenci/model/ogrenci_model.dart';
 import 'package:flutter_application_hive/ogrenci/view/ogrenci_view.dart';
 import 'package:flutter_application_hive/siniflar/model/sinif_model.dart';
+import 'package:flutter_application_hive/store/sinif_store.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -54,6 +56,7 @@ class MyStatefulWidget extends StatefulWidget {
 
 /// This is the private State class that goes with MyStatefulWidget.
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+  final SinifStore sinifStore = SinifStore();
   List<SinifModel> transactions = [];
   String dropdownValue = "";
   int selectedId = 1;
@@ -95,13 +98,12 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             color: Colors.deepPurpleAccent,
           ),
           onChanged: (String? newValue) {
-            setState(() {
-              dropdownValue = newValue!;
-              // ignore: avoid_print
-              print(transactions
-                  .singleWhere((element) => element.sinifAd == dropdownValue)
-                  .id);
-            });
+            dropdownValue = newValue!;
+            int sinifId = transactions
+                .singleWhere((element) => element.sinifAd == dropdownValue)
+                .id;
+            sinifStore.setSinifId(sinifId);
+            print(sinifStore.sinifId);
           },
           items: transactions.map<DropdownMenuItem<String>>((SinifModel value) {
             return DropdownMenuItem<String>(

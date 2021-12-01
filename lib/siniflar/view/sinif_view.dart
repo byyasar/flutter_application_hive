@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_hive/core/boxes.dart';
+import 'package:flutter_application_hive/ogrenci/view/ogrenci_view.dart';
 import 'package:flutter_application_hive/siniflar/dialog/sinif_dialog.dart';
 import 'package:flutter_application_hive/siniflar/model/sinif_model.dart';
 import 'package:flutter_application_hive/siniflar/widget/sinif_card.dart';
@@ -40,6 +41,15 @@ class _SinifpageViewState extends State<SinifpageView> {
         appBar: AppBar(
           title: const Text('Sınıf Listesi'),
           centerTitle: true,
+          leading: IconButton(
+              onPressed: () async {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const OgrencipageView()),
+                );
+              },
+              icon: const Icon(Icons.delete)),
         ),
         body: ValueListenableBuilder<Box<SinifModel>>(
           valueListenable: SinifBoxes.getTransactions().listenable(),

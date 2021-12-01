@@ -32,12 +32,15 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
 
     if (widget.transaction != null) {
       final transaction = widget.transaction!;
-
       nameController.text = transaction.name;
       nuController.text = transaction.nu.toString();
-      transactionsSinif =
-          SinifBoxes.getTransactions().values.toList().cast<SinifModel>();
-      dropdownValue = transactionsSinif.first.sinifAd;
+}
+      if (transactionsSinif.isEmpty) {
+        transactionsSinif =
+            SinifBoxes.getTransactions().values.toList().cast<SinifModel>();
+        //
+
+      
     }
   }
 
@@ -45,7 +48,6 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
   void dispose() {
     nameController.dispose();
     nuController.dispose();
-
     super.dispose();
   }
 
@@ -55,11 +57,19 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
     final title = isEditing ? 'Öğrenciyi Düzenle' : 'Öğrenci Ekle';
     //final ogrenciModel = widget.transaction;
     final box = OgrenciBoxes.getTransactions();
+    if (isEditing) {
+      dropdownValue = transactionsSinif
+          .singleWhere((element) => element.id == widget.transaction?.sinifId)
+          .sinifAd;
+    } else {
+      dropdownValue = transactionsSinif.first.sinifAd;
+      sinifId = transactionsSinif
+          .singleWhere((element) => element.sinifAd == dropdownValue)
+          .id;
+    }
 
     int sonId;
-    sinifId = transactionsSinif
-        .singleWhere((element) => element.sinifAd == dropdownValue)
-        .id;
+
     //int sonId = isEditing ?  (widget.transaction.?id==null?0:widget.transaction.id):box.values.last.id + 1;
     if (widget.transaction?.id == null) {
       isEditing
@@ -82,7 +92,7 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
               const SizedBox(height: 8),
               buildNu(),
               const SizedBox(height: 8),
-              buildSinif(context, transactionsSinif, dropdownValue, sinifId)
+              buildSinif(context, transactionsSinif)
             ],
           ),
         ),
@@ -94,8 +104,7 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
     );
   }
 
-  Widget buildSinif(BuildContext context, List<SinifModel> transactionsSinif,
-          dropdownValue, int sinifId) =>
+  Widget buildSinif(BuildContext context, List<SinifModel> transactionsSinif) =>
       DropdownButton<String>(
         value: dropdownValue,
         icon: const Icon(Icons.arrow_downward),
@@ -113,6 +122,7 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
             sinifId = transactionsSinif
                 .singleWhere((element) => element.sinifAd == dropdownValue)
                 .id;
+            // ignore: avoid_print
             print("sinifId: $sinifId");
           });
         },

@@ -4,8 +4,8 @@ import 'package:flutter_application_hive/dersler/model/ders_model.dart';
 //import 'package:flutter_application_hive/dersler/view/ders_view.dart';
 import 'package:flutter_application_hive/model/task_model.dart';
 import 'package:flutter_application_hive/ogrenci/model/ogrenci_model.dart';
+import 'package:flutter_application_hive/ogrenci/view/ogrenci_view.dart';
 import 'package:flutter_application_hive/siniflar/model/sinif_model.dart';
-import 'package:flutter_application_hive/siniflar/view/sinif_view.dart';
 //import 'package:flutter_application_hive/ogrenci/view/ogrenci_view.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -36,8 +36,8 @@ class MyApp extends StatelessWidget {
         title: title,
         theme: ThemeData(primarySwatch: Colors.indigo),
         //home: MainpageView(),//OgrencipageView
-        //home: const OgrencipageView(), //OgrencipageView
+        home: const OgrencipageView(), //OgrencipageView
         //home: const DerspageView(), //OgrencipageView
-        home: const SinifpageView(), //OgrencipageView
+        //home: const SinifpageView(), //OgrencipageView
       );
 }
