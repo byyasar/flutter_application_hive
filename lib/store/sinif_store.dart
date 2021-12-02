@@ -6,7 +6,7 @@ class SinifStore = _SinifId with _$SinifStore;
 
 abstract class _SinifId with Store {
   @observable
-  int sinifId = 0;
+  int sinifId = -1;
 
   @observable
   String sinifAd = "";
@@ -14,10 +14,12 @@ abstract class _SinifId with Store {
   @action
   void setSinifId(int sinifId) {
     sinifId = sinifId;
+    print('sinif id:$sinifId');
   }
 
   @action
   void setSinifAd(String sinifAd) {
     sinifAd = sinifAd;
+    print('sinif adı:$sinifAd');
   }
 }

@@ -7,9 +7,9 @@ import 'package:flutter_application_hive/ogrenci/model/ogrenci_model.dart';
 import 'package:flutter_application_hive/ogrenci/view/ogrenci_view.dart';
 import 'package:flutter_application_hive/siniflar/model/sinif_model.dart';
 import 'package:flutter_application_hive/store/sinif_store.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -58,6 +58,7 @@ class MyStatefulWidget extends StatefulWidget {
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   final SinifStore sinifStore = SinifStore();
   List<SinifModel> transactions = [];
+  List<String> transactionssinif = [];
   String dropdownValue = "";
   int selectedId = 1;
 
@@ -71,10 +72,10 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   void initState() {
     super.initState();
 
-    /* transactions = SinifBoxes.getTransactions()
+    transactionssinif = SinifBoxes.getTransactions()
         .values
         .map((e) => e.sinifAd.toString())
-        .toList(); */
+        .toList();
     transactions =
         SinifBoxes.getTransactions().values.toList().cast<SinifModel>();
     // ignore: avoid_print
@@ -87,30 +88,19 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        DropdownButton<String>(
-          value: dropdownValue,
-          icon: const Icon(Icons.arrow_downward),
-          iconSize: 24,
-          elevation: 16,
-          style: const TextStyle(color: Colors.deepPurple),
-          underline: Container(
-            height: 2,
-            color: Colors.deepPurpleAccent,
-          ),
-          onChanged: (String? newValue) {
-            dropdownValue = newValue!;
-            int sinifId = transactions
-                .singleWhere((element) => element.sinifAd == dropdownValue)
-                .id;
-            sinifStore.setSinifId(sinifId);
-            print(sinifStore.sinifId);
-          },
-          items: transactions.map<DropdownMenuItem<String>>((SinifModel value) {
-            return DropdownMenuItem<String>(
-              value: value.sinifAd,
-              child: Text(value.sinifAd),
-            );
-          }).toList(),
+        SizedBox(
+          width: 160,
+          child: DropdownSearch<String>(
+              mode: Mode.MENU,
+              // showSelectedItem: true,
+              items: transactionssinif,
+              // ignore: deprecated_member_use
+              label: "Sınıflar",
+              // ignore: deprecated_member_use
+              hint: "country in menu mode",
+              //popupItemDisabled: (String s) => s.startsWith('B'),
+              onChanged: (value) => print('seçilen $value'),
+              selectedItem: transactionssinif.first),
         ),
         const SizedBox(
           width: 10,

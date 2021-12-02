@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_hive/ogrenci/model/ogrenci_model.dart';
 import 'package:flutter_application_hive/core/boxes.dart';
 import 'package:flutter_application_hive/siniflar/model/sinif_model.dart';
+import 'package:flutter_application_hive/store/sinif_store.dart';
 
 class OgrenciDialog extends StatefulWidget {
   final OgrenciModel? transaction;
@@ -22,7 +23,8 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
   final formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final nuController = TextEditingController();
-  int sinifId = 0;
+  SinifStore sinifStore = SinifStore();
+
   //final isCompletedController=
   List<SinifModel> transactionsSinif = [];
   String dropdownValue = "";
@@ -34,13 +36,11 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
       final transaction = widget.transaction!;
       nameController.text = transaction.name;
       nuController.text = transaction.nu.toString();
-}
-      if (transactionsSinif.isEmpty) {
-        transactionsSinif =
-            SinifBoxes.getTransactions().values.toList().cast<SinifModel>();
-        //
-
-      
+    }
+    if (transactionsSinif.isEmpty) {
+      transactionsSinif =
+          SinifBoxes.getTransactions().values.toList().cast<SinifModel>();
+      dropdownValue = transactionsSinif.first.sinifAd;
     }
   }
 
@@ -55,9 +55,8 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
   Widget build(BuildContext context) {
     final isEditing = widget.transaction != null;
     final title = isEditing ? 'Öğrenciyi Düzenle' : 'Öğrenci Ekle';
-    //final ogrenciModel = widget.transaction;
     final box = OgrenciBoxes.getTransactions();
-    if (isEditing) {
+    /*  if (isEditing) {
       dropdownValue = transactionsSinif
           .singleWhere((element) => element.id == widget.transaction?.sinifId)
           .sinifAd;
@@ -66,15 +65,16 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
       sinifId = transactionsSinif
           .singleWhere((element) => element.sinifAd == dropdownValue)
           .id;
-    }
+    } */
 
     int sonId;
-
-    //int sonId = isEditing ?  (widget.transaction.?id==null?0:widget.transaction.id):box.values.last.id + 1;
     if (widget.transaction?.id == null) {
-      isEditing
-          ? sonId = widget.transaction!.id
-          : (box.values.isEmpty ? sonId = 1 : sonId = box.values.last.id + 1);
+      if (isEditing) {
+        sonId = widget.transaction!.id;
+        sinifStore.setSinifId(widget.transaction!.sinifId);
+      } else {
+        box.values.isEmpty ? sonId = 1 : sonId = box.values.last.id + 1;
+      }
     } else {
       sonId = isEditing ? widget.transaction!.id : 1;
     }
@@ -99,7 +99,7 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
       ),
       actions: <Widget>[
         buildCancelButton(context),
-        buildAddButton(context, sonId, sinifId, isEditing: isEditing),
+        buildAddButton(context, sonId, isEditing: isEditing),
       ],
     );
   }
@@ -116,17 +116,14 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
           color: Colors.deepPurpleAccent,
         ),
         onChanged: (String? newValue) {
-          setState(() {
-            dropdownValue = newValue!;
-            // ignore: avoid_print
-            sinifId = transactionsSinif
-                .singleWhere((element) => element.sinifAd == dropdownValue)
-                .id;
-            // ignore: avoid_print
-            print("sinifId: $sinifId");
-          });
+          dropdownValue = newValue!;
+          sinifStore.setSinifId(transactionsSinif
+              .singleWhere((element) => element.sinifAd == newValue)
+              .id);
+          sinifStore.setSinifAd(newValue);
+         // setState(() {});
         },
-        items:
+        items:         
             transactionsSinif.map<DropdownMenuItem<String>>((SinifModel value) {
           return DropdownMenuItem<String>(
             value: value.sinifAd,
@@ -160,7 +157,7 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
         onPressed: () => Navigator.of(context).pop(),
       );
 
-  Widget buildAddButton(BuildContext context, int? sonId, int? secilensinifId,
+  Widget buildAddButton(BuildContext context, int? sonId,
       {required bool isEditing}) {
     final text = isEditing ? 'Kaydet' : 'Ekle';
 
@@ -174,7 +171,7 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
           int? nu = int.parse(nuController.text);
 
           int id = sonId ?? 0;
-          int sinifId = secilensinifId ?? 0;
+          int sinifId = sinifStore.sinifId;
 
           widget.onClickedDone(id, name, nu, sinifId);
 
