@@ -21,12 +21,7 @@ class _OgrencipageViewState extends State<OgrencipageView> {
   }
 
   void editTransaction(
-    OgrenciModel transaction,
-    int id,
-    String name,
-    int nu,
-    int sinifId
-  ) {
+      OgrenciModel transaction, int id, String name, int nu, int sinifId) {
     transaction.id = id;
     transaction.name = name;
     transaction.nu = nu;
@@ -138,7 +133,10 @@ class _OgrencipageViewState extends State<OgrencipageView> {
           Expanded(
             child: TextButton.icon(
               label: const Text('Sil'),
-              icon: const Icon(Icons.delete),
+              icon: const Icon(
+                Icons.delete,
+                color: Colors.red,
+              ),
               onPressed: () => deleteTransaction(transaction),
             ),
           )

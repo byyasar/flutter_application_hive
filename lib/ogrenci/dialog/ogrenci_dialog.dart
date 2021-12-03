@@ -4,7 +4,6 @@ import 'package:flutter_application_hive/core/boxes.dart';
 import 'package:flutter_application_hive/siniflar/model/sinif_model.dart';
 import 'package:flutter_application_hive/store/sinif_store.dart';
 import 'package:dropdown_search/dropdown_search.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 
 class OgrenciDialog extends StatefulWidget {
   final OgrenciModel? transaction;
@@ -96,15 +95,20 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
         ),
       ),
       actions: <Widget>[
-        buildCancelButton(context),
-        buildAddButton(context, sonId, isEditing: isEditing),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            buildCancelButton(context),
+            buildAddButton(context, sonId, isEditing: isEditing),
+          ],
+        )
       ],
     );
   }
 
   Widget buildSinif(BuildContext context, List<SinifModel> transactionsSinif) =>
       SizedBox(
-        width: 160,
+        width: MediaQuery.of(context).size.width * .6,
         child: DropdownSearch<String>(
           mode: Mode.MENU,
           // showSelectedItem: true,
@@ -129,6 +133,7 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
   Widget buildName() => TextFormField(
         controller: nameController,
         decoration: const InputDecoration(
+          label: Text("Öğrenci adı"),
           border: OutlineInputBorder(),
           hintText: 'Öğrenci Adını Giriniz',
         ),
@@ -139,6 +144,7 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
   Widget buildNu() => TextFormField(
         decoration: const InputDecoration(
           border: OutlineInputBorder(),
+          label: Text("Öğrenci Nu"),
           hintText: 'Numarayı Giriniz',
         ),
         keyboardType: TextInputType.number,
@@ -147,7 +153,15 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
       );
 
   Widget buildCancelButton(BuildContext context) => TextButton(
-        child: const Text('İptal'),
+        child: Row(
+          children: [
+            Icon(
+              Icons.cancel,
+              color: Colors.red.shade400,
+            ),
+            const Text('İptal'),
+          ],
+        ),
         onPressed: () => Navigator.of(context).pop(),
       );
 
@@ -156,7 +170,12 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
     final text = isEditing ? 'Kaydet' : 'Ekle';
 
     return TextButton(
-      child: Text(text),
+      child: Row(
+        children: [
+          Icon(Icons.add_box, color: Colors.green.shade400),
+          Text(text),
+        ],
+      ),
       onPressed: () async {
         final isValid = formKey.currentState!.validate();
 
