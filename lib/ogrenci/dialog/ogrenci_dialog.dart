@@ -3,6 +3,8 @@ import 'package:flutter_application_hive/ogrenci/model/ogrenci_model.dart';
 import 'package:flutter_application_hive/core/boxes.dart';
 import 'package:flutter_application_hive/siniflar/model/sinif_model.dart';
 import 'package:flutter_application_hive/store/sinif_store.dart';
+import 'package:dropdown_search/dropdown_search.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 class OgrenciDialog extends StatefulWidget {
   final OgrenciModel? transaction;
@@ -27,7 +29,7 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
 
   //final isCompletedController=
   List<SinifModel> transactionsSinif = [];
-  String dropdownValue = "";
+
   @override
   void initState() {
     super.initState();
@@ -38,9 +40,12 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
       nuController.text = transaction.nu.toString();
     }
     if (transactionsSinif.isEmpty) {
+      /* transactionsSinif = SinifBoxes.getTransactions()
+          .values
+          .map((e) => e.sinifAd.toString())
+          .toList(); */
       transactionsSinif =
           SinifBoxes.getTransactions().values.toList().cast<SinifModel>();
-      dropdownValue = transactionsSinif.first.sinifAd;
     }
   }
 
@@ -56,27 +61,20 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
     final isEditing = widget.transaction != null;
     final title = isEditing ? 'Öğrenciyi Düzenle' : 'Öğrenci Ekle';
     final box = OgrenciBoxes.getTransactions();
-    /*  if (isEditing) {
-      dropdownValue = transactionsSinif
-          .singleWhere((element) => element.id == widget.transaction?.sinifId)
-          .sinifAd;
-    } else {
-      dropdownValue = transactionsSinif.first.sinifAd;
-      sinifId = transactionsSinif
-          .singleWhere((element) => element.sinifAd == dropdownValue)
-          .id;
-    } */
-
     int sonId;
+
     if (widget.transaction?.id == null) {
       if (isEditing) {
         sonId = widget.transaction!.id;
-        sinifStore.setSinifId(widget.transaction!.sinifId);
       } else {
         box.values.isEmpty ? sonId = 1 : sonId = box.values.last.id + 1;
       }
     } else {
       sonId = isEditing ? widget.transaction!.id : 1;
+      sinifStore.setSinifId(widget.transaction!.sinifId);
+      sinifStore.setSinifAd(transactionsSinif
+          .singleWhere((element) => element.id == widget.transaction!.sinifId)
+          .sinifAd);
     }
 
     return AlertDialog(
@@ -105,31 +103,27 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
   }
 
   Widget buildSinif(BuildContext context, List<SinifModel> transactionsSinif) =>
-      DropdownButton<String>(
-        value: dropdownValue,
-        icon: const Icon(Icons.arrow_downward),
-        iconSize: 24,
-        elevation: 16,
-        style: const TextStyle(color: Colors.deepPurple),
-        underline: Container(
-          height: 2,
-          color: Colors.deepPurpleAccent,
+      SizedBox(
+        width: 160,
+        child: DropdownSearch<String>(
+          mode: Mode.MENU,
+          // showSelectedItem: true,
+          items: buildItems(),
+          // ignore: deprecated_member_use
+          label: "Sınıflar",
+          // ignore: deprecated_member_use
+          hint: "country in menu mode",
+          //popupItemDisabled: (String s) => s.startsWith('B'),
+          onChanged: (value) {
+            print('seçilen $value');
+            int sinifid = transactionsSinif
+                .singleWhere((element) => element.sinifAd == value)
+                .id;
+            sinifStore.setSinifId(sinifid);
+            print('storedan glen id' + sinifStore.sinifId.toString());
+          },
+          selectedItem: sinifStore.sinifAd,
         ),
-        onChanged: (String? newValue) {
-          dropdownValue = newValue!;
-          sinifStore.setSinifId(transactionsSinif
-              .singleWhere((element) => element.sinifAd == newValue)
-              .id);
-          sinifStore.setSinifAd(newValue);
-         // setState(() {});
-        },
-        items:         
-            transactionsSinif.map<DropdownMenuItem<String>>((SinifModel value) {
-          return DropdownMenuItem<String>(
-            value: value.sinifAd,
-            child: Text(value.sinifAd),
-          );
-        }).toList(),
       );
 
   Widget buildName() => TextFormField(
@@ -171,13 +165,21 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
           int? nu = int.parse(nuController.text);
 
           int id = sonId ?? 0;
-          int sinifId = sinifStore.sinifId;
+          //int sinifId = sId ?? 0;
 
-          widget.onClickedDone(id, name, nu, sinifId);
+          widget.onClickedDone(id, name, nu, sinifStore.sinifId);
 
           Navigator.of(context).pop();
         }
       },
     );
+  }
+
+  List<String> buildItems() {
+    List<String> items = SinifBoxes.getTransactions()
+        .values
+        .map((e) => e.sinifAd.toString())
+        .toList();
+    return items;
   }
 }

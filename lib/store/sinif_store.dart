@@ -13,13 +13,13 @@ abstract class _SinifId with Store {
 
   @action
   void setSinifId(int sinifId) {
-    sinifId = sinifId;
+    this.sinifId = sinifId;
     print('sinif id:$sinifId');
   }
 
   @action
   void setSinifAd(String sinifAd) {
-    sinifAd = sinifAd;
+    this.sinifAd = sinifAd;
     print('sinif adı:$sinifAd');
   }
 }
