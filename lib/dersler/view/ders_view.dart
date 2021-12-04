@@ -14,10 +14,9 @@ class DerspageView extends StatefulWidget {
 }
 
 class _DerspageViewState extends State<DerspageView> {
-  int sinifId = 0;
   @override
   void dispose() {
-    Hive.close();
+    //Hive.close();
     super.dispose();
   }
 
@@ -126,7 +125,7 @@ class _DerspageViewState extends State<DerspageView> {
                 MaterialPageRoute(
                   builder: (context) => DersDialog(
                     transaction: transaction,
-                    onClickedDone: (id, dersad,dersId) =>
+                    onClickedDone: (id, dersad, sinifId) =>
                         editTransaction(transaction, id, dersad, sinifId),
                   ),
                 ),

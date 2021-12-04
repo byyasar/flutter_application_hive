@@ -111,13 +111,9 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
         width: MediaQuery.of(context).size.width * .6,
         child: DropdownSearch<String>(
           mode: Mode.MENU,
-          // showSelectedItem: true,
           items: buildItems(),
-          // ignore: deprecated_member_use
           label: "Sınıflar",
-          // ignore: deprecated_member_use
-          hint: "country in menu mode",
-          //popupItemDisabled: (String s) => s.startsWith('B'),
+          hint: "Sınıf seçiniz",
           onChanged: (value) {
             print('seçilen $value');
             int sinifid = transactionsSinif
@@ -126,7 +122,7 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
             sinifStore.setSinifId(sinifid);
             print('storedan glen id' + sinifStore.sinifId.toString());
           },
-          selectedItem: sinifStore.sinifAd,
+          selectedItem: sinifStore.sinifAd.isEmpty?"":sinifStore.sinifAd,
         ),
       );
 

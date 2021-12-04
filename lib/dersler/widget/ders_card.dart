@@ -24,7 +24,8 @@ class DersCard extends StatelessWidget {
           maxLines: 2,
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
-        subtitle: Text("id: ${transaction.id.toString()} "),
+        subtitle: Text(
+            "id: ${transaction.id.toString()} sinif id: ${transaction.sinifId.toString()} "),
         children: [butons],
       ),
     );

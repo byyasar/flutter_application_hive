@@ -16,7 +16,7 @@ class OgrencipageView extends StatefulWidget {
 class _OgrencipageViewState extends State<OgrencipageView> {
   @override
   void dispose() {
-    Hive.close();
+    //Hive.close();
     super.dispose();
   }
 

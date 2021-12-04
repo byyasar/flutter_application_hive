@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_application_hive/core/boxes.dart';
 import 'package:flutter_application_hive/dersler/model/ders_model.dart';
+import 'package:flutter_application_hive/siniflar/model/sinif_model.dart';
+import 'package:flutter_application_hive/siniflar/store/sinif_store.dart';
+import 'package:dropdown_search/dropdown_search.dart';
+
+
 
 class DersDialog extends StatefulWidget {
   final DersModel? transaction;
-  int sinifId = 0;
+  
 
   final Function(int id, String dersad, int sinifId) onClickedDone;
 
   const DersDialog({
     Key? key,
     this.transaction,
-    required this.sinifId,
     required this.onClickedDone,
   }) : super(key: key);
 
@@ -23,7 +26,8 @@ class DersDialog extends StatefulWidget {
 class _DersDialogState extends State<DersDialog> {
   final formKey = GlobalKey<FormState>();
   final dersadController = TextEditingController();
-
+   SinifStore sinifStore = SinifStore();
+List<SinifModel> transactionsSinif = [];
   @override
   void initState() {
     super.initState();
@@ -31,6 +35,10 @@ class _DersDialogState extends State<DersDialog> {
     if (widget.transaction != null) {
       final transaction = widget.transaction!;
       dersadController.text = transaction.dersad;
+    }
+    if (transactionsSinif.isEmpty) {
+      transactionsSinif =
+          SinifBoxes.getTransactions().values.toList().cast<SinifModel>();
     }
   }
 
@@ -44,16 +52,19 @@ class _DersDialogState extends State<DersDialog> {
   Widget build(BuildContext context) {
     final isEditing = widget.transaction != null;
     final title = isEditing ? 'Dersi Düzenle' : 'Ders Ekle';
-    //final DersModel = widget.transaction;
     final box = DersBoxes.getTransactions();
     int sonId;
-    //int sonId = isEditing ?  (widget.transaction.?id==null?0:widget.transaction.id):box.values.last.id + 1;
+
     if (widget.transaction?.id == null) {
       isEditing
           ? sonId = widget.transaction!.id
           : (box.values.isEmpty ? sonId = 1 : sonId = box.values.last.id + 1);
     } else {
       sonId = isEditing ? widget.transaction!.id : 1;
+       sinifStore.setSinifId(widget.transaction!.sinifId);
+      sinifStore.setSinifAd(transactionsSinif
+          .singleWhere((element) => element.id == widget.transaction!.sinifId)
+          .sinifAd);
     }
 
     return AlertDialog(
@@ -67,6 +78,7 @@ class _DersDialogState extends State<DersDialog> {
               const SizedBox(height: 8),
               builddersad(),
               const SizedBox(height: 8),
+               buildSinif(context, transactionsSinif)
             ],
           ),
         ),
@@ -77,6 +89,26 @@ class _DersDialogState extends State<DersDialog> {
       ],
     );
   }
+
+   Widget buildSinif(BuildContext context, List<SinifModel> transactionsSinif) =>
+      SizedBox(
+        width: MediaQuery.of(context).size.width * .6,
+        child: DropdownSearch<String>(
+          mode: Mode.MENU,
+          items: buildItems(),
+          label: "Sınıflar",
+          hint: "country in menu mode",
+          onChanged: (value) {
+            print('seçilen $value');
+            int sinifid = transactionsSinif
+                .singleWhere((element) => element.sinifAd == value)
+                .id;
+            sinifStore.setSinifId(sinifid);
+            print('storedan glen id' + sinifStore.sinifId.toString());
+          },
+          selectedItem: sinifStore.sinifAd,
+        ),
+      );
 
   Widget builddersad() => TextFormField(
         controller: dersadController,
@@ -107,13 +139,21 @@ class _DersDialogState extends State<DersDialog> {
           // int? nu = int.parse(nuController.text);
 
           int id = sonId ?? 0;
-          int sinifId = widget.sinifId ?? 0;
+          
 
-          widget.onClickedDone(id, dersad, sinifId);
+          widget.onClickedDone(id, dersad, sinifStore.sinifId);
 
           Navigator.of(context).pop();
         }
       },
     );
+  }
+
+  List<String> buildItems() {
+    List<String> items = SinifBoxes.getTransactions()
+        .values
+        .map((e) => e.sinifAd.toString())
+        .toList();
+    return items;
   }
 }
