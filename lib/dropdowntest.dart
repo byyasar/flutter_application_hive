@@ -6,7 +6,7 @@ import 'package:flutter_application_hive/model/task_model.dart';
 import 'package:flutter_application_hive/ogrenci/model/ogrenci_model.dart';
 import 'package:flutter_application_hive/ogrenci/view/ogrenci_view.dart';
 import 'package:flutter_application_hive/siniflar/model/sinif_model.dart';
-import 'package:flutter_application_hive/store/sinif_store.dart';
+import 'package:flutter_application_hive/siniflar/store/sinif_store.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:dropdown_search/dropdown_search.dart';

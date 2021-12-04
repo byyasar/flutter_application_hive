@@ -19,17 +19,20 @@ class DersModelAdapter extends TypeAdapter<DersModel> {
     return DersModel(
       id: fields[0] as int,
       dersad: fields[1] as String,
+      sinifId: fields[2] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, DersModel obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.dersad);
+      ..write(obj.dersad)
+      ..writeByte(2)
+      ..write(obj.sinifId);
   }
 
   @override

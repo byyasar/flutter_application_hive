@@ -14,6 +14,7 @@ class DerspageView extends StatefulWidget {
 }
 
 class _DerspageViewState extends State<DerspageView> {
+  int sinifId = 0;
   @override
   void dispose() {
     Hive.close();
@@ -24,9 +25,11 @@ class _DerspageViewState extends State<DerspageView> {
     DersModel transaction,
     int id,
     String dersad,
+    int sinifId,
   ) {
     transaction.id = id;
     transaction.dersad = dersad;
+    transaction.sinifId = sinifId;
     transaction.save();
   }
 
@@ -106,8 +109,8 @@ class _DerspageViewState extends State<DerspageView> {
         butons: buildButtons(context, transaction));
   }
 
-  Future addTransaction(int id, String dersad) async {
-    final transaction = DersModel(id: id, dersad: dersad);
+  Future addTransaction(int id, String dersad, int sinifId) async {
+    final transaction = DersModel(id: id, dersad: dersad, sinifId: sinifId);
 
     final box = DersBoxes.getTransactions();
     box.add(transaction);
@@ -123,8 +126,8 @@ class _DerspageViewState extends State<DerspageView> {
                 MaterialPageRoute(
                   builder: (context) => DersDialog(
                     transaction: transaction,
-                    onClickedDone: (id, dersad) =>
-                        editTransaction(transaction, id, dersad),
+                    onClickedDone: (id, dersad,dersId) =>
+                        editTransaction(transaction, id, dersad, sinifId),
                   ),
                 ),
               ),

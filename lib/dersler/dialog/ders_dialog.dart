@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_application_hive/core/boxes.dart';
 import 'package:flutter_application_hive/dersler/model/ders_model.dart';
 
 class DersDialog extends StatefulWidget {
   final DersModel? transaction;
+  int sinifId = 0;
 
-  final Function(int id, String dersad) onClickedDone;
+  final Function(int id, String dersad, int sinifId) onClickedDone;
 
   const DersDialog({
     Key? key,
     this.transaction,
+    required this.sinifId,
     required this.onClickedDone,
   }) : super(key: key);
 
@@ -48,9 +51,7 @@ class _DersDialogState extends State<DersDialog> {
     if (widget.transaction?.id == null) {
       isEditing
           ? sonId = widget.transaction!.id
-          : (box.values.isEmpty
-              ? sonId = 1
-              : sonId = box.values.last.id + 1);
+          : (box.values.isEmpty ? sonId = 1 : sonId = box.values.last.id + 1);
     } else {
       sonId = isEditing ? widget.transaction!.id : 1;
     }
@@ -106,8 +107,9 @@ class _DersDialogState extends State<DersDialog> {
           // int? nu = int.parse(nuController.text);
 
           int id = sonId ?? 0;
+          int sinifId = widget.sinifId ?? 0;
 
-          widget.onClickedDone(id, dersad);
+          widget.onClickedDone(id, dersad, sinifId);
 
           Navigator.of(context).pop();
         }

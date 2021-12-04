@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_hive/ogrenci/model/ogrenci_model.dart';
 import 'package:flutter_application_hive/core/boxes.dart';
 import 'package:flutter_application_hive/siniflar/model/sinif_model.dart';
-import 'package:flutter_application_hive/store/sinif_store.dart';
+import 'package:flutter_application_hive/siniflar/store/sinif_store.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 
 class OgrenciDialog extends StatefulWidget {
