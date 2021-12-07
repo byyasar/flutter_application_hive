@@ -3,6 +3,9 @@ import 'package:flutter_application_hive/core/boxes.dart';
 import 'package:flutter_application_hive/dersler/dialog/ders_dialog.dart';
 import 'package:flutter_application_hive/dersler/model/ders_model.dart';
 import 'package:flutter_application_hive/dersler/widget/ders_card.dart';
+import 'package:flutter_application_hive/siniflar/model/sinif_model.dart';
+import 'package:flutter_application_hive/siniflar/store/sinif_store.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -14,6 +17,7 @@ class DerspageView extends StatefulWidget {
 }
 
 class _DerspageViewState extends State<DerspageView> {
+  SinifStore sinifStore = SinifStore();
   @override
   void dispose() {
     //Hive.close();
@@ -41,17 +45,49 @@ class _DerspageViewState extends State<DerspageView> {
         appBar: AppBar(
           title: const Text('Ders Listesi'),
           centerTitle: true,
+          actions: <Widget>[
+            PopupMenuButton<String>(
+              onCanceled: () => sinifStore.setFiltreSinifId(-1),
+              onSelected: (value) {
+                //print(value);
+                sinifStore.setFiltreSinifId(int.parse(value));
+              },
+              itemBuilder: (BuildContext context) {
+                return SinifBoxes.getTransactions()
+                    .values
+                    .toList()
+                    .cast<SinifModel>()
+                    .map((e) {
+                  return PopupMenuItem(
+                    value: e.id.toString(),
+                    child: Text(e.sinifAd),
+                  );
+                }).toList();
+              },
+            )
+          ],
         ),
-        body: ValueListenableBuilder<Box<DersModel>>(
-          valueListenable: DersBoxes.getTransactions().listenable(),
-          builder: (context, box, _) {
-            final transactions = box.values.toList().cast<DersModel>();
-            // ignore: avoid_print
-            print(transactions.length);
-            //return Text(transactions[1].detail);
-            return buildContent(transactions);
-          },
-        ),
+        body: Observer(builder: (_) {
+          int filtre = sinifStore.filtreSinifId;
+          //print("filtre: ${sinifStore.filtreSinifId}");
+          return ValueListenableBuilder<Box<DersModel>>(
+              valueListenable: DersBoxes.getTransactions().listenable(),
+              builder: (context, box, _) {
+                List<DersModel> transactions = [];
+                if (filtre != -1) {
+                  transactions = box.values
+                      .where((object) =>
+                          object.sinifId == filtre)
+                      .toList();
+                } else {
+                  transactions = box.values.toList().cast<DersModel>();
+                }
+                // ignore: avoid_print
+                print(transactions.length);
+                //return Text(transactions[1].detail);
+                return buildContent(transactions);
+              });
+        }),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: Padding(
           padding: const EdgeInsets.all(8.0),

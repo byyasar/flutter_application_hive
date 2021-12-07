@@ -9,17 +9,26 @@ abstract class _SinifId with Store {
   int sinifId = -1;
 
   @observable
+  int filtreSinifId = -1;
+
+  @observable
   String sinifAd = "";
 
   @action
   void setSinifId(int sinifId) {
     this.sinifId = sinifId;
-    print('sinif id:$sinifId');
+    //print('sinif id:$sinifId');
+  }
+
+  @action
+  void setFiltreSinifId(int filtreSinifId) {
+    this.filtreSinifId = filtreSinifId;
+    //print('filtre sinif id:$filtreSinifId');
   }
 
   @action
   void setSinifAd(String sinifAd) {
     this.sinifAd = sinifAd;
-    print('sinif adı:$sinifAd');
+    //print('sinif adı:$sinifAd');
   }
 }

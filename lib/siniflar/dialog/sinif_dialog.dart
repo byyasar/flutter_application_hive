@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_hive/core/boxes.dart';
+import 'package:flutter_application_hive/core/widget/cancel_button.dart';
 import 'package:flutter_application_hive/siniflar/model/sinif_model.dart';
 
 class SinifDialog extends StatefulWidget {
@@ -48,9 +49,7 @@ class _SinifDialogState extends State<SinifDialog> {
     if (widget.transaction?.id == null) {
       isEditing
           ? sonId = widget.transaction!.id
-          : (box.values.isEmpty
-              ? sonId = 1
-              : sonId = box.values.last.id + 1);
+          : (box.values.isEmpty ? sonId = 1 : sonId = box.values.last.id + 1);
     } else {
       sonId = isEditing ? widget.transaction!.id : 1;
     }
@@ -71,8 +70,13 @@ class _SinifDialogState extends State<SinifDialog> {
         ),
       ),
       actions: <Widget>[
-        buildCancelButton(context),
-        buildAddButton(context, sonId, isEditing: isEditing),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            buildCancelButton(context),
+            buildAddButton(context, sonId, isEditing: isEditing),
+          ],
+        ),
       ],
     );
   }
@@ -87,17 +91,22 @@ class _SinifDialogState extends State<SinifDialog> {
             sinifAd != null && sinifAd.isEmpty ? 'Sınıf Adını Yazınız' : null,
       );
 
-  Widget buildCancelButton(BuildContext context) => TextButton(
+  /* Widget buildCancelButton(BuildContext context) => TextButton(
         child: const Text('İptal'),
         onPressed: () => Navigator.of(context).pop(),
-      );
+      ); */
 
   Widget buildAddButton(BuildContext context, int? sonId,
       {required bool isEditing}) {
     final text = isEditing ? 'Kaydet' : 'Ekle';
 
     return TextButton(
-      child: Text(text),
+      child: Row(
+        children: [
+          Icon(Icons.add_box, color: Colors.green.shade400),
+          Text(text),
+        ],
+      ),
       onPressed: () async {
         final isValid = formKey.currentState!.validate();
 

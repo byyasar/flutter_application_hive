@@ -24,6 +24,21 @@ mixin _$SinifStore on _SinifId, Store {
     });
   }
 
+  final _$filtreSinifIdAtom = Atom(name: '_SinifId.filtreSinifId');
+
+  @override
+  int get filtreSinifId {
+    _$filtreSinifIdAtom.reportRead();
+    return super.filtreSinifId;
+  }
+
+  @override
+  set filtreSinifId(int value) {
+    _$filtreSinifIdAtom.reportWrite(value, super.filtreSinifId, () {
+      super.filtreSinifId = value;
+    });
+  }
+
   final _$sinifAdAtom = Atom(name: '_SinifId.sinifAd');
 
   @override
@@ -53,6 +68,17 @@ mixin _$SinifStore on _SinifId, Store {
   }
 
   @override
+  void setFiltreSinifId(int filtreSinifId) {
+    final _$actionInfo = _$_SinifIdActionController.startAction(
+        name: '_SinifId.setFiltreSinifId');
+    try {
+      return super.setFiltreSinifId(filtreSinifId);
+    } finally {
+      _$_SinifIdActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void setSinifAd(String sinifAd) {
     final _$actionInfo =
         _$_SinifIdActionController.startAction(name: '_SinifId.setSinifAd');
@@ -67,6 +93,7 @@ mixin _$SinifStore on _SinifId, Store {
   String toString() {
     return '''
 sinifId: ${sinifId},
+filtreSinifId: ${filtreSinifId},
 sinifAd: ${sinifAd}
     ''';
   }

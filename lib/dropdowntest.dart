@@ -99,7 +99,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               // ignore: deprecated_member_use
               hint: "country in menu mode",
               //popupItemDisabled: (String s) => s.startsWith('B'),
-              onChanged: (value) => print('seçilen $value'),
+              //onChanged: (value) => print('seçilen $value'),
               selectedItem: transactionssinif.first),
         ),
         const SizedBox(

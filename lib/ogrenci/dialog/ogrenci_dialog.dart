@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_hive/core/widget/cancel_button.dart';
 import 'package:flutter_application_hive/ogrenci/model/ogrenci_model.dart';
 import 'package:flutter_application_hive/core/boxes.dart';
 import 'package:flutter_application_hive/siniflar/model/sinif_model.dart';
@@ -112,17 +113,17 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
         child: DropdownSearch<String>(
           mode: Mode.MENU,
           items: buildItems(),
-          label: "Sınıflar",
-          hint: "Sınıf seçiniz",
+          //label: "Sınıflar",
+          //hint: "Sınıf seçiniz",
           onChanged: (value) {
-            print('seçilen $value');
+            //print('seçilen $value');
             int sinifid = transactionsSinif
                 .singleWhere((element) => element.sinifAd == value)
                 .id;
             sinifStore.setSinifId(sinifid);
-            print('storedan glen id' + sinifStore.sinifId.toString());
+            //print('storedan glen id' + sinifStore.sinifId.toString());
           },
-          selectedItem: sinifStore.sinifAd.isEmpty?"":sinifStore.sinifAd,
+          selectedItem: sinifStore.sinifAd.isEmpty ? "" : sinifStore.sinifAd,
         ),
       );
 
@@ -148,7 +149,7 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
         controller: nuController,
       );
 
-  Widget buildCancelButton(BuildContext context) => TextButton(
+  /* Widget buildCancelButton(BuildContext context) => TextButton(
         child: Row(
           children: [
             Icon(
@@ -159,7 +160,7 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
           ],
         ),
         onPressed: () => Navigator.of(context).pop(),
-      );
+      ); */
 
   Widget buildAddButton(BuildContext context, int? sonId,
       {required bool isEditing}) {

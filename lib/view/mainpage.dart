@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_hive/dersler/view/ders_view.dart';
 import 'package:flutter_application_hive/ogrenci/view/ogrenci_view.dart';
 import 'package:flutter_application_hive/siniflar/view/sinif_view.dart';
+import 'package:flutter_application_hive/temrin/view/temrin_view.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -14,9 +15,9 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('title')),
+      appBar: AppBar(title: const Text('Temrin Not Sistemi')),
       body: const Center(
-        child: Text('My Page!'),
+        child: Text('Temrin Not Girişi'),
       ),
       drawer: Drawer(
         // Add a ListView to the drawer. This ensures the user can scroll
@@ -39,21 +40,28 @@ class _MainPageState extends State<MainPage> {
               title: const Text('Sınıflar'),
               onTap: () {
                 Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => SinifpageView()));
+                    MaterialPageRoute(builder: (context) => const SinifpageView()));
               },
             ),
             ListTile(
               title: const Text('Dersler'),
               onTap: () {
                 Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => DerspageView()));
+                    MaterialPageRoute(builder: (context) => const DerspageView()));
               },
             ),
             ListTile(
               title: const Text('Öğrenciler'),
               onTap: () {
                 Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => OgrencipageView()));
+                    MaterialPageRoute(builder: (context) => const OgrencipageView()));
+              },
+            ),
+            ListTile(
+              title: const Text('Temrinler'),
+              onTap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const TemrinpageView()));
               },
             ),
           ],
