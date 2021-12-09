@@ -170,7 +170,7 @@ packages:
     source: hosted
     version: "2.2.0"
   dropdown_search:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: dropdown_search
       url: "https://pub.dartlang.org"

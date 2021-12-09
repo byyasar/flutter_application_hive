@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_hive/core/boxes.dart';
+import 'package:flutter_application_hive/core/widget/add_button.dart';
 import 'package:flutter_application_hive/core/widget/cancel_button.dart';
 import 'package:flutter_application_hive/dersler/model/ders_model.dart';
 import 'package:flutter_application_hive/siniflar/model/sinif_model.dart';
@@ -64,7 +65,6 @@ class _DersDialogState extends State<DersDialog> {
           .singleWhere((element) => element.id == widget.transaction!.sinifId)
           .sinifAd);
     }
-
     return AlertDialog(
       title: Text(title),
       content: Form(
@@ -86,7 +86,18 @@ class _DersDialogState extends State<DersDialog> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             buildCancelButton(context),
-            buildAddButton(context, sonId, isEditing: isEditing),
+            BuildAddButton(
+                context: context,
+                sonId: sonId,
+                isEditing: isEditing,
+                onPressed: () async {
+                  final isValid = formKey.currentState!.validate();
+                  if (isValid) {
+                    String? dersad = dersadController.text.toUpperCase();
+                    widget.onClickedDone(sonId, dersad, sinifStore.sinifId);
+                    Navigator.of(context).pop();
+                  }
+                }),
           ],
         ),
       ],
@@ -123,7 +134,7 @@ class _DersDialogState extends State<DersDialog> {
             dersad != null && dersad.isEmpty ? 'Öğrenci Adını' : null,
       );
 
-  Widget buildAddButton(BuildContext context, int? sonId,
+  /*  Widget buildAddButton(BuildContext context, int? sonId,
       {required bool isEditing}) {
     final text = isEditing ? 'Kaydet' : 'Ekle';
 
@@ -149,7 +160,7 @@ class _DersDialogState extends State<DersDialog> {
         }
       },
     );
-  }
+  } */
 
   List<String> buildItems() {
     List<String> items = SinifBoxes.getTransactions()

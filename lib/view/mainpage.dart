@@ -3,6 +3,7 @@ import 'package:flutter_application_hive/dersler/view/ders_view.dart';
 import 'package:flutter_application_hive/ogrenci/view/ogrenci_view.dart';
 import 'package:flutter_application_hive/siniflar/view/sinif_view.dart';
 import 'package:flutter_application_hive/temrin/view/temrin_view.dart';
+import 'package:flutter_application_hive/temrinnot/view/temrinnot_view.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -81,6 +82,16 @@ class _MainPageState extends State<MainPage> {
                 },
               ),
               const Divider(color: Colors.black, height: 2.0),
+              ListTile(
+                title: const Text(
+                  'Temrin Not Girişi',
+                  style: TextStyle(fontSize: 24),
+                ),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const TemrinnotpageView()));
+                },
+              ),
             ],
           ),
         ),

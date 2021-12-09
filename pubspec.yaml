@@ -40,6 +40,7 @@ dependencies:
   mobx: ^2.0.5
   flutter_mobx: ^2.0.2
   mobx_codegen: ^2.0.4
+  dropdown_search: ^2.0.1
 
  
 
@@ -55,7 +56,7 @@ dev_dependencies:
   flutter_lints: ^1.0.0
   hive_generator: ^1.1.1
   build_runner: ^2.1.5
-  dropdown_search: 
+  
   
   
 

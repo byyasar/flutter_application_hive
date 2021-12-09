@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_hive/core/boxes.dart';
+import 'package:flutter_application_hive/core/widget/add_button.dart';
 import 'package:flutter_application_hive/core/widget/cancel_button.dart';
 import 'package:flutter_application_hive/siniflar/model/sinif_model.dart';
 
@@ -74,7 +75,21 @@ class _SinifDialogState extends State<SinifDialog> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             buildCancelButton(context),
-            buildAddButton(context, sonId, isEditing: isEditing),
+            BuildAddButton(
+              context: context,
+              sonId: sonId,
+              isEditing: isEditing,
+              onPressed: () async {
+                final isValid = formKey.currentState!.validate();
+
+                if (isValid) {
+                  String? sinifAd = sinifadController.text.toUpperCase();
+                  // int? nu = int.parse(nuController.text);
+                  widget.onClickedDone(sonId, sinifAd);
+                  Navigator.of(context).pop();
+                }
+              },
+            ),
           ],
         ),
       ],
@@ -96,7 +111,7 @@ class _SinifDialogState extends State<SinifDialog> {
         onPressed: () => Navigator.of(context).pop(),
       ); */
 
-  Widget buildAddButton(BuildContext context, int? sonId,
+/*   Widget buildAddButton(BuildContext context, int? sonId,
       {required bool isEditing}) {
     final text = isEditing ? 'Kaydet' : 'Ekle';
 
@@ -122,5 +137,5 @@ class _SinifDialogState extends State<SinifDialog> {
         }
       },
     );
-  }
+  } */
 }

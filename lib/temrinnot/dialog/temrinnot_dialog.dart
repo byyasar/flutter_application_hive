@@ -3,56 +3,76 @@ import 'package:flutter_application_hive/core/boxes.dart';
 import 'package:flutter_application_hive/core/widget/add_button.dart';
 import 'package:flutter_application_hive/core/widget/cancel_button.dart';
 import 'package:flutter_application_hive/dersler/model/ders_model.dart';
-import 'package:dropdown_search/dropdown_search.dart';
-import 'package:flutter_application_hive/dersler/store/ders_store.dart';
+import 'package:flutter_application_hive/ogrenci/model/ogrenci_model.dart';
+import 'package:flutter_application_hive/siniflar/model/sinif_model.dart';
 import 'package:flutter_application_hive/temrin/model/temrin_model.dart';
+import 'package:flutter_application_hive/temrinnot/model/temrinnot_model.dart';
 
-class TemrinDialog extends StatefulWidget {
-  final TemrinModel? transaction;
+class TemrinnotDialog extends StatefulWidget {
+  final TemrinnotModel? transaction;
 
-  final Function(int id, String temrinKonusu, int dersId) onClickedDone;
+  final Function(int id, int temrinId, int ogrenciId, int puan, String notlar)
+      onClickedDone;
 
-  const TemrinDialog({
+  const TemrinnotDialog({
     Key? key,
     this.transaction,
     required this.onClickedDone,
   }) : super(key: key);
 
   @override
-  _TemrinDialogState createState() => _TemrinDialogState();
+  _TemrinnotDialogState createState() => _TemrinnotDialogState();
 }
 
-class _TemrinDialogState extends State<TemrinDialog> {
+class _TemrinnotDialogState extends State<TemrinnotDialog> {
   final formKey = GlobalKey<FormState>();
-  final temrinadController = TextEditingController();
-  //SinifStore sinifStore = SinifStore();
-  DersStore dersStore = DersStore();
-  List<DersModel> transactionsDersler = [];
+  final temrinnotnotlarController = TextEditingController();
+  final temrinnotpuanController = TextEditingController();
+
+  List<TemrinModel> transactionsTemrin = [];
+  List<OgrenciModel> transactionsOgrenci = [];
+  List<SinifModel> transactionsSinif = [];
+  List<DersModel> transactionsDers = [];
+
   @override
   void initState() {
     super.initState();
 
     if (widget.transaction != null) {
       final transaction = widget.transaction!;
-      temrinadController.text = transaction.temrinKonusu;
+      temrinnotnotlarController.text = transaction.notlar;
+      temrinnotpuanController.text = transaction.puan.toString();
     }
-    if (transactionsDersler.isEmpty) {
-      transactionsDersler =
+    if (transactionsSinif.isEmpty) {
+      transactionsSinif =
+          SinifBoxes.getTransactions().values.toList().cast<SinifModel>();
+    }
+    if (transactionsTemrin.isEmpty) {
+      transactionsTemrin =
+          TemrinBoxes.getTransactions().values.toList().cast<TemrinModel>();
+    }
+    if (transactionsOgrenci.isEmpty) {
+      transactionsOgrenci =
+          OgrenciBoxes.getTransactions().values.toList().cast<OgrenciModel>();
+    }
+    if (transactionsDers.isEmpty) {
+      transactionsDers =
           DersBoxes.getTransactions().values.toList().cast<DersModel>();
     }
   }
 
   @override
   void dispose() {
-    temrinadController.dispose();
+    temrinnotnotlarController.dispose();
+    temrinnotpuanController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final isEditing = widget.transaction != null;
-    final title = isEditing ? 'Temrini Düzenle' : 'Temrin Ekle';
-    final box = TemrinBoxes.getTransactions();
+    final title = isEditing ? 'Temrinnot Düzenle' : 'Temrinnot Ekle';
+    final box = TemrinnotBoxes.getTransactions();
     int sonId;
 
     if (widget.transaction?.id == null) {
@@ -62,10 +82,8 @@ class _TemrinDialogState extends State<TemrinDialog> {
     } else {
       sonId = isEditing ? widget.transaction!.id : 1;
       //sinifStore.setSinifId(widget.transaction!.sinifId);
-      dersStore.setDersId(widget.transaction!.dersId);
-      dersStore.setDersAd(transactionsDersler
-          .singleWhere((element) => element.id == widget.transaction!.dersId)
-          .dersad);
+      //dersStore.setDersId(widget.transaction!.dersId);
+      //dersStore.setDersAd(transactionsDersler    .singleWhere((element) => element.id == widget.transaction!.dersId)          .dersad);
       //sinifStore.setSinifAd(transactionsSinif
       //    .singleWhere((element) => element.id == widget.transaction!.sinifId)
       //    .sinifAd);
@@ -80,9 +98,8 @@ class _TemrinDialogState extends State<TemrinDialog> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               const SizedBox(height: 8),
-              buildTemrinad(),
+              buildTemrinnotad(),
               const SizedBox(height: 8),
-              buildDers(context, transactionsDersler)
             ],
           ),
         ),
@@ -100,10 +117,13 @@ class _TemrinDialogState extends State<TemrinDialog> {
                 final isValid = formKey.currentState!.validate();
 
                 if (isValid) {
-                  String? temrinKonusu = temrinadController.text.toUpperCase();
-                  // int? nu = int.parse(nuController.text);
-                  //int id = sonId ?? 0;
-                  widget.onClickedDone(sonId, temrinKonusu, dersStore.dersId);
+                  int temrinId = 0;
+                  int ogrenciId = 0;
+                  int temrinnotPuan =
+                      int.tryParse(temrinnotpuanController.text)!;
+                  String temrinnotNotlar = temrinnotnotlarController.text;
+                  widget.onClickedDone(sonId, temrinId, ogrenciId,
+                      temrinnotPuan, temrinnotNotlar);
                   Navigator.of(context).pop();
                 }
               },
@@ -114,7 +134,7 @@ class _TemrinDialogState extends State<TemrinDialog> {
     );
   }
 
-  Widget buildDers(BuildContext context, List<DersModel> transactionsDersler) =>
+/*  Widget buildDers(BuildContext context, List<DersModel> transactionsDersler) =>
       SizedBox(
         width: MediaQuery.of(context).size.width * .6,
         child: DropdownSearch<String>(
@@ -133,45 +153,19 @@ class _TemrinDialogState extends State<TemrinDialog> {
           },
           selectedItem: dersStore.dersAd,
         ),
-      );
+      );  */
 
-  Widget buildTemrinad() => TextFormField(
-        controller: temrinadController,
+  Widget buildTemrinnotad() => TextFormField(
+        controller: temrinnotnotlarController,
         decoration: const InputDecoration(
           border: OutlineInputBorder(),
-          hintText: 'Temrin Adını Giriniz',
+          hintText: 'Temrinnot Adını Giriniz',
         ),
-        validator: (temrinAd) =>
-            temrinAd != null && temrinAd.isEmpty ? 'Temrin Konusu' : null,
+        validator: (temrinnotnotlar) =>
+            temrinnotnotlar != null && temrinnotnotlar.isEmpty
+                ? 'Temrinnot Konusu'
+                : null,
       );
-
-/*   Widget buildAddButton(BuildContext context, int? sonId,
-      {required bool isEditing}) {
-    final text = isEditing ? 'Kaydet' : 'Ekle';
-
-    return TextButton(
-      child: Row(
-        children: [
-          Icon(Icons.add_box, color: Colors.green.shade400),
-          Text(text),
-        ],
-      ),
-              onPressed: () async {
-                final isValid = formKey.currentState!.validate();
-
-                if (isValid) {
-                  String? temrinKonusu = temrinadController.text.toUpperCase();
-                  // int? nu = int.parse(nuController.text);
-
-                  int id = sonId ?? 0;
-
-                  widget.onClickedDone(id, temrinKonusu, dersStore.dersId);
-
-                  Navigator.of(context).pop();
-                }
-              },
-    );
-  } */
 
   List<String> buildItems() {
     List<String> items = DersBoxes.getTransactions()

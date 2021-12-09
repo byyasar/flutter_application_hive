@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_hive/core/widget/add_button.dart';
 import 'package:flutter_application_hive/core/widget/cancel_button.dart';
 import 'package:flutter_application_hive/ogrenci/model/ogrenci_model.dart';
 import 'package:flutter_application_hive/core/boxes.dart';
@@ -100,7 +101,20 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             buildCancelButton(context),
-            buildAddButton(context, sonId, isEditing: isEditing),
+            BuildAddButton(
+              context: context,
+              sonId: sonId,
+              isEditing: isEditing,
+              onPressed: () async {
+                final isValid = formKey.currentState!.validate();
+                if (isValid) {
+                  String? name = nameController.text.toUpperCase();
+                  int? nu = int.parse(nuController.text);
+                  widget.onClickedDone(sonId, name, nu, sinifStore.sinifId);
+                  Navigator.of(context).pop();
+                }
+              },
+            ),
           ],
         )
       ],
@@ -161,7 +175,7 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
         ),
         onPressed: () => Navigator.of(context).pop(),
       ); */
-
+/* 
   Widget buildAddButton(BuildContext context, int? sonId,
       {required bool isEditing}) {
     final text = isEditing ? 'Kaydet' : 'Ekle';
@@ -189,7 +203,7 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
         }
       },
     );
-  }
+  } */
 
   List<String> buildItems() {
     List<String> items = SinifBoxes.getTransactions()
