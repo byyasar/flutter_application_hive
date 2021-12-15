@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_hive/core/base/base_state.dart';
 import 'package:flutter_application_hive/core/boxes.dart';
+import 'package:flutter_application_hive/core/view/base_view.dart';
+import 'package:flutter_application_hive/core/widget/custom_ders_dialog.dart';
+import 'package:flutter_application_hive/core/widget/custom_ogrenci_card.dart';
+import 'package:flutter_application_hive/core/widget/custom_sinif_dialog.dart';
+import 'package:flutter_application_hive/core/widget/custom_temrin_dialog.dart';
 import 'package:flutter_application_hive/dersler/model/ders_model.dart';
 import 'package:flutter_application_hive/dersler/store/ders_store.dart';
-import 'package:flutter_application_hive/ogrenci/dialog/ogrenci_dialog.dart';
 import 'package:flutter_application_hive/ogrenci/model/ogrenci_model.dart';
 import 'package:flutter_application_hive/ogrenci/store/ogrenci_store.dart';
-import 'package:flutter_application_hive/ogrenci/widget/ogrenci_card.dart';
 import 'package:flutter_application_hive/siniflar/model/sinif_model.dart';
 import 'package:flutter_application_hive/siniflar/store/sinif_store.dart';
 import 'package:flutter_application_hive/temrin/model/temrin_model.dart';
 import 'package:flutter_application_hive/temrin/store/temrin_store.dart';
-import 'package:flutter_application_hive/temrinnot/dialog/temrinnot_dialog.dart';
 import 'package:flutter_application_hive/temrinnot/model/temrinnot_model.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 
 class TemrinnotpageView extends StatefulWidget {
   const TemrinnotpageView({Key? key}) : super(key: key);
@@ -24,19 +24,17 @@ class TemrinnotpageView extends StatefulWidget {
   _TemrinnotpageViewState createState() => _TemrinnotpageViewState();
 }
 
-class _TemrinnotpageViewState extends State<TemrinnotpageView> {
+class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
   List<TemrinModel> transactionsTemrin = [];
   List<OgrenciModel> transactionsOgrenci = [];
   List<SinifModel> transactionsSinif = [];
   List<DersModel> transactionsDers = [];
 
-  SinifStore sinifStore = SinifStore();
-  DersStore dersStore = DersStore();
+  //SinifStore sinifStore = SinifStore();
+  SinifStore viewModelSinif = SinifStore();
+  DersStore viewModelDers = DersStore();
   OgrenciStore ogrenciStore = OgrenciStore();
-  TemrinStore temrinStore = TemrinStore();
-
-  int filtreSinifId = -1;
-  String secim = "";
+  TemrinStore viewModelTemrin = TemrinStore();
 
   @override
   void initState() {
@@ -44,18 +42,15 @@ class _TemrinnotpageViewState extends State<TemrinnotpageView> {
       transactionsSinif =
           SinifBoxes.getTransactions().values.toList().cast<SinifModel>();
     }
-    if (transactionsTemrin.isEmpty) {
+/*     if (transactionsTemrin.isEmpty) {
       transactionsTemrin =
           TemrinBoxes.getTransactions().values.toList().cast<TemrinModel>();
     }
-    if (transactionsOgrenci.isEmpty) {
-      transactionsOgrenci =
-          OgrenciBoxes.getTransactions().values.toList().cast<OgrenciModel>();
-    }
+    
     if (transactionsDers.isEmpty) {
       transactionsDers =
           DersBoxes.getTransactions().values.toList().cast<DersModel>();
-    }
+    } */
     super.initState();
   }
 
@@ -65,7 +60,7 @@ class _TemrinnotpageViewState extends State<TemrinnotpageView> {
     super.dispose();
   }
 
-  void editTransaction(
+  void editTransactionTemrinnot(
     TemrinnotModel transaction,
     int id,
     int temrinId,
@@ -81,269 +76,219 @@ class _TemrinnotpageViewState extends State<TemrinnotpageView> {
     transaction.save();
   }
 
-  void deleteTransaction(TemrinnotModel transaction) {
+  void editTransactionSinif(
+    SinifModel transaction,
+    int id,
+    String sinifAd,
+  ) {
+    transaction.id = id;
+    transaction.sinifAd = sinifAd;
+    transaction.save();
+  }
+
+  void deleteTransactionSinif(SinifModel transaction) {
+    transaction.delete();
+  }
+
+  void deleteTransactionTemrinnot(TemrinnotModel transaction) {
     transaction.delete();
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context) {
+    int sonSecilenFiltreSinifId = -1;
+    int sonSecilenFiltreDersId = -1;
+    String sinifsecText = "Sınıf Seç";
+    String derssecText = "Ders Seç";
+    String temrinsecText = "Temrin Seç";
+
+    return BaseView<SinifStore>(
+      viewModel: SinifStore(),
+      onModelReady: (model) {
+        viewModelSinif = model;
+      },
+      onPageBuilder: (context, value) => Scaffold(
         appBar: AppBar(
           title: const Text('Temrinnot Listesi'),
           centerTitle: true,
         ),
-        body: Column(
-          children: [
-            Expanded(
-                flex: 2,
-                child: Container(
-                  color: Colors.amber,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      buildSinifListesi(transactionsSinif),
-                      Observer(builder: (_) {
-                        print(sinifStore.filtreSinifId);
-
-                        return Visibility(
-                          visible: filtreSinifId != -1 ? true : false,
-                          child: filtreSinifId != -1
-                              ? buildDersListesi(
-                                  context, transactionsDers, filtreSinifId)
-                              : Text(''),
-                        );
-                      }),
-                    ],
+        body: Observer(
+          builder: (context) => Column(children: [
+            Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+              //print(viewModel.sinifAd);
+              Column(
+                children: [
+                  const Text(
+                    "Sınıf Adı",
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.blueAccent,
+                        fontWeight: FontWeight.bold),
                   ),
-                )),
-            Expanded(
-              flex: 8,
-              child: Observer(builder: (_) {
-                print(sinifStore.filtreSinifId);
-                filtreSinifId = sinifStore.filtreSinifId;
-                return ValueListenableBuilder<Box<OgrenciModel>>(
-                  valueListenable: OgrenciBoxes.getTransactions().listenable(),
-                  builder: (context, box, _) {
-                    List<OgrenciModel> transactions = [];
-
-                    if (filtreSinifId != -1) {
-                      transactions = box.values
-                          .where((object) => object.sinifId == filtreSinifId)
-                          .toList();
-                    } else {
-                      transactions = box.values.toList().cast<OgrenciModel>();
-                    }
-                    // ignore: avoid_print
-                    print(transactions.length);
-                    //return Text(transactions[1].detail);
-                    return buildContent(transactions);
-                  },
-                );
-              }),
+                  ElevatedButton(
+                    onPressed: () {
+                      showDialog(
+                              context: context,
+                              builder: (context) => CustomSinifDialog(
+                                  onClickedDone: addTransactionSinif))
+                          .then((value) {
+                        sonSecilenFiltreSinifId = viewModelSinif.filtreSinifId;
+                        if (value != null) {
+                          viewModelSinif.sinifAd = value.sinifAd;
+                          viewModelSinif.filtreSinifId = value.sinifId;
+                        }
+                      });
+                    },
+                    child: Text(viewModelSinif.sinifAd.isEmpty
+                        ? sinifsecText
+                        : viewModelSinif.sinifAd),
+                  ),
+                ],
+              ),
+              Visibility(
+                //DERS SEÇ BUTON
+                visible: viewModelSinif.filtreSinifId != -1 ? true : false,
+                child: Column(
+                  children: [
+                    const Text(
+                      "Ders Adı",
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.blueAccent,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        showDialog(
+                                context: context,
+                                builder: (context) => CustomDersDialog(
+                                    gelensinifId: viewModelSinif.filtreSinifId,
+                                    onClickedDone: addTransactionDers))
+                            .then((value) {
+                          if (value != null) {
+                            viewModelDers.dersAd = value.dersAd;
+                            viewModelDers.filtredersId = value.dersId;
+                            sonSecilenFiltreSinifId =
+                                viewModelSinif.filtreSinifId;
+                            viewModelTemrin.setFiltretemrinId(-1);
+                          }
+                        });
+                      },
+                      child: Text(viewModelDers.dersAd.isEmpty ||
+                              sonSecilenFiltreSinifId !=
+                                  viewModelSinif.filtreSinifId
+                          ? derssecText
+                          : viewModelDers.dersAd.substring(0, 8)),
+                    ),
+                  ],
+                ),
+              ),
+              Visibility(
+                //TEMRİN SEÇ BUTON
+                visible: viewModelDers.filtredersId != -1 ? true : false,
+                child: Column(
+                  children: [
+                    const Text(
+                      "Temrin Konusu",
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.blueAccent,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        showDialog(
+                                context: context,
+                                builder: (context) => CustomTemrinDialog(
+                                    gelenDersId: viewModelDers.filtredersId,
+                                    onClickedDone: addTransactionDers))
+                            .then((value) {
+                          if (value != null) {
+                            viewModelTemrin.temrinKonusu = value.temrinKonusu;
+                            viewModelTemrin.filtretemrinId =
+                                value.filtretemrinId;
+                            sonSecilenFiltreDersId = viewModelDers.filtredersId;
+                          }
+                        });
+                      },
+                      child: Text(viewModelTemrin.temrinKonusu.isEmpty ||
+                              sonSecilenFiltreSinifId !=
+                                  viewModelSinif.filtreSinifId ||
+                              sonSecilenFiltreDersId !=
+                                  viewModelDers.filtredersId
+                          ? temrinsecText
+                          : viewModelTemrin.temrinKonusu.length < 18
+                              ? viewModelTemrin.temrinKonusu
+                              : viewModelTemrin.temrinKonusu.substring(0, 18)),
+                    ),
+                  ],
+                ),
+              ),
+            ]),
+            const Divider(height: 10, color: Colors.redAccent),
+            SizedBox(
+              height: 20,
             ),
-          ],
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: FloatingActionButton(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-            child: const Icon(Icons.add),
-            onPressed: () => showDialog(
-              context: context,
-              builder: (context) => TemrinnotDialog(
-                onClickedDone: addTransaction,
+            Visibility(
+              visible: viewModelTemrin.filtretemrinId != -1 ? true : false,
+              child: Column(
+                children: [
+                  //const Text('Öğrenci Listesi'),
+                  Container(
+                    child: viewModelTemrin.filtretemrinId != -1
+                        ? buildOgrenciListesi(
+                            context, viewModelSinif.filtreSinifId)
+                        : Text('Öğrenci Listesi'),
+                  ),
+                ],
               ),
             ),
-          ),
+            const Divider(height: 10, color: Colors.redAccent),
+          ]),
         ),
-      );
-
-  Widget buildSinifListesi(List<SinifModel> transactionsSinif) => SizedBox(
-        width: MediaQuery.of(context).size.width * .6,
-        child: DropdownSearch<String>(
-          mode: Mode.MENU,
-          items: buildItems(),
-          //label: "Sınıflar",
-          //hint: "country in menu mode",
-          onChanged: (value) {
-            //print('seçilen $value');
-            int sinifid = transactionsSinif
-                .singleWhere((element) => element.sinifAd == value)
-                .id;
-            sinifStore.setFiltreSinifId(sinifid);
-            //print('storedan glen id' + sinifStore.sinifId.toString());
-          },
-          selectedItem: sinifStore.sinifAd,
-        ),
-      );
-
-  Widget buildContent(List<OgrenciModel> transactions) {
-    if (transactions.isEmpty) {
-      return const Center(
-        child: Text(
-          'Henüz öğrenci yok!',
-          style: TextStyle(fontSize: 24),
-        ),
-      );
-    } else {
-      //return Text(transactions.length.toString());
-      return Column(
-        children: [
-          const SizedBox(height: 24),
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.all(8),
-              itemCount: transactions.length,
-              itemBuilder: (BuildContext context, int index) {
-                final transaction = transactions[index];
-
-                return buildTransaction(context, transaction, index);
-                //return Text(transactions.length.toString());
-              },
-            ),
-          ),
-          const SizedBox(height: 24),
-        ],
-      );
-    }
+      ),
+    );
   }
 
-  Widget buildTransaction(
-      BuildContext context, OgrenciModel transaction, int index) {
-    return OgrenciCard(
-        transaction: transaction,
-        index: index,
-        butons: buildButtons(context, transaction));
-  }
-
-  Future addTransaction(
-    int id,
-    int temrinId,
-    int ogrenciId,
-    int puan,
-    String notlar,
-  ) async {
-    final transaction = TemrinnotModel(
-        id: id,
-        temrinId: temrinId,
-        ogrenciId: ogrenciId,
-        puan: puan,
-        notlar: notlar);
-
-    final box = TemrinnotBoxes.getTransactions();
+  addTransactionSinif(int id, String sinifAd) async {
+    final transaction = SinifModel(id: id, sinifAd: sinifAd);
+    final box = SinifBoxes.getTransactions();
     box.add(transaction);
   }
 
-  /*  Widget buildButtons(BuildContext context, TemrinnotModel transaction) => Row(
-        children: [
-          Expanded(
-            child: TextButton.icon(
-              label: const Text('Düzenle'),
-              icon: const Icon(Icons.edit),
-              onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => TemrinnotDialog(
-                    transaction: transaction,
-                    onClickedDone: (id, temrinId, ogrenciId, puan, notlar) =>
-                        editTransaction(
-                            transaction, id, temrinId, ogrenciId, puan, notlar),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            child: TextButton.icon(
-              label: const Text('Sil'),
-              icon: const Icon(Icons.delete),
-              onPressed: () => deleteTransaction(transaction),
-            ),
-          )
-        ],
-      ); */
-  Widget buildButtons(BuildContext context, OgrenciModel transaction) => Row(
-        children: [
-          Expanded(
-            child: TextButton.icon(
-              label: const Text('Düzenle'),
-              icon: const Icon(Icons.edit),
-              onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => OgrenciDialog(
-                      transaction: transaction,
-                      onClickedDone: (id, name, nu, sinifId) {}
-                      // editTransaction(transaction, id, name, nu, sinifId),
-                      ),
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            child: TextButton.icon(
-                label: const Text('Sil'),
-                icon: const Icon(
-                  Icons.delete,
-                  color: Colors.red,
-                ),
-                onPressed: () {} //=> deleteTransaction(transaction),
-                ),
-          )
-        ],
-      );
-  List<String> buildItems() {
-    List<String> items = SinifBoxes.getTransactions()
-        .values
-        .map((e) => e.sinifAd.toString())
-        .toList();
-    return items;
+  addTransactionDers(int id, String dersAd, int sinifId) {
+    final transaction = DersModel(id: id, sinifId: sinifId, dersad: dersAd);
+    final box = DersBoxes.getTransactions();
+    box.add(transaction);
   }
 
-  Widget buildDersListesi(BuildContext context,
-      List<DersModel> transactionsDers, int filtreSinifId) {
-    print('build ders çalıştı');
-    List<DersModel> transactions = [];
-    secim = "Ders seçiniz";
-    if (filtreSinifId != -1) {
-      transactions = transactionsDers
-          .where((object) => object.sinifId == filtreSinifId)
-          .toList();
-    } else {
-      transactions = transactionsDers;
-    }
-
-    return Observer(builder: (_) {
-      print(dersStore.dersAd);
-      secim = "Ders seçiniz";
-      return SizedBox(
-        width: MediaQuery.of(context).size.width * .6,
-        child: DropdownSearch<String>(
-          mode: Mode.MENU,
-          items: buildItemsDers(transactions),
-          //label: "Sınıflar",
-          //hint: "country in menu mode",
-          onChanged: (value) {
-            //print('seçilen $value');
-            int dersId = transactions
-                .singleWhere((element) => element.dersad == value)
-                .id;
-            dersStore.setFiltreDersId(dersId);
-            dersStore.setDersAd(value!);
-            secim = value;
-            //print('storedan glen id' + sinifStore.sinifId.toString());
-          },
-          //showSelectedItems: true,
-          selectedItem: secim,
-        ),
-      );
-    });
+  addTransactionTemrin(int id, String temrinKonusu, int dersId) {
+    final transaction =
+        TemrinModel(id: id, temrinKonusu: temrinKonusu, dersId: dersId);
+    final box = TemrinBoxes.getTransactions();
+    box.add(transaction);
   }
 
-  List<String> buildItemsDers(List<DersModel> transactions) {
-    List<String> items = [];
-    for (var element in transactions) {
-      items.add(element.dersad);
+  buildOgrenciListesi(BuildContext context, int filtreSinifId) {
+    if (transactionsOgrenci.isEmpty) {
+      transactionsOgrenci =
+          OgrenciBoxes.getTransactions().values.toList().cast<OgrenciModel>();
     }
-    return items;
+    List<OgrenciModel> transactionsOgrenciSinif = [];
+    for (var ogrenci in transactionsOgrenci) {
+      if (ogrenci.sinifId == filtreSinifId)
+        transactionsOgrenciSinif.add(ogrenci);
+    }
+
+    return ListView.builder(
+      shrinkWrap: true,
+      padding: const EdgeInsets.all(8),
+      itemCount: transactionsOgrenciSinif.length,
+      itemBuilder: (BuildContext context, int index) {
+        final transaction = transactionsOgrenciSinif[index];
+        //return Text("${transaction.name}");
+        return CustomOgrenciCard(transaction: transaction, index: index);
+      },
+    );
   }
 }

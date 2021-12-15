@@ -134,26 +134,7 @@ class _TemrinnotDialogState extends State<TemrinnotDialog> {
     );
   }
 
-/*  Widget buildDers(BuildContext context, List<DersModel> transactionsDersler) =>
-      SizedBox(
-        width: MediaQuery.of(context).size.width * .6,
-        child: DropdownSearch<String>(
-          mode: Mode.MENU,
-          items: buildItems(),
-          //label: "Dersler",
-          //hint: "country in menu mode",
-          onChanged: (value) {
-            //print('seçilen $value');
-            int dersId = transactionsDersler
-                .singleWhere((element) => element.dersad == value)
-                .id;
-            dersStore.setDersId(dersId);
-            //sinifStore.setSinifId(sinifid);
-            //print('storedan gelen id' + dersStore.dersId.toString());
-          },
-          selectedItem: dersStore.dersAd,
-        ),
-      );  */
+
 
   Widget buildTemrinnotad() => TextFormField(
         controller: temrinnotnotlarController,
