@@ -5,8 +5,8 @@ import 'package:flutter_application_hive/core/view/base_view.dart';
 import 'package:flutter_application_hive/core/widget/cancel_button.dart';
 import 'package:flutter_application_hive/core/widget/ok_button.dart';
 import 'package:dropdown_search/dropdown_search.dart';
-import 'package:flutter_application_hive/temrin/model/temrin_model.dart';
-import 'package:flutter_application_hive/temrin/store/temrin_store.dart';
+import 'package:flutter_application_hive/features/temrin/model/temrin_model.dart';
+import 'package:flutter_application_hive/features/temrin/store/temrin_store.dart';
 
 class CustomTemrinDialog extends StatefulWidget {
   final TemrinModel? transaction;

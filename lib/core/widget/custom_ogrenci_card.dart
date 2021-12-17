@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_hive/ogrenci/model/ogrenci_model.dart';
+import 'package:flutter_application_hive/features/ogrenci/model/ogrenci_model.dart';
 
 class CustomOgrenciCard extends StatelessWidget {
   final OgrenciModel transaction;

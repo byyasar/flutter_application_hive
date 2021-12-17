@@ -4,8 +4,8 @@ import 'package:flutter_application_hive/core/boxes.dart';
 import 'package:flutter_application_hive/core/view/base_view.dart';
 import 'package:flutter_application_hive/core/widget/cancel_button.dart';
 import 'package:flutter_application_hive/core/widget/ok_button.dart';
-import 'package:flutter_application_hive/siniflar/model/sinif_model.dart';
-import 'package:flutter_application_hive/siniflar/store/sinif_store.dart';
+import 'package:flutter_application_hive/features/siniflar/model/sinif_model.dart';
+import 'package:flutter_application_hive/features/siniflar/store/sinif_store.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 
 class CustomSinifDialog extends StatefulWidget {

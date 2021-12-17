@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_hive/dersler/view/ders_view.dart';
-import 'package:flutter_application_hive/ogrenci/view/ogrenci_view.dart';
-import 'package:flutter_application_hive/siniflar/view/sinif_view.dart';
-import 'package:flutter_application_hive/temrin/view/temrin_view.dart';
-import 'package:flutter_application_hive/temrinnot/view/temrinnot_view.dart';
+import 'package:flutter_application_hive/features/dersler/view/ders_view.dart';
+import 'package:flutter_application_hive/features/ogrenci/view/ogrenci_view.dart';
+import 'package:flutter_application_hive/features/siniflar/view/sinif_view.dart';
+import 'package:flutter_application_hive/features/temrin/view/temrin_view.dart';
+import 'package:flutter_application_hive/features/temrinnot/view/temrinnot_view.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);

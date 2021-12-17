@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_hive/constants/app_constants.dart';
-import 'package:flutter_application_hive/dersler/model/ders_model.dart';
-import 'package:flutter_application_hive/ogrenci/model/ogrenci_model.dart';
-import 'package:flutter_application_hive/siniflar/model/sinif_model.dart';
-import 'package:flutter_application_hive/temrin/model/temrin_model.dart';
-import 'package:flutter_application_hive/temrinnot/model/temrinnot_model.dart';
+import 'package:flutter_application_hive/features/dersler/model/ders_model.dart';
+import 'package:flutter_application_hive/features/ogrenci/model/ogrenci_model.dart';
+import 'package:flutter_application_hive/features/siniflar/model/sinif_model.dart';
+import 'package:flutter_application_hive/features/temrin/model/temrin_model.dart';
+import 'package:flutter_application_hive/features/temrinnot/model/temrinnot_model.dart';
 import 'package:flutter_application_hive/view/mainpage.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';

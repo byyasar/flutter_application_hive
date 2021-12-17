@@ -4,8 +4,8 @@ import 'package:flutter_application_hive/core/boxes.dart';
 import 'package:flutter_application_hive/core/view/base_view.dart';
 import 'package:flutter_application_hive/core/widget/cancel_button.dart';
 import 'package:flutter_application_hive/core/widget/ok_button.dart';
-import 'package:flutter_application_hive/dersler/model/ders_model.dart';
-import 'package:flutter_application_hive/dersler/store/ders_store.dart';
+import 'package:flutter_application_hive/features/dersler/model/ders_model.dart';
+import 'package:flutter_application_hive/features/dersler/store/ders_store.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 
 class CustomDersDialog extends StatefulWidget {
