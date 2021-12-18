@@ -44,3 +44,5 @@ class CustomOgrenciCard extends StatelessWidget {
     );
   }
 }
+//ANCHOR: ÖĞRENCİ KART
+//TODO: ÖĞRENCİ KART

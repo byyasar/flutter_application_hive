@@ -111,6 +111,7 @@ class _TemrinpageViewState extends State<TemrinpageView> {
     final box = TemrinBoxes.getTransactions();
     box.add(transaction);
   }
+//ANCHOR: Yeniden düzenlenecek
 
   Widget buildButtons(BuildContext context, TemrinModel transaction) => Row(
         children: [
