@@ -18,10 +18,8 @@ class CustomOgrenciCard extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            flex: 4,
-            child: ExpansionTile(
-              tilePadding:
-                  const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+            flex: 5,
+            child: ListTile(
               title: Text(
                 (index + 1).toString() + " - " + transaction.name,
                 maxLines: 2,
@@ -32,13 +30,24 @@ class CustomOgrenciCard extends StatelessWidget {
                   "id: ${transaction.id.toString()} Nu:  ${transaction.nu} Sınıf ıd:  ${transaction.sinifId}"),
             ),
           ),
-          Expanded(flex: 1, child: TextFormField()),
           Expanded(
-              flex: 1,
-              child: ElevatedButton(
-                child: const Icon(Icons.save),
-                onPressed: () {},
+              flex: 2,
+              child: TextFormField(
+                textAlign: TextAlign.center,
+                maxLength: 3,
+                style: const TextStyle(color: Colors.blueAccent, fontSize: 28),
               )),
+              //todo: bu alana kontrol eklenecek
+          Spacer(
+            flex: 1,
+          )
+          /*  Expanded(
+            flex: 1,
+            child: IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.save),
+            ),
+          ), */
         ],
       ),
     );

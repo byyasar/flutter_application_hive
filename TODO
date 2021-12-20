@@ -1,7 +1,7 @@
 
 Todo:
-  ✔ Item @started(21-12-18 12:52) @done(21-12-18 12:53) @lasted(1m25s)
-✔ Test yazılacak @done(21-12-18 12:51)
-✔ ÖĞRENCİ KARTI DÜZENLENECEK @started(21-12-18 13:02) @done(21-12-18 13:04) @lasted(2m20s)
-✘ TEST @cancelled (12/18/2021, 1:05:06 PM)
+☐ Öğrenci Kart not girişi ayarlanacak. @started(21-12-18 13:15)
+☐ Arayüzlere filtreleme eklenecek.
+☐ Not ekleme textform field bu alana kontrol eklenecek. not kontrolü olacak 0-100 arasında.
+
 

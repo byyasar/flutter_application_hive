@@ -178,7 +178,9 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
                               sonSecilenFiltreSinifId !=
                                   viewModelSinif.filtreSinifId
                           ? derssecText
-                          : viewModelDers.dersAd.length<8?viewModelDers.dersAd:viewModelDers.dersAd.substring(0, 8)),
+                          : viewModelDers.dersAd.length < 8
+                              ? viewModelDers.dersAd
+                              : viewModelDers.dersAd.substring(0, 8)),
                     ),
                   ],
                 ),
@@ -243,6 +245,9 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
                 ],
               ),
             ),
+            ElevatedButton(
+                onPressed: () {},
+                child: const Text('Kaydet', style: TextStyle(fontSize: 22))),
             const Divider(height: 10, color: Colors.redAccent),
           ]),
         ),
