@@ -6,7 +6,6 @@ import 'package:flutter_application_hive/features/dersler/widget/ders_card.dart'
 import 'package:flutter_application_hive/features/siniflar/model/sinif_model.dart';
 import 'package:flutter_application_hive/features/siniflar/store/sinif_store.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class DerspageView extends StatefulWidget {

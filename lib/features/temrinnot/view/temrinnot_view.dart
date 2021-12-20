@@ -35,7 +35,8 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
   DersStore viewModelDers = DersStore();
   OgrenciStore ogrenciStore = OgrenciStore();
   TemrinStore viewModelTemrin = TemrinStore();
-
+  List<OgrenciModel> transactionsOgrenciSinif = [];
+  List<TextEditingController> _controllers = [];
   @override
   void initState() {
     if (transactionsSinif.isEmpty) {
@@ -51,12 +52,14 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
       transactionsDers =
           DersBoxes.getTransactions().values.toList().cast<DersModel>();
     } */
+
     super.initState();
   }
 
   @override
   void dispose() {
     //Hive.close();
+    _controllers.clear();
     super.dispose();
   }
 
@@ -246,7 +249,20 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
               ),
             ),
             ElevatedButton(
-                onPressed: () {},
+                onPressed: viewModelDers.filtredersId == -1 ||
+                        viewModelTemrin.filtretemrinId == -1
+                    ? null
+                    : () {
+                        //ANCHOR: NOT KAYDET
+                        //print('kaydet${_controllers.length}');
+                        /*  for (var item in _controllers) {
+                    //print(_controllers.indexOf(item));
+                    print(transactionsOgrenciSinif[_controllers.indexOf(item)]
+                            .name +
+                        "" +
+                        item.text);
+                  } */
+                      },
                 child: const Text('Kaydet', style: TextStyle(fontSize: 22))),
             const Divider(height: 10, color: Colors.redAccent),
           ]),
@@ -279,22 +295,50 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
       transactionsOgrenci =
           OgrenciBoxes.getTransactions().values.toList().cast<OgrenciModel>();
     }
-    List<OgrenciModel> transactionsOgrenciSinif = [];
+    //List<OgrenciModel> transactionsOgrenciSinif = [];
+    transactionsOgrenciSinif = [];
     for (var ogrenci in transactionsOgrenci) {
       if (ogrenci.sinifId == filtreSinifId) {
         transactionsOgrenciSinif.add(ogrenci);
       }
     }
-
+    _controllers = [];
     return ListView.builder(
       shrinkWrap: true,
       padding: const EdgeInsets.all(8),
       itemCount: transactionsOgrenciSinif.length,
       itemBuilder: (BuildContext context, int index) {
+        _controllers.add(TextEditingController());
         final transaction = transactionsOgrenciSinif[index];
         //return Text("${transaction.name}");
-        return CustomOgrenciCard(transaction: transaction, index: index);
+        return CustomOgrenciCard(
+          transaction: transaction,
+          index: index,
+          controller: _controllers[index],
+        );
       },
     );
   }
 }
+
+
+
+/* ListView.builder(
+         shrinkWrap: true,
+         physics: ScrollPhysics(),
+         itemCount: list.length,
+         itemBuilder: (BuildContext context, int index) {
+         _controllers.add(new TextEditingController());
+           return Container(
+               child: TextField(
+                  textAlign: TextAlign.start,
+                  controller:   _controllers[index],
+                  autofocus: false,
+                  keyboardType: TextInputType.text,),)) */
+
+
+            /*       for (var item,i in _controllers) {
+                    print(transactionsOgrenciSinif[i].name+""+item.text);
+                    
+
+                  } */

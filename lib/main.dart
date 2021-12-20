@@ -6,7 +6,6 @@ import 'package:flutter_application_hive/features/siniflar/model/sinif_model.dar
 import 'package:flutter_application_hive/features/temrin/model/temrin_model.dart';
 import 'package:flutter_application_hive/features/temrinnot/model/temrinnot_model.dart';
 import 'package:flutter_application_hive/view/mainpage.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 Future<void> main() async {

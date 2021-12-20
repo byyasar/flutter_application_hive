@@ -4,11 +4,12 @@ import 'package:flutter_application_hive/features/ogrenci/model/ogrenci_model.da
 class CustomOgrenciCard extends StatelessWidget {
   final OgrenciModel transaction;
   final int index;
+  final TextEditingController controller;
 
   const CustomOgrenciCard({
     Key? key,
     required this.transaction,
-    required this.index,
+    required this.index, required this.controller,
   }) : super(key: key);
 
   @override
@@ -33,12 +34,13 @@ class CustomOgrenciCard extends StatelessWidget {
           Expanded(
               flex: 2,
               child: TextFormField(
+                controller: controller,
                 textAlign: TextAlign.center,
                 maxLength: 3,
                 style: const TextStyle(color: Colors.blueAccent, fontSize: 28),
               )),
-              //todo: bu alana kontrol eklenecek
-          Spacer(
+          //todo: bu alana kontrol eklenecek
+          const Spacer(
             flex: 1,
           )
           /*  Expanded(

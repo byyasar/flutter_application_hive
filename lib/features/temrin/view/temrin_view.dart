@@ -3,7 +3,6 @@ import 'package:flutter_application_hive/core/boxes.dart';
 import 'package:flutter_application_hive/features/temrin/dialog/temrin_dialog.dart';
 import 'package:flutter_application_hive/features/temrin/model/temrin_model.dart';
 import 'package:flutter_application_hive/features/temrin/widget/temrin_card.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class TemrinpageView extends StatefulWidget {

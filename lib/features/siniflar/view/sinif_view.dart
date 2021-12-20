@@ -4,7 +4,6 @@ import 'package:flutter_application_hive/features/siniflar/dialog/sinif_dialog.d
 import 'package:flutter_application_hive/features/siniflar/model/sinif_model.dart';
 import 'package:flutter_application_hive/features/siniflar/widget/sinif_card.dart';
 
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class SinifpageView extends StatefulWidget {

@@ -3,7 +3,6 @@ import 'package:flutter_application_hive/features/dialog/ogrenci_dialog.dart';
 import 'package:flutter_application_hive/features/ogrenci/model/ogrenci_model.dart';
 import 'package:flutter_application_hive/features/ogrenci/widget/ogrenci_card.dart';
 import 'package:flutter_application_hive/core/boxes.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class OgrencipageView extends StatefulWidget {
