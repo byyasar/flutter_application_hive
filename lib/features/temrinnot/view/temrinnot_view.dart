@@ -29,6 +29,7 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
   List<OgrenciModel> transactionsOgrenci = [];
   List<SinifModel> transactionsSinif = [];
   List<DersModel> transactionsDers = [];
+  List<TemrinnotModel> transactionsTemrinnot = [];
 
   //SinifStore sinifStore = SinifStore();
   SinifStore viewModelSinif = SinifStore();
@@ -43,15 +44,6 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
       transactionsSinif =
           SinifBoxes.getTransactions().values.toList().cast<SinifModel>();
     }
-/*     if (transactionsTemrin.isEmpty) {
-      transactionsTemrin =
-          TemrinBoxes.getTransactions().values.toList().cast<TemrinModel>();
-    }
-    
-    if (transactionsDers.isEmpty) {
-      transactionsDers =
-          DersBoxes.getTransactions().values.toList().cast<DersModel>();
-    } */
 
     super.initState();
   }
@@ -79,11 +71,19 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
     transaction.save();
   }
 
-  void editTransactionSinif(
-    SinifModel transaction,
-    int id,
-    String sinifAd,
-  ) {
+  Future addTransactionTemrinnot(
+      int id, int temrinId, int ogrenciId, int puan, String notlar) async {
+    final transaction = TemrinnotModel(
+        id: id,
+        temrinId: temrinId,
+        ogrenciId: ogrenciId,
+        puan: puan,
+        notlar: notlar);
+    final box = TemrinnotBoxes.getTransactions();
+    box.add(transaction);
+  }
+
+  void editTransactionSinif(SinifModel transaction, int id, String sinifAd) {
     transaction.id = id;
     transaction.sinifAd = sinifAd;
     transaction.save();
@@ -252,19 +252,29 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
                 onPressed: viewModelDers.filtredersId == -1 ||
                         viewModelTemrin.filtretemrinId == -1
                     ? null
-                    : () {
+                    : () async {
                         //ANCHOR: NOT KAYDET
                         //print('kaydet${_controllers.length}');
-                        /*  for (var item in _controllers) {
-                    //print(_controllers.indexOf(item));
-                    print(transactionsOgrenciSinif[_controllers.indexOf(item)]
-                            .name +
-                        "" +
-                        item.text);
-                  } */
+                        for (var item in _controllers) {
+                          //print(_controllers.indexOf(item));
+                          print(transactionsOgrenciSinif[
+                                      _controllers.indexOf(item)]
+                                  .name +
+                              " Not:" +
+                              item.text);
+                          await addTransactionTemrinnot(
+                              1,
+                              viewModelTemrin.filtretemrinId,
+                              transactionsOgrenciSinif[
+                                      _controllers.indexOf(item)]
+                                  .id,
+                              int.parse(item.text.isEmpty ? "0" : item.text),
+                              '');
+                        }
                       },
                 child: const Text('Kaydet', style: TextStyle(fontSize: 22))),
             const Divider(height: 10, color: Colors.redAccent),
+            temrinnotlariListe(context),
           ]),
         ),
       ),
@@ -318,6 +328,23 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
         );
       },
     );
+  }
+
+  Widget temrinnotlariListe(BuildContext context) {
+    transactionsTemrinnot =
+        TemrinnotBoxes.getTransactions().values.toList().cast<TemrinnotModel>();
+    return ListView.builder(
+        shrinkWrap: true,
+        itemCount: transactionsTemrinnot.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(transactionsTemrinnot[index].id.toString() +
+                "- " +
+                transactionsTemrinnot[index].ogrenciId.toString() +
+                "- " +
+                transactionsTemrinnot[index].puan.toString()),
+          );
+        });
   }
 }
 
