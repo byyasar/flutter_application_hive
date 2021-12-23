@@ -8,6 +8,8 @@ Arayüz Geliştirmeleri:
     ☐ Not ekleme textform field bu alana kontrol eklenecek. not kontrolü olacak 0-100 arasında.
     ☐ Temrin not ekranında ders adı değiştiğinde temrin konusu sıfırlanacak.
     ☐ Temrin not tek tek kaydet olacak.
+    ☐ Secimleri kaydetmek için store oluşturulacak.
+    ☐ Hive den sorgu yapmak için helper dosyası oluşturulacak.
     
 
 

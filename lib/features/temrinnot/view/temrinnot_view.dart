@@ -99,8 +99,11 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
 
   @override
   Widget build(BuildContext context) {
+    List<int> secimler = [-1, -1, -1]; //sınıf-dersadı-temrinkonusu
     int sonSecilenFiltreSinifId = -1;
     int sonSecilenFiltreDersId = -1;
+    int sonSecilenFitreTemrinId = -1;
+
     String sinifsecText = "Sınıf Seç";
     String derssecText = "Ders Seç";
     String temrinsecText = "Temrin Seç";
@@ -135,10 +138,13 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
                               builder: (context) => CustomSinifDialog(
                                   onClickedDone: addTransactionSinif))
                           .then((value) {
-                        sonSecilenFiltreSinifId = viewModelSinif.filtreSinifId;
                         if (value != null) {
+                          sonSecilenFiltreSinifId =
+                              viewModelSinif.filtreSinifId;
+
                           viewModelSinif.sinifAd = value.sinifAd;
                           viewModelSinif.filtreSinifId = value.sinifId;
+                          print('Secimler :$secimler');
                         }
                       });
                     },
@@ -213,6 +219,8 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
                             viewModelTemrin.filtretemrinId =
                                 value.filtretemrinId;
                             sonSecilenFiltreDersId = viewModelDers.filtredersId;
+                            sonSecilenFitreTemrinId = viewModelTemrin
+                                .filtretemrinId; //ANCHOR:TEMRİN DEĞİŞTİRME
                           }
                         });
                       },
@@ -274,7 +282,13 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
                       },
                 child: const Text('Kaydet', style: TextStyle(fontSize: 22))),
             const Divider(height: 10, color: Colors.redAccent),
-            temrinnotlariListe(context),
+            Visibility(
+              visible: viewModelTemrin.filtretemrinId != -1 ? true : false,
+              child: Expanded(
+                child:
+                    temrinnotlariListe(context, viewModelTemrin.filtretemrinId),
+              ),
+            ),
           ]),
         ),
       ),
@@ -330,42 +344,30 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
     );
   }
 
-  Widget temrinnotlariListe(BuildContext context) {
+  Widget temrinnotlariListe(BuildContext context, int filtretemdrinId) {
+    List filtretemrinId = [];
     transactionsTemrinnot =
         TemrinnotBoxes.getTransactions().values.toList().cast<TemrinnotModel>();
+    for (var temrinnot in transactionsTemrinnot) {
+      temrinnot.temrinId == filtretemdrinId
+          ? filtretemrinId.add(temrinnot)
+          : "";
+    }
+
     return ListView.builder(
         shrinkWrap: true,
-        itemCount: transactionsTemrinnot.length,
+        itemCount: filtretemrinId.length,
         itemBuilder: (context, index) {
           return ListTile(
-            title: Text(transactionsTemrinnot[index].id.toString() +
-                "- " +
-                transactionsTemrinnot[index].ogrenciId.toString() +
-                "- " +
-                transactionsTemrinnot[index].puan.toString()),
+            title: Text("temrin not id" +
+                filtretemrinId[index].id.toString() +
+                "-ogrid: " +
+                filtretemrinId[index].ogrenciId.toString() +
+                "-temrin id " +
+                filtretemrinId[index].temrinId.toString() +
+                "-puan " +
+                filtretemrinId[index].puan.toString()),
           );
         });
   }
 }
-
-
-
-/* ListView.builder(
-         shrinkWrap: true,
-         physics: ScrollPhysics(),
-         itemCount: list.length,
-         itemBuilder: (BuildContext context, int index) {
-         _controllers.add(new TextEditingController());
-           return Container(
-               child: TextField(
-                  textAlign: TextAlign.start,
-                  controller:   _controllers[index],
-                  autofocus: false,
-                  keyboardType: TextInputType.text,),)) */
-
-
-            /*       for (var item,i in _controllers) {
-                    print(transactionsOgrenciSinif[i].name+""+item.text);
-                    
-
-                  } */
