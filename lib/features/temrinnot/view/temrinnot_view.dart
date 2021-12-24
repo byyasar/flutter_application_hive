@@ -39,6 +39,7 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
   TemrinStore viewModelTemrin = TemrinStore();
   List<OgrenciModel> transactionsOgrenciSinif = [];
   List<TextEditingController> _controllers = [];
+
   @override
   void initState() {
     if (transactionsSinif.isEmpty) {
@@ -221,7 +222,16 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
                   //const Text('Öğrenci Listesi'),
                   Container(
                     child: viewModelTemrin.filtretemrinId != -1
-                        ? buildOgrenciListesi(context, viewModelSinif.filtreSinifId)
+                        ? FutureBuilder(
+                            future: TemrinnotListesiHelper('temrinnot')
+                                .temrinnotFiltreListesiGetir(viewModelTemrin.filtretemrinId),
+                            builder: (BuildContext context, AsyncSnapshot snapshot) {
+                              if (snapshot.hasData) {
+                                return buildOgrenciListesi(context, viewModelSinif.filtreSinifId, snapshot.data);
+                              } else {
+                                return const Text("Datayok");
+                              }
+                            })
                         : const Text('Öğrenci Listesi'),
                   ),
                 ],
@@ -246,12 +256,12 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
                       },
                 child: const Text('Kaydet', style: TextStyle(fontSize: 22))),
             const Divider(height: 10, color: Colors.redAccent),
-            Visibility(
+            /*  Visibility(
               visible: viewModelTemrin.filtretemrinId != -1 ? true : false,
               child: Expanded(
                 child: viewModelTemrin.filtretemrinId != -1
                     ? FutureBuilder(
-                        future: TemrinnotListesiHelper().temrinnotFiltreListesiGetir(viewModelTemrin
+                        future: TemrinnotListesiHelper('temrinnot').temrinnotFiltreListesiGetir(viewModelTemrin
                             .filtretemrinId), //temrinnotlariListe(context, viewModelTemrin.filtretemrinId),
                         builder: (BuildContext context, AsyncSnapshot snapshot) {
                           if (snapshot.hasData) {
@@ -263,7 +273,7 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
                       )
                     : const Text(""),
               ),
-            ),
+            ), */
           ]),
         ),
       ),
@@ -288,7 +298,9 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
     box.add(transaction);
   }
 
-  buildOgrenciListesi(BuildContext context, int filtreSinifId) {
+  buildOgrenciListesi(BuildContext context, int filtreSinifId, List<TemrinnotModel> temrinnotModelList) {
+    List filtretemrinList = [];
+    filtretemrinList = temrinnotModelList;
     if (transactionsOgrenci.isEmpty) {
       transactionsOgrenci = OgrenciBoxes.getTransactions().values.toList().cast<OgrenciModel>();
     }
@@ -307,7 +319,8 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
       itemBuilder: (BuildContext context, int index) {
         _controllers.add(TextEditingController());
         final transaction = transactionsOgrenciSinif[index];
-        _controllers[index].text = "0";
+
+        _controllers[index].text = filtretemrinList.isNotEmpty ? filtretemrinList[index].puan.toString() : "0";
         //return Text("${transaction.name}");
         return CustomOgrenciCard(
           transaction: transaction,

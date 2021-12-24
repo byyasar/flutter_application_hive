@@ -5,11 +5,20 @@ Todo:
 
 Arayüz Geliştirmeleri:
     ☐ Arayüzlere filtreleme eklenecek.
+    ☐ Secimleri kaydetmek için store oluşturulacak.
+    ☐ Hive den sorgu yapmak için helper dosyası oluşturulacak.
+
+Temrin not ekranı geliştirmeleri:
     ☐ Not ekleme textform field bu alana kontrol eklenecek. not kontrolü olacak 0-100 arasında.
     ☐ Temrin not ekranında ders adı değiştiğinde temrin konusu sıfırlanacak.
     ☐ Temrin not tek tek kaydet olacak.
-    ☐ Secimleri kaydetmek için store oluşturulacak.
-    ☐ Hive den sorgu yapmak için helper dosyası oluşturulacak.
+    ☐ Temrin not ekranına gelmedi tick eklenecek.
+    ☐ Temrin not ekranına tarih eklenecek.
+    ☐ Temrin not ekranına notlar alanı eklenecek.
+
+Özellikler:
+    ☐ Excelden liste çekme eklenecek.
+    ☐ Raporlar bölümü oluşturulacak.
     
 
 
