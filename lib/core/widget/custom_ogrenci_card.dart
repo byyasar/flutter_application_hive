@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_hive/features/ogrenci/model/ogrenci_model.dart';
 
-class CustomOgrenciCard extends StatelessWidget {
+class CustomOgrenciCard extends StatefulWidget {
   final OgrenciModel transaction;
   final int index;
   final TextEditingController controller;
@@ -9,9 +9,16 @@ class CustomOgrenciCard extends StatelessWidget {
   const CustomOgrenciCard({
     Key? key,
     required this.transaction,
-    required this.index, required this.controller,
+    required this.index,
+    required this.controller,
   }) : super(key: key);
 
+  @override
+  State<CustomOgrenciCard> createState() => _CustomOgrenciCardState();
+}
+
+class _CustomOgrenciCardState extends State<CustomOgrenciCard> {
+  bool? _chacked = false;
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -20,21 +27,32 @@ class CustomOgrenciCard extends StatelessWidget {
         children: [
           Expanded(
             flex: 5,
-            child: ListTile(
+            child: ExpansionTile(
               title: Text(
-                (index + 1).toString() + " - " + transaction.name,
+                (widget.index + 1).toString() + " - " + widget.transaction.name,
                 maxLines: 2,
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
               subtitle: Text(
-                  "id: ${transaction.id.toString()} Nu:  ${transaction.nu} Sınıf ıd:  ${transaction.sinifId}"),
+                  "ogrid: ${widget.transaction.id.toString()} Nu:  ${widget.transaction.nu} Sınıf ıd:  ${widget.transaction.sinifId}"),
+              children: [
+                TextFormField(),
+                CheckboxListTile(
+                    title: const Text("Gelmedi"),
+                    value: _chacked,
+                    onChanged: (value) {
+                      setState(() {
+                        _chacked = value;
+                        
+                      });
+                    })
+              ],
             ),
           ),
           Expanded(
               flex: 2,
               child: TextFormField(
-                controller: controller,
+                controller: widget.controller,
                 textAlign: TextAlign.center,
                 maxLength: 3,
                 style: const TextStyle(color: Colors.blueAccent, fontSize: 28),

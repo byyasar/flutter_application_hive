@@ -8,7 +8,7 @@ import 'package:flutter_application_hive/core/widget/custom_sinif_dialog.dart';
 import 'package:flutter_application_hive/core/widget/custom_temrin_dialog.dart';
 import 'package:flutter_application_hive/features/dersler/model/ders_model.dart';
 import 'package:flutter_application_hive/features/dersler/store/ders_store.dart';
-import 'package:flutter_application_hive/features/helper/temrinnot_helper.dart';
+import 'package:flutter_application_hive/features/helper/temrinnot_listesi_helper.dart';
 import 'package:flutter_application_hive/features/ogrenci/model/ogrenci_model.dart';
 import 'package:flutter_application_hive/features/ogrenci/store/ogrenci_store.dart';
 import 'package:flutter_application_hive/features/siniflar/model/sinif_model.dart';
@@ -94,9 +94,15 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
 
   @override
   Widget build(BuildContext context) {
-    //List<int> secimler = [-1, -1, -1]; //sınıf-dersadı-temrinkonusu
-    int sonSecilenFiltreSinifId = -1;
-    int sonSecilenFiltreDersId = -1;
+    List<int> secimler = [1, 1, 1]; //sınıf-dersadı-temrinkonusu
+    viewModelSinif.setFiltreSinifId(secimler[0]);
+    viewModelDers.setFiltreDersId(secimler[1]);
+    viewModelTemrin.setFiltretemrinId(secimler[2]);
+
+    //print("${viewModelSinif.filtreSinifId} - ${viewModelDers.filtredersId} -  ${viewModelTemrin.filtretemrinId}");
+
+    //int sonSecilenFiltreSinifId = -1;
+    // int sonSecilenFiltreDersId = -1;
     // int sonSecilenFitreTemrinId = -1;
 
     String sinifsecText = "Sınıf Seç";
@@ -129,7 +135,7 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
                           context: context,
                           builder: (context) => CustomSinifDialog(onClickedDone: addTransactionSinif)).then((value) {
                         if (value != null) {
-                          sonSecilenFiltreSinifId = viewModelSinif.filtreSinifId;
+                          //sonSecilenFiltreSinifId = viewModelSinif.filtreSinifId;
 
                           viewModelSinif.sinifAd = value.sinifAd;
                           viewModelSinif.filtreSinifId = value.sinifId;
@@ -144,6 +150,7 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
               Visibility(
                 //DERS SEÇ BUTON
                 visible: viewModelSinif.filtreSinifId != -1 ? true : false,
+                //visible: true,
                 child: Column(
                   children: [
                     const Text(
@@ -160,13 +167,13 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
                           if (value != null) {
                             viewModelDers.dersAd = value.dersAd;
                             viewModelDers.filtredersId = value.dersId;
-                            sonSecilenFiltreSinifId = viewModelSinif.filtreSinifId;
-                            viewModelTemrin.setFiltretemrinId(-1);
+                            //sonSecilenFiltreSinifId = viewModelSinif.filtreSinifId;
+                            //viewModelTemrin.setFiltretemrinId(-1);
                           }
                         });
                       },
-                      child:
-                          Text(viewModelDers.dersAd.isEmpty || sonSecilenFiltreSinifId != viewModelSinif.filtreSinifId
+                      child: Text(
+                          viewModelDers.dersAd.isEmpty /* || sonSecilenFiltreSinifId != viewModelSinif.filtreSinifId */
                               ? derssecText
                               : viewModelDers.dersAd.length < 8
                                   ? viewModelDers.dersAd
@@ -194,14 +201,15 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
                           if (value != null) {
                             viewModelTemrin.temrinKonusu = value.temrinKonusu;
                             viewModelTemrin.filtretemrinId = value.filtretemrinId;
-                            sonSecilenFiltreDersId = viewModelDers.filtredersId;
+                            // = viewModelDers.filtredersId;
                             //sonSecilenFitreTemrinId = viewModelTemrin.filtretemrinId; //ANCHOR:TEMRİN DEĞİŞTİRME
                           }
                         });
                       },
-                      child: Text(viewModelTemrin.temrinKonusu.isEmpty ||
+                      child: Text(viewModelTemrin.temrinKonusu
+                              .isEmpty /* ||
                               sonSecilenFiltreSinifId != viewModelSinif.filtreSinifId ||
-                              sonSecilenFiltreDersId != viewModelDers.filtredersId
+                              sonSecilenFiltreDersId != viewModelDers.filtredersId */
                           ? temrinsecText
                           : viewModelTemrin.temrinKonusu.length < 18
                               ? viewModelTemrin.temrinKonusu
@@ -256,7 +264,7 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
                       },
                 child: const Text('Kaydet', style: TextStyle(fontSize: 22))),
             const Divider(height: 10, color: Colors.redAccent),
-            /*  Visibility(
+            Visibility(
               visible: viewModelTemrin.filtretemrinId != -1 ? true : false,
               child: Expanded(
                 child: viewModelTemrin.filtretemrinId != -1
@@ -273,7 +281,7 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
                       )
                     : const Text(""),
               ),
-            ), */
+            ),
           ]),
         ),
       ),
