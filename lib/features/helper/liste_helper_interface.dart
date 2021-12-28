@@ -5,7 +5,6 @@ abstract class IListeHelper<T> {
   Box<T>? _box;
   IListeHelper(
     this.key,
-    
   );
 
   Future<void> init() async {
@@ -18,4 +17,5 @@ abstract class IListeHelper<T> {
   void registerAdapters();
   List<T>? getValues();
   T? getItem(String key, Box<T>? _box);
+  List<T>? getFilteredValues(String filtreKey, int filtreValue);
 }

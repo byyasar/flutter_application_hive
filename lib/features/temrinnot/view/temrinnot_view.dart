@@ -314,11 +314,14 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
     }
     //List<OgrenciModel> transactionsOgrenciSinif = [];
     transactionsOgrenciSinif = [];
+
+    // transactionsOgrenciSinif = TemrinnotListesiHelper().getFilteredValues("sinifId", filtreSinifId);
+    /* 
     for (var ogrenci in transactionsOgrenci) {
       if (ogrenci.sinifId == filtreSinifId) {
         transactionsOgrenciSinif.add(ogrenci);
       }
-    }
+    } */
     _controllers = [];
     return ListView.builder(
       shrinkWrap: true,

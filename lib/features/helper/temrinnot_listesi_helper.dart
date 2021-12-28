@@ -45,4 +45,27 @@ class TemrinnotListesiHelper extends IListeHelper<TemrinnotModel> {
       Hive.registerAdapter(TemrinnotModelAdapter());
     }
   }
+
+  @override
+  List<TemrinnotModel>? getFilteredValues(String filtreKey, int filtreValue) {
+    List<TemrinnotModel> transactionsTemrinnot = [];
+    List<TemrinnotModel> transactionsTemrinnotGecici =
+        TemrinnotBoxes.getTransactions().values.toList().cast<TemrinnotModel>();
+
+    switch (filtreKey) {
+      case "OgrenciId":
+        for (var temrinnot in transactionsTemrinnotGecici) {
+          if (temrinnot.ogrenciId == filtreValue) transactionsTemrinnot.add(temrinnot);
+        }
+        break;
+      case "TemrinId":
+      for (var temrinnot in transactionsTemrinnotGecici) {
+          if (temrinnot.temrinId == filtreValue) transactionsTemrinnot.add(temrinnot);
+        }
+        break;
+      default:
+    }
+
+    return transactionsTemrinnot;
+  }
 }

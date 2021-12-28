@@ -26,4 +26,15 @@ class SinifListesiHelper extends IListeHelper<SinifModel> {
   SinifModel? getItem(String key, Box<SinifModel>? _box) {
     return _box?.get(key);
   }
+
+  @override
+  List<SinifModel>? getFilteredValues(String filtreKey, int filtreValue) {
+    List<SinifModel> transactionsSinifListesi = [];
+    List<SinifModel> transactionsSinifListesiGecici = SinifBoxes.getTransactions().values.toList().cast<SinifModel>();
+
+    for (var sinif in transactionsSinifListesiGecici) {
+      if (sinif.id == filtreValue) transactionsSinifListesi.add(sinif);
+    }
+    return transactionsSinifListesi;
+  }
 }
