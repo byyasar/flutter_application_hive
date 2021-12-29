@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_hive/constants/app_constants.dart';
 import 'package:flutter_application_hive/features/dialog/ogrenci_dialog.dart';
+import 'package:flutter_application_hive/features/helper/ogrenci_listesi_helper.dart';
 import 'package:flutter_application_hive/features/ogrenci/model/ogrenci_model.dart';
 import 'package:flutter_application_hive/features/ogrenci/widget/ogrenci_card.dart';
 import 'package:flutter_application_hive/core/boxes.dart';
@@ -13,14 +15,14 @@ class OgrencipageView extends StatefulWidget {
 }
 
 class _OgrencipageViewState extends State<OgrencipageView> {
+  Box<OgrenciModel> _box = OgrenciBoxes.getTransactions();
   @override
   void dispose() {
     //Hive.close();
     super.dispose();
   }
 
-  void editTransaction(
-      OgrenciModel transaction, int id, String name, int nu, int sinifId) {
+  void editTransaction(OgrenciModel transaction, int id, String name, int nu, int sinifId) {
     transaction.id = id;
     transaction.name = name;
     transaction.nu = nu;
@@ -28,9 +30,7 @@ class _OgrencipageViewState extends State<OgrencipageView> {
     transaction.save();
   }
 
-  void deleteTransaction(OgrenciModel transaction) {
-    transaction.delete();
-  }
+  
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -39,9 +39,9 @@ class _OgrencipageViewState extends State<OgrencipageView> {
           centerTitle: true,
         ),
         body: ValueListenableBuilder<Box<OgrenciModel>>(
-          valueListenable: OgrenciBoxes.getTransactions().listenable(),
-          builder: (context, box, _) {
-            final transactions = box.values.toList().cast<OgrenciModel>();
+          valueListenable: _box.listenable(),
+          builder: (context, _box, _) {
+            final transactions = _box.values.toList().cast<OgrenciModel>();
             // ignore: avoid_print
             print(transactions.length);
             //return Text(transactions[1].detail);
@@ -52,8 +52,7 @@ class _OgrencipageViewState extends State<OgrencipageView> {
         floatingActionButton: Padding(
           padding: const EdgeInsets.all(8.0),
           child: FloatingActionButton(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             child: const Icon(Icons.add),
             onPressed: () => showDialog(
               context: context,
@@ -96,20 +95,21 @@ class _OgrencipageViewState extends State<OgrencipageView> {
     }
   }
 
-  Widget buildTransaction(
-      BuildContext context, OgrenciModel transaction, int index) {
-    return OgrenciCard(
-        transaction: transaction,
-        index: index,
-        butons: buildButtons(context, transaction));
+  Widget buildTransaction(BuildContext context, OgrenciModel transaction, int index) {
+    return OgrenciCard(transaction: transaction, index: index, butons: buildButtons(context, transaction));
   }
 
   Future addTransaction(int id, String name, int nu, int sinifId) async {
-    final transaction =
-        OgrenciModel(id: id, name: name, nu: nu, sinifId: sinifId);
+  /*   final transaction = OgrenciModel(id: id, name: name, nu: nu, sinifId: sinifId);
 
-    final box = OgrenciBoxes.getTransactions();
-    box.add(transaction);
+    _box = OgrenciBoxes.getTransactions();
+    _box.add(transaction); */
+    OgrenciModel yeniOgrenci;
+    yeniOgrenci.id=id;
+    yeniOgrenci.name=name;
+    yeniOgrenci.
+ OgrenciListesiHelper(ApplicationConstants.boxOgrenci).addItem(model)
+
   }
 
   Widget buildButtons(BuildContext context, OgrenciModel transaction) => Row(
@@ -122,8 +122,7 @@ class _OgrencipageViewState extends State<OgrencipageView> {
                 MaterialPageRoute(
                   builder: (context) => OgrenciDialog(
                     transaction: transaction,
-                    onClickedDone: (id, name, nu, sinifId) =>
-                        editTransaction(transaction, id, name, nu, sinifId),
+                    onClickedDone: (id, name, nu, sinifId) => editTransaction(transaction, id, name, nu, sinifId),
                   ),
                 ),
               ),
@@ -131,14 +130,21 @@ class _OgrencipageViewState extends State<OgrencipageView> {
           ),
           Expanded(
             child: TextButton.icon(
-              label: const Text('Sil'),
-              icon: const Icon(
-                Icons.delete,
-                color: Colors.red,
-              ),
-              onPressed: () => deleteTransaction(transaction),
-            ),
+                label: const Text('Sil'),
+                icon: const Icon(
+                  Icons.delete,
+                  color: Colors.red,
+                ),
+                onPressed: () {
+                  buildDeleteOgrenci(transaction);
+                }
+
+                ),
           )
         ],
       );
+
+  void buildDeleteOgrenci(OgrenciModel transaction) {
+    OgrenciListesiHelper(ApplicationConstants.boxOgrenci).deleteItem(transaction);
+  }
 }

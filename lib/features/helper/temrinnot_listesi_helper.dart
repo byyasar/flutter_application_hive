@@ -10,8 +10,7 @@ class TemrinnotListesiHelper extends IListeHelper<TemrinnotModel> {
 
   @override
   TemrinnotModel? getItem(String key, Box<TemrinnotModel>? box) {
-    // TODO: implement getItem
-    throw UnimplementedError();
+    return null;
   }
 
   Future<List<TemrinnotModel>> temrinnotFiltreListesiGetir(int filtreTemrinId) async {
@@ -59,11 +58,12 @@ class TemrinnotListesiHelper extends IListeHelper<TemrinnotModel> {
         }
         break;
       case "TemrinId":
-      for (var temrinnot in transactionsTemrinnotGecici) {
+        for (var temrinnot in transactionsTemrinnotGecici) {
           if (temrinnot.temrinId == filtreValue) transactionsTemrinnot.add(temrinnot);
         }
         break;
       default:
+        return null;
     }
 
     return transactionsTemrinnot;

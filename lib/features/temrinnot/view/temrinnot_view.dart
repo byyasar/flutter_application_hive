@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_hive/constants/app_constants.dart';
 import 'package:flutter_application_hive/core/base/base_state.dart';
 import 'package:flutter_application_hive/core/boxes.dart';
 import 'package:flutter_application_hive/core/view/base_view.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_application_hive/core/widget/custom_sinif_dialog.dart';
 import 'package:flutter_application_hive/core/widget/custom_temrin_dialog.dart';
 import 'package:flutter_application_hive/features/dersler/model/ders_model.dart';
 import 'package:flutter_application_hive/features/dersler/store/ders_store.dart';
+import 'package:flutter_application_hive/features/helper/ogrenci_listesi_helper.dart';
 import 'package:flutter_application_hive/features/helper/temrinnot_listesi_helper.dart';
 import 'package:flutter_application_hive/features/ogrenci/model/ogrenci_model.dart';
 import 'package:flutter_application_hive/features/ogrenci/store/ogrenci_store.dart';
@@ -231,7 +233,7 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
                   Container(
                     child: viewModelTemrin.filtretemrinId != -1
                         ? FutureBuilder(
-                            future: TemrinnotListesiHelper('temrinnot')
+                            future: TemrinnotListesiHelper(ApplicationConstants.boxTemrinNot)
                                 .temrinnotFiltreListesiGetir(viewModelTemrin.filtretemrinId),
                             builder: (BuildContext context, AsyncSnapshot snapshot) {
                               if (snapshot.hasData) {
@@ -314,14 +316,9 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
     }
     //List<OgrenciModel> transactionsOgrenciSinif = [];
     transactionsOgrenciSinif = [];
-
-    // transactionsOgrenciSinif = TemrinnotListesiHelper().getFilteredValues("sinifId", filtreSinifId);
-    /* 
-    for (var ogrenci in transactionsOgrenci) {
-      if (ogrenci.sinifId == filtreSinifId) {
-        transactionsOgrenciSinif.add(ogrenci);
-      }
-    } */
+    transactionsOgrenciSinif = OgrenciListesiHelper(ApplicationConstants.boxOgrenci)
+        .getFilteredValues('SinifId', viewModelSinif.filtreSinifId)!;
+    print(transactionsOgrenciSinif.length);
     _controllers = [];
     return ListView.builder(
       shrinkWrap: true,

@@ -54,8 +54,7 @@ class _SinifpageViewState extends State<SinifpageView> {
         floatingActionButton: Padding(
           padding: const EdgeInsets.all(8.0),
           child: FloatingActionButton(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             child: const Icon(Icons.add),
             onPressed: () => showDialog(
               context: context,
@@ -98,12 +97,8 @@ class _SinifpageViewState extends State<SinifpageView> {
     }
   }
 
-  Widget buildTransaction(
-      BuildContext context, SinifModel transaction, int index) {
-    return SinifCard(
-        transaction: transaction,
-        index: index,
-        butons: buildButtons(context, transaction));
+  Widget buildTransaction(BuildContext context, SinifModel transaction, int index) {
+    return SinifCard(transaction: transaction, index: index, butons: buildButtons(context, transaction));
   }
 
   Future addTransaction(int id, String sinifAd) async {
@@ -123,8 +118,7 @@ class _SinifpageViewState extends State<SinifpageView> {
                 MaterialPageRoute(
                   builder: (context) => SinifDialog(
                     transaction: transaction,
-                    onClickedDone: (id, sinifAd) =>
-                        editTransaction(transaction, id, sinifAd),
+                    onClickedDone: (id, sinifAd) => editTransaction(transaction, id, sinifAd),
                   ),
                 ),
               ),
