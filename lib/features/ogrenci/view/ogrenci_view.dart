@@ -15,7 +15,7 @@ class OgrencipageView extends StatefulWidget {
 }
 
 class _OgrencipageViewState extends State<OgrencipageView> {
-  Box<OgrenciModel> _box = OgrenciBoxes.getTransactions();
+  final Box<OgrenciModel> _box = OgrenciBoxes.getTransactions();
   @override
   void dispose() {
     //Hive.close();
@@ -29,8 +29,6 @@ class _OgrencipageViewState extends State<OgrencipageView> {
     transaction.sinifId = sinifId;
     transaction.save();
   }
-
-  
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -100,16 +98,12 @@ class _OgrencipageViewState extends State<OgrencipageView> {
   }
 
   Future addTransaction(int id, String name, int nu, int sinifId) async {
-  /*   final transaction = OgrenciModel(id: id, name: name, nu: nu, sinifId: sinifId);
+    /*   final transaction = OgrenciModel(id: id, name: name, nu: nu, sinifId: sinifId);
 
     _box = OgrenciBoxes.getTransactions();
     _box.add(transaction); */
-    OgrenciModel yeniOgrenci;
-    yeniOgrenci.id=id;
-    yeniOgrenci.name=name;
-    yeniOgrenci.
- OgrenciListesiHelper(ApplicationConstants.boxOgrenci).addItem(model)
-
+    OgrenciModel yeniOgrenci = OgrenciModel(id: id, name: name, nu: nu, sinifId: sinifId);
+    OgrenciListesiHelper(ApplicationConstants.boxOgrenci).addItem(yeniOgrenci);
   }
 
   Widget buildButtons(BuildContext context, OgrenciModel transaction) => Row(
@@ -137,9 +131,7 @@ class _OgrencipageViewState extends State<OgrencipageView> {
                 ),
                 onPressed: () {
                   buildDeleteOgrenci(transaction);
-                }
-
-                ),
+                }),
           )
         ],
       );

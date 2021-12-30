@@ -7,8 +7,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 class SinifListesiHelper extends IListeHelper<SinifModel> {
   SinifListesiHelper(String key) : super(key);
 
-  //Box<SinifModel>? _box;
-
   @override
   List<SinifModel>? getValues() {
     List<SinifModel> transactionsSinifListesi = SinifBoxes.getTransactions().values.toList().cast<SinifModel>();
@@ -36,5 +34,16 @@ class SinifListesiHelper extends IListeHelper<SinifModel> {
       if (sinif.id == filtreValue) transactionsSinifListesi.add(sinif);
     }
     return transactionsSinifListesi;
+  }
+
+  @override
+  Future<void> addItem(dynamic model) async {
+    Box<SinifModel> _box = SinifBoxes.getTransactions();
+    await _box.add(model!);
+  }
+
+  @override
+  Future<void> deleteItem(dynamic model) async {
+    await model.delete();
   }
 }

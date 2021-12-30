@@ -2,8 +2,7 @@ import 'package:flutter_application_hive/constants/hive_constans.dart';
 import 'package:flutter_application_hive/core/boxes.dart';
 import 'package:flutter_application_hive/features/helper/liste_helper_interface.dart';
 import 'package:flutter_application_hive/features/ogrenci/model/ogrenci_model.dart';
-import 'package:flutter_application_hive/features/siniflar/model/sinif_model.dart';
-//import 'package:hive/hive.dart';
+import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class OgrenciListesiHelper extends IListeHelper {
@@ -52,14 +51,13 @@ class OgrenciListesiHelper extends IListeHelper {
   }
 
   @override
-  Future addItem( model) {
-    return super.addItem(model!);
+  Future<void> addItem(dynamic model) async {
+    Box<OgrenciModel> _box = OgrenciBoxes.getTransactions();
+    await _box.add(model!);
   }
 
   @override
-  deleteItem(model) {
-    return super.deleteItem(model);
+  Future<void> deleteItem(dynamic model) async {
+    await model.delete();
   }
-
- 
 }

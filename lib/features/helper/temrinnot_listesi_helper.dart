@@ -68,4 +68,15 @@ class TemrinnotListesiHelper extends IListeHelper<TemrinnotModel> {
 
     return transactionsTemrinnot;
   }
+
+  @override
+  Future<void> addItem(dynamic model) async {
+    Box<TemrinnotModel> _box = TemrinnotBoxes.getTransactions();
+    await _box.add(model!);
+  }
+
+  @override
+  Future<void> deleteItem(dynamic model) async {
+    await model.delete();
+  }
 }
