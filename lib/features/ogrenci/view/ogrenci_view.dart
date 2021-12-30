@@ -16,19 +16,7 @@ class OgrencipageView extends StatefulWidget {
 
 class _OgrencipageViewState extends State<OgrencipageView> {
   final Box<OgrenciModel> _box = OgrenciBoxes.getTransactions();
-  @override
-  void dispose() {
-    //Hive.close();
-    super.dispose();
-  }
-
-  void editTransaction(OgrenciModel transaction, int id, String name, int nu, int sinifId) {
-    transaction.id = id;
-    transaction.name = name;
-    transaction.nu = nu;
-    transaction.sinifId = sinifId;
-    transaction.save();
-  }
+  final OgrenciListesiHelper _ogrenciListesiHelper = OgrenciListesiHelper(ApplicationConstants.boxOgrenci);
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -80,9 +68,8 @@ class _OgrencipageViewState extends State<OgrencipageView> {
               padding: const EdgeInsets.all(8),
               itemCount: transactions.length,
               itemBuilder: (BuildContext context, int index) {
-                final transaction = transactions[index];
-
-                return buildTransaction(context, transaction, index);
+                final ogrenciModel = transactions[index];
+                return buildTransaction(context, ogrenciModel, index);
                 //return Text(transactions.length.toString());
               },
             ),
@@ -93,20 +80,28 @@ class _OgrencipageViewState extends State<OgrencipageView> {
     }
   }
 
-  Widget buildTransaction(BuildContext context, OgrenciModel transaction, int index) {
-    return OgrenciCard(transaction: transaction, index: index, butons: buildButtons(context, transaction));
+  Widget buildTransaction(BuildContext context, OgrenciModel ogrenciModel, int index) {
+    return OgrenciCard(transaction: ogrenciModel, index: index, butons: buildButtons(context, ogrenciModel));
   }
 
   Future addTransaction(int id, String name, int nu, int sinifId) async {
-    /*   final transaction = OgrenciModel(id: id, name: name, nu: nu, sinifId: sinifId);
-
-    _box = OgrenciBoxes.getTransactions();
-    _box.add(transaction); */
     OgrenciModel yeniOgrenci = OgrenciModel(id: id, name: name, nu: nu, sinifId: sinifId);
-    OgrenciListesiHelper(ApplicationConstants.boxOgrenci).addItem(yeniOgrenci);
+    _ogrenciListesiHelper.addItem(yeniOgrenci);
   }
 
-  Widget buildButtons(BuildContext context, OgrenciModel transaction) => Row(
+  void editTransaction(OgrenciModel ogrenciModel, int id, String name, int nu, int sinifId) {
+    ogrenciModel.id = id;
+    ogrenciModel.name = name;
+    ogrenciModel.nu = nu;
+    ogrenciModel.sinifId = sinifId;
+    _ogrenciListesiHelper.editItem(ogrenciModel);
+  }
+
+  void buildDeleteOgrenci(OgrenciModel ogrenciModel) {
+    _ogrenciListesiHelper.deleteItem(ogrenciModel);
+  }
+
+  Widget buildButtons(BuildContext context, OgrenciModel ogrenciModel) => Row(
         children: [
           Expanded(
             child: TextButton.icon(
@@ -115,8 +110,8 @@ class _OgrencipageViewState extends State<OgrencipageView> {
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => OgrenciDialog(
-                    transaction: transaction,
-                    onClickedDone: (id, name, nu, sinifId) => editTransaction(transaction, id, name, nu, sinifId),
+                    transaction: ogrenciModel,
+                    onClickedDone: (id, name, nu, sinifId) => editTransaction(ogrenciModel, id, name, nu, sinifId),
                   ),
                 ),
               ),
@@ -130,13 +125,9 @@ class _OgrencipageViewState extends State<OgrencipageView> {
                   color: Colors.red,
                 ),
                 onPressed: () {
-                  buildDeleteOgrenci(transaction);
+                  buildDeleteOgrenci(ogrenciModel);
                 }),
           )
         ],
       );
-
-  void buildDeleteOgrenci(OgrenciModel transaction) {
-    OgrenciListesiHelper(ApplicationConstants.boxOgrenci).deleteItem(transaction);
-  }
 }

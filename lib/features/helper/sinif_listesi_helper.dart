@@ -46,4 +46,10 @@ class SinifListesiHelper extends IListeHelper<SinifModel> {
   Future<void> deleteItem(dynamic model) async {
     await model.delete();
   }
+
+  @override
+  Future<void> editItem(dynamic model) async {
+    // TODO: implement editItem
+    throw UnimplementedError();
+  }
 }

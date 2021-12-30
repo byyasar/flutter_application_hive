@@ -16,7 +16,8 @@ abstract class IListeHelper<T> {
   List<T>? getValues();
   T? getItem(String key, Box<T>? _box);
   List<T>? getFilteredValues(String filtreKey, int filtreValue);
-  Future<void> deleteItem(HiveObject? model) ;
+  Future<void> deleteItem(HiveObject? model);
   Future<void> addItem(T? model);
+  Future<void> editItem(HiveObject? model);
   void registerAdapters();
 }

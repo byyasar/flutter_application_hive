@@ -47,4 +47,10 @@ class TemrinListesiHelper extends IListeHelper<TemrinModel> {
   Future<void> deleteItem(dynamic model) async {
     await model.delete();
   }
+
+  @override
+  Future<void> editItem(dynamic model) {
+    // TODO: implement editItem
+    throw UnimplementedError();
+  }
 }
