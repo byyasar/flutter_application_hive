@@ -84,4 +84,9 @@ class TemrinnotListesiHelper extends IListeHelper<TemrinnotModel> {
   getItem(String key, Box? _box) {
     return _box?.get(key);
   }
+
+  @override
+  TemrinnotModel? getItemId(int id) {
+  
+  }
 }

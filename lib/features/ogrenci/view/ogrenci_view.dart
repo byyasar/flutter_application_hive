@@ -5,6 +5,9 @@ import 'package:flutter_application_hive/features/helper/ogrenci_listesi_helper.
 import 'package:flutter_application_hive/features/ogrenci/model/ogrenci_model.dart';
 import 'package:flutter_application_hive/features/ogrenci/widget/ogrenci_card.dart';
 import 'package:flutter_application_hive/core/boxes.dart';
+import 'package:flutter_application_hive/features/siniflar/model/sinif_model.dart';
+import 'package:flutter_application_hive/features/siniflar/store/sinif_store.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class OgrencipageView extends StatefulWidget {
@@ -15,25 +18,34 @@ class OgrencipageView extends StatefulWidget {
 }
 
 class _OgrencipageViewState extends State<OgrencipageView> {
+  SinifStore sinifStore = SinifStore();
   final Box<OgrenciModel> _box = OgrenciBoxes.getTransactions();
   final OgrenciListesiHelper _ogrenciListesiHelper = OgrenciListesiHelper(ApplicationConstants.boxOgrenci);
 
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: _buildAppBar,
-        body: _buildBody(),
+        body: _buildBody,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: _buildFloatingActionButton(context),
       );
 
-  ValueListenableBuilder<Box<OgrenciModel>> _buildBody() {
-    return ValueListenableBuilder<Box<OgrenciModel>>(
-      valueListenable: _box.listenable(),
-      builder: (context, _box, _) {
-        final transactions = _box.values.toList().cast<OgrenciModel>();
-        return buildContent(transactions);
-      },
-    );
+  Observer get _buildBody {
+    return Observer(builder: (_) {
+      int filtre = sinifStore.filtreSinifId;
+      return ValueListenableBuilder<Box<OgrenciModel>>(
+        valueListenable: _box.listenable(),
+        builder: (context, _box, _) {
+          List<OgrenciModel> transactions = [];
+          if (filtre != -1) {
+            transactions = _box.values.where((object) => object.sinifId == filtre).toList();
+          } else {
+            transactions = _box.values.toList().cast<OgrenciModel>();
+          }
+          return buildContent(transactions);
+        },
+      );
+    });
   }
 
   Widget _buildFloatingActionButton(BuildContext context) {
@@ -52,10 +64,29 @@ class _OgrencipageViewState extends State<OgrencipageView> {
     );
   }
 
-  PreferredSizeWidget get _buildAppBar => AppBar(
-        title: const Text('Öğrenci Listesi'),
-        centerTitle: true,
-      );
+  PreferredSizeWidget get _buildAppBar {
+    return AppBar(
+      title: const Text('Öğrenci Listesi'),
+      centerTitle: true,
+      actions: <Widget>[
+        PopupMenuButton<String>(
+          onCanceled: () => sinifStore.setFiltreSinifId(-1),
+          onSelected: (value) {
+            //print(value);
+            sinifStore.setFiltreSinifId(int.parse(value));
+          },
+          itemBuilder: (BuildContext context) {
+            return SinifBoxes.getTransactions().values.toList().cast<SinifModel>().map((e) {
+              return PopupMenuItem(
+                value: e.id.toString(),
+                child: Text(e.sinifAd),
+              );
+            }).toList();
+          },
+        )
+      ],
+    );
+  }
 
   Widget buildContent(List<OgrenciModel> transactions) {
     if (transactions.isEmpty) {

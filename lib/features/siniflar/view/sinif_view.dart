@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_hive/constants/app_constants.dart';
 import 'package:flutter_application_hive/core/boxes.dart';
+import 'package:flutter_application_hive/features/helper/sinif_listesi_helper.dart';
 import 'package:flutter_application_hive/features/siniflar/dialog/sinif_dialog.dart';
 import 'package:flutter_application_hive/features/siniflar/model/sinif_model.dart';
 import 'package:flutter_application_hive/features/siniflar/widget/sinif_card.dart';
@@ -14,57 +16,46 @@ class SinifpageView extends StatefulWidget {
 }
 
 class _SinifpageViewState extends State<SinifpageView> {
-  @override
-  void dispose() {
-    //Hive.close();
-    super.dispose();
-  }
-
-  void editTransaction(
-    SinifModel transaction,
-    int id,
-    String sinifAd,
-  ) {
-    transaction.id = id;
-    transaction.sinifAd = sinifAd;
-    transaction.save();
-  }
-
-  void deleteTransaction(SinifModel transaction) {
-    transaction.delete();
-  }
+  final Box<SinifModel> _box = SinifBoxes.getTransactions();
+  final SinifListesiHelper _sinifListesiHelper = SinifListesiHelper(ApplicationConstants.boxSinif);
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: const Text('Sınıf Listesi'),
-          centerTitle: true,
-        ),
-        body: ValueListenableBuilder<Box<SinifModel>>(
-          valueListenable: SinifBoxes.getTransactions().listenable(),
-          builder: (context, box, _) {
-            final transactions = box.values.toList().cast<SinifModel>();
-            // ignore: avoid_print
-            print(transactions.length);
-            //return Text(transactions[1].detail);
-            return buildContent(transactions);
-          },
-        ),
+        appBar: _buildAppBar,
+        body: _buildBody,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: FloatingActionButton(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-            child: const Icon(Icons.add),
-            onPressed: () => showDialog(
-              context: context,
-              builder: (context) => SinifDialog(
-                onClickedDone: addTransaction,
-              ),
-            ),
+        floatingActionButton: _buildFloatingAcionButton(context),
+      );
+  PreferredSizeWidget get _buildAppBar => AppBar(
+        title: const Text('Sınıf Listesi'),
+        centerTitle: true,
+      );
+
+  ValueListenableBuilder<Box<SinifModel>> get _buildBody {
+    return ValueListenableBuilder<Box<SinifModel>>(
+      valueListenable: _box.listenable(),
+      builder: (context, _box, _) {
+        final transactions = _box.values.toList().cast<SinifModel>();
+        return buildContent(transactions);
+      },
+    );
+  }
+
+  Padding _buildFloatingAcionButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: FloatingActionButton(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        child: const Icon(Icons.add),
+        onPressed: () => showDialog(
+          context: context,
+          builder: (context) => SinifDialog(
+            onClickedDone: addTransaction,
           ),
         ),
-      );
+      ),
+    );
+  }
 
   Widget buildContent(List<SinifModel> transactions) {
     if (transactions.isEmpty) {
@@ -97,18 +88,16 @@ class _SinifpageViewState extends State<SinifpageView> {
     }
   }
 
-  Widget buildTransaction(BuildContext context, SinifModel transaction, int index) {
-    return SinifCard(transaction: transaction, index: index, butons: buildButtons(context, transaction));
+  Widget buildTransaction(BuildContext context, SinifModel sinifModel, int index) {
+    return SinifCard(transaction: sinifModel, index: index, butons: buildButtons(context, sinifModel));
   }
 
   Future addTransaction(int id, String sinifAd) async {
-    final transaction = SinifModel(id: id, sinifAd: sinifAd);
-
-    final box = SinifBoxes.getTransactions();
-    box.add(transaction);
+    final sinifModel = SinifModel(id: id, sinifAd: sinifAd);
+    _sinifListesiHelper.addItem(sinifModel);
   }
 
-  Widget buildButtons(BuildContext context, SinifModel transaction) => Row(
+  Widget buildButtons(BuildContext context, SinifModel sinifModel) => Row(
         children: [
           Expanded(
             child: TextButton.icon(
@@ -117,8 +106,8 @@ class _SinifpageViewState extends State<SinifpageView> {
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => SinifDialog(
-                    transaction: transaction,
-                    onClickedDone: (id, sinifAd) => editTransaction(transaction, id, sinifAd),
+                    transaction: sinifModel,
+                    onClickedDone: (id, sinifAd) => editTransaction(sinifModel, id, sinifAd),
                   ),
                 ),
               ),
@@ -128,9 +117,17 @@ class _SinifpageViewState extends State<SinifpageView> {
             child: TextButton.icon(
               label: const Text('Sil'),
               icon: const Icon(Icons.delete),
-              onPressed: () => deleteTransaction(transaction),
+              onPressed: () => deleteTransaction(sinifModel),
             ),
           )
         ],
       );
+
+  deleteTransaction(SinifModel sinifModel) => _sinifListesiHelper.deleteItem(sinifModel);
+
+  editTransaction(SinifModel sinifModel, int id, String sinifAd) {
+    sinifModel.id = id;
+    sinifModel.sinifAd = sinifAd;
+    _sinifListesiHelper.editItem(sinifModel);
+  }
 }

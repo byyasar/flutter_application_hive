@@ -19,5 +19,6 @@ abstract class IListeHelper<T> {
   Future<void> deleteItem(HiveObject? model);
   Future<void> addItem(T? model);
   Future<void> editItem(HiveObject? model);
+  T? getItemId(int id);
   void registerAdapters();
 }

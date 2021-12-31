@@ -52,4 +52,9 @@ class TemrinListesiHelper extends IListeHelper<TemrinModel> {
   Future<void> editItem(dynamic model) async {
     await model.save();
   }
+
+  @override
+  TemrinModel? getItemId(int id) {
+   
+  }
 }

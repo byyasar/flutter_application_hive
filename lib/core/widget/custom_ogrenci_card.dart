@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_hive/constants/app_constants.dart';
+import 'package:flutter_application_hive/features/helper/sinif_listesi_helper.dart';
 import 'package:flutter_application_hive/features/ogrenci/model/ogrenci_model.dart';
 
 class CustomOgrenciCard extends StatefulWidget {
@@ -21,6 +23,7 @@ class _CustomOgrenciCardState extends State<CustomOgrenciCard> {
   bool? _chacked = false;
   @override
   Widget build(BuildContext context) {
+    SinifListesiHelper _sinifListesiHelper = SinifListesiHelper(ApplicationConstants.boxSinif);
     return Card(
       color: Colors.white60,
       child: Row(
@@ -34,7 +37,7 @@ class _CustomOgrenciCardState extends State<CustomOgrenciCard> {
                 style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
               subtitle: Text(
-                  "ogrid: ${widget.transaction.id.toString()} Nu:  ${widget.transaction.nu} Sınıf ıd:  ${widget.transaction.sinifId}"),
+                  "ogrid: ${widget.transaction.id.toString()} Nu:  ${widget.transaction.nu} Sınıf ${_sinifListesiHelper.getItemId(widget.transaction.sinifId)!.sinifAd}"),
               children: [
                 TextFormField(),
                 CheckboxListTile(
@@ -43,7 +46,6 @@ class _CustomOgrenciCardState extends State<CustomOgrenciCard> {
                     onChanged: (value) {
                       setState(() {
                         _chacked = value;
-                        
                       });
                     })
               ],

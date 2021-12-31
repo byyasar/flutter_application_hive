@@ -65,4 +65,9 @@ class OgrenciListesiHelper extends IListeHelper {
   Future<void> editItem(dynamic model) async {
     await model.save();
   }
+
+  @override
+  getItemId(int id) {
+   
+  }
 }

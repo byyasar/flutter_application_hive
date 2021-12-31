@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_hive/constants/app_constants.dart';
 import 'package:flutter_application_hive/core/boxes.dart';
+import 'package:flutter_application_hive/features/dersler/model/ders_model.dart';
+import 'package:flutter_application_hive/features/dersler/store/ders_store.dart';
+import 'package:flutter_application_hive/features/helper/temrin_listesi_helper.dart';
 import 'package:flutter_application_hive/features/temrin/dialog/temrin_dialog.dart';
 import 'package:flutter_application_hive/features/temrin/model/temrin_model.dart';
 import 'package:flutter_application_hive/features/temrin/widget/temrin_card.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class TemrinpageView extends StatefulWidget {
@@ -13,46 +18,36 @@ class TemrinpageView extends StatefulWidget {
 }
 
 class _TemrinpageViewState extends State<TemrinpageView> {
+  final DersStore _viewDersModel = DersStore();
+  final Box<TemrinModel> _box = TemrinBoxes.getTransactions();
+  final TemrinListesiHelper _temrinListesiHelper = TemrinListesiHelper(ApplicationConstants.boxTemrin);
+
   @override
   void dispose() {
     //Hive.close();
     super.dispose();
   }
 
-  void editTransaction(
-      TemrinModel transaction, int id, String temrinKonusu, int dersId) {
-    transaction.id = id;
-    transaction.temrinKonusu = temrinKonusu;
-    transaction.dersId = dersId;
-    transaction.save();
+  void editTransaction(TemrinModel temrinModel, int id, String temrinKonusu, int dersId) {
+    temrinModel.id = id;
+    temrinModel.temrinKonusu = temrinKonusu;
+    temrinModel.dersId = dersId;
+    _temrinListesiHelper.addItem(temrinModel);
   }
 
-  void deleteTransaction(TemrinModel transaction) {
-    transaction.delete();
+  void deleteTransaction(TemrinModel temrinModel) {
+    _temrinListesiHelper.deleteItem(temrinModel);
   }
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: const Text('Temrin Listesi'),
-          centerTitle: true,
-        ),
-        body: ValueListenableBuilder<Box<TemrinModel>>(
-          valueListenable: TemrinBoxes.getTransactions().listenable(),
-          builder: (context, box, _) {
-            final transactions = box.values.toList().cast<TemrinModel>();
-            // ignore: avoid_print
-            print(transactions.length);
-            //return Text(transactions[1].detail);
-            return buildContent(transactions);
-          },
-        ),
+        appBar: _buildAppBar(),
+        body: _buildBody(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: Padding(
           padding: const EdgeInsets.all(8.0),
           child: FloatingActionButton(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             child: const Icon(Icons.add),
             onPressed: () => showDialog(
               context: context,
@@ -63,6 +58,48 @@ class _TemrinpageViewState extends State<TemrinpageView> {
           ),
         ),
       );
+
+  Observer _buildBody() {
+    return Observer(builder: (_) {
+      int filtre = _viewDersModel.filtredersId;
+      return ValueListenableBuilder<Box<TemrinModel>>(
+        valueListenable: _box.listenable(),
+        builder: (context, box, _) {
+          //final transactions = box.values.toList().cast<TemrinModel>();
+          List<TemrinModel> transactions = [];
+          if (filtre != -1) {
+            transactions = _box.values.where((object) => object.dersId == filtre).toList();
+          } else {
+            transactions = _box.values.toList().cast<TemrinModel>();
+          }
+          return buildContent(transactions);
+        },
+      );
+    });
+  }
+
+  AppBar _buildAppBar() {
+    return AppBar(
+      title: const Text('Temrin Listesi'),
+      actions: <Widget>[
+        PopupMenuButton<String>(
+          onCanceled: () => _viewDersModel.setFiltreDersId(-1),
+          onSelected: (value) {
+            //print(value);
+            _viewDersModel.setFiltreDersId(int.parse(value));
+          },
+          itemBuilder: (BuildContext context) {
+            return DersBoxes.getTransactions().values.toList().cast<DersModel>().map((e) {
+              return PopupMenuItem(
+                value: e.id.toString(),
+                child: Text(e.dersad),
+              );
+            }).toList();
+          },
+        )
+      ],
+    );
+  }
 
   Widget buildContent(List<TemrinModel> transactions) {
     if (transactions.isEmpty) {
@@ -95,17 +132,12 @@ class _TemrinpageViewState extends State<TemrinpageView> {
     }
   }
 
-  Widget buildTransaction(
-      BuildContext context, TemrinModel transaction, int index) {
-    return TemrinCard(
-        transaction: transaction,
-        index: index,
-        butons: buildButtons(context, transaction));
+  Widget buildTransaction(BuildContext context, TemrinModel transaction, int index) {
+    return TemrinCard(transaction: transaction, index: index, butons: buildButtons(context, transaction));
   }
 
   Future addTransaction(int id, String temrinKonusu, int dersId) async {
-    final transaction =
-        TemrinModel(id: id, temrinKonusu: temrinKonusu, dersId: dersId);
+    final transaction = TemrinModel(id: id, temrinKonusu: temrinKonusu, dersId: dersId);
 
     final box = TemrinBoxes.getTransactions();
     box.add(transaction);
@@ -122,8 +154,7 @@ class _TemrinpageViewState extends State<TemrinpageView> {
                 MaterialPageRoute(
                   builder: (context) => TemrinDialog(
                     transaction: transaction,
-                    onClickedDone: (id, temrinKonusu, dersId) =>
-                        editTransaction(transaction, id, temrinKonusu, dersId),
+                    onClickedDone: (id, temrinKonusu, dersId) => editTransaction(transaction, id, temrinKonusu, dersId),
                   ),
                 ),
               ),

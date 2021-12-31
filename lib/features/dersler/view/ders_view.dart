@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_hive/constants/app_constants.dart';
 import 'package:flutter_application_hive/core/boxes.dart';
 import 'package:flutter_application_hive/features/dersler/dialog/ders_dialog.dart';
 import 'package:flutter_application_hive/features/dersler/model/ders_model.dart';
 import 'package:flutter_application_hive/features/dersler/widget/ders_card.dart';
+import 'package:flutter_application_hive/features/helper/ders_listesi_helper.dart';
 import 'package:flutter_application_hive/features/siniflar/model/sinif_model.dart';
 import 'package:flutter_application_hive/features/siniflar/store/sinif_store.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -17,92 +19,77 @@ class DerspageView extends StatefulWidget {
 
 class _DerspageViewState extends State<DerspageView> {
   SinifStore sinifStore = SinifStore();
-  @override
-  void dispose() {
-    //Hive.close();
-    super.dispose();
-  }
-
-  void editTransaction(
-    DersModel transaction,
-    int id,
-    String dersad,
-    int sinifId,
-  ) {
-    transaction.id = id;
-    transaction.dersad = dersad;
-    transaction.sinifId = sinifId;
-    transaction.save();
-  }
-
-  void deleteTransaction(DersModel transaction) {
-    transaction.delete();
-  }
+  final Box<DersModel> _box = DersBoxes.getTransactions();
+  final DersListesiHelper _dersListesiHelper = DersListesiHelper(ApplicationConstants.boxDers);
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: const Text('Ders Listesi'),
-          centerTitle: true,
-          actions: <Widget>[
-            PopupMenuButton<String>(
-              onCanceled: () => sinifStore.setFiltreSinifId(-1),
-              onSelected: (value) {
-                //print(value);
-                sinifStore.setFiltreSinifId(int.parse(value));
-              },
-              itemBuilder: (BuildContext context) {
-                return SinifBoxes.getTransactions()
-                    .values
-                    .toList()
-                    .cast<SinifModel>()
-                    .map((e) {
-                  return PopupMenuItem(
-                    value: e.id.toString(),
-                    child: Text(e.sinifAd),
-                  );
-                }).toList();
-              },
-            )
-          ],
-        ),
-        body: Observer(builder: (_) {
-          int filtre = sinifStore.filtreSinifId;
-          //print("filtre: ${sinifStore.filtreSinifId}");
-          return ValueListenableBuilder<Box<DersModel>>(
-              valueListenable: DersBoxes.getTransactions().listenable(),
-              builder: (context, box, _) {
-                List<DersModel> transactions = [];
-                if (filtre != -1) {
-                  transactions = box.values
-                      .where((object) =>
-                          object.sinifId == filtre)
-                      .toList();
-                } else {
-                  transactions = box.values.toList().cast<DersModel>();
-                }
-                // ignore: avoid_print
-                print(transactions.length);
-                //return Text(transactions[1].detail);
-                return buildContent(transactions);
-              });
-        }),
+        appBar: _buildAppBar,
+        body: _buildBody,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: FloatingActionButton(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-            child: const Icon(Icons.add),
-            onPressed: () => showDialog(
-              context: context,
-              builder: (context) => DersDialog(
-                onClickedDone: addTransaction,
-              ),
-            ),
+        floatingActionButton: _buildFloatingActionButton(context),
+      );
+
+  PreferredSizeWidget get _buildAppBar {
+    return AppBar(
+      title: const Text('Ders Listesi'),
+      centerTitle: true,
+      actions: <Widget>[
+        PopupMenuButton<String>(
+          onCanceled: () => sinifStore.setFiltreSinifId(-1),
+          onSelected: (value) {
+            //print(value);
+            sinifStore.setFiltreSinifId(int.parse(value));
+          },
+          itemBuilder: (BuildContext context) {
+            return SinifBoxes.getTransactions().values.toList().cast<SinifModel>().map((e) {
+              return PopupMenuItem(
+                value: e.id.toString(),
+                child: Text(e.sinifAd),
+              );
+            }).toList();
+          },
+        )
+      ],
+    );
+  }
+
+  Observer get _buildBody {
+    return Observer(builder: (_) {
+      int filtre = sinifStore.filtreSinifId;
+      //print("filtre: ${sinifStore.filtreSinifId}");
+      return ValueListenableBuilder<Box<DersModel>>(
+          valueListenable: _box.listenable(),
+          builder: (context, box, _) {
+            List<DersModel> transactions = [];
+            if (filtre != -1) {
+              transactions = box.values.where((object) => object.sinifId == filtre).toList();
+            } else {
+              transactions = box.values.toList().cast<DersModel>();
+            }
+            // ignore: avoid_print
+            print(transactions.length);
+            //return Text(transactions[1].detail);
+            return buildContent(transactions);
+          });
+    });
+  }
+
+  Widget _buildFloatingActionButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: FloatingActionButton(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        child: const Icon(Icons.add),
+        onPressed: () => showDialog(
+          context: context,
+          builder: (context) => DersDialog(
+            onClickedDone: addTransaction,
           ),
         ),
-      );
+      ),
+    );
+  }
 
   Widget buildContent(List<DersModel> transactions) {
     if (transactions.isEmpty) {
@@ -123,7 +110,6 @@ class _DerspageViewState extends State<DerspageView> {
               itemCount: transactions.length,
               itemBuilder: (BuildContext context, int index) {
                 final transaction = transactions[index];
-
                 return buildTransaction(context, transaction, index);
                 //return Text(transactions.length.toString());
               },
@@ -135,19 +121,13 @@ class _DerspageViewState extends State<DerspageView> {
     }
   }
 
-  Widget buildTransaction(
-      BuildContext context, DersModel transaction, int index) {
-    return DersCard(
-        transaction: transaction,
-        index: index,
-        butons: buildButtons(context, transaction));
+  Widget buildTransaction(BuildContext context, DersModel transaction, int index) {
+    return DersCard(transaction: transaction, index: index, butons: buildButtons(context, transaction));
   }
 
   Future addTransaction(int id, String dersad, int sinifId) async {
-    final transaction = DersModel(id: id, dersad: dersad, sinifId: sinifId);
-
-    final box = DersBoxes.getTransactions();
-    box.add(transaction);
+    DersModel dersModel = DersModel(id: id, dersad: dersad, sinifId: sinifId);
+    _dersListesiHelper.addItem(dersModel);
   }
 
   Widget buildButtons(BuildContext context, DersModel transaction) => Row(
@@ -160,8 +140,7 @@ class _DerspageViewState extends State<DerspageView> {
                 MaterialPageRoute(
                   builder: (context) => DersDialog(
                     transaction: transaction,
-                    onClickedDone: (id, dersad, sinifId) =>
-                        editTransaction(transaction, id, dersad, sinifId),
+                    onClickedDone: (id, dersad, sinifId) => editTransaction(transaction, id, dersad, sinifId),
                   ),
                 ),
               ),
@@ -176,4 +155,15 @@ class _DerspageViewState extends State<DerspageView> {
           )
         ],
       );
+
+  deleteTransaction(DersModel dersModel) {
+    _dersListesiHelper.deleteItem(dersModel);
+  }
+
+  editTransaction(DersModel dersModel, int id, String dersad, int sinifId) {
+    dersModel.id = id;
+    dersModel.dersad = dersad;
+    dersModel.sinifId = sinifId;
+    dersModel.save();
+  }
 }
