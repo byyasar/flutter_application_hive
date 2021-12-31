@@ -318,7 +318,7 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
     transactionsOgrenciSinif = [];
     transactionsOgrenciSinif = OgrenciListesiHelper(ApplicationConstants.boxOgrenci)
         .getFilteredValues('SinifId', viewModelSinif.filtreSinifId)!;
-    print(transactionsOgrenciSinif.length);
+    //print(transactionsOgrenciSinif.length);
     _controllers = [];
     return ListView.builder(
       shrinkWrap: true,

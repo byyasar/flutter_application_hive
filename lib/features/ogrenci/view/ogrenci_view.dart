@@ -20,34 +20,41 @@ class _OgrencipageViewState extends State<OgrencipageView> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: const Text('Öğrenci Listesi'),
-          centerTitle: true,
-        ),
-        body: ValueListenableBuilder<Box<OgrenciModel>>(
-          valueListenable: _box.listenable(),
-          builder: (context, _box, _) {
-            final transactions = _box.values.toList().cast<OgrenciModel>();
-            // ignore: avoid_print
-            print(transactions.length);
-            //return Text(transactions[1].detail);
-            return buildContent(transactions);
-          },
-        ),
+        appBar: _buildAppBar,
+        body: _buildBody(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: FloatingActionButton(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-            child: const Icon(Icons.add),
-            onPressed: () => showDialog(
-              context: context,
-              builder: (context) => OgrenciDialog(
-                onClickedDone: addTransaction,
-              ),
-            ),
+        floatingActionButton: _buildFloatingActionButton(context),
+      );
+
+  ValueListenableBuilder<Box<OgrenciModel>> _buildBody() {
+    return ValueListenableBuilder<Box<OgrenciModel>>(
+      valueListenable: _box.listenable(),
+      builder: (context, _box, _) {
+        final transactions = _box.values.toList().cast<OgrenciModel>();
+        return buildContent(transactions);
+      },
+    );
+  }
+
+  Widget _buildFloatingActionButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: FloatingActionButton(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        child: const Icon(Icons.add),
+        onPressed: () => showDialog(
+          context: context,
+          builder: (context) => OgrenciDialog(
+            onClickedDone: addTransaction,
           ),
         ),
+      ),
+    );
+  }
+
+  PreferredSizeWidget get _buildAppBar => AppBar(
+        title: const Text('Öğrenci Listesi'),
+        centerTitle: true,
       );
 
   Widget buildContent(List<OgrenciModel> transactions) {
@@ -59,7 +66,6 @@ class _OgrencipageViewState extends State<OgrencipageView> {
         ),
       );
     } else {
-      //return Text(transactions.length.toString());
       return Column(
         children: [
           const SizedBox(height: 24),
@@ -70,7 +76,6 @@ class _OgrencipageViewState extends State<OgrencipageView> {
               itemBuilder: (BuildContext context, int index) {
                 final ogrenciModel = transactions[index];
                 return buildTransaction(context, ogrenciModel, index);
-                //return Text(transactions.length.toString());
               },
             ),
           ),

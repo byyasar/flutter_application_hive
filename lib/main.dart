@@ -5,7 +5,6 @@ import 'package:flutter_application_hive/features/ogrenci/model/ogrenci_model.da
 import 'package:flutter_application_hive/features/siniflar/model/sinif_model.dart';
 import 'package:flutter_application_hive/features/temrin/model/temrin_model.dart';
 import 'package:flutter_application_hive/features/temrinnot/model/temrinnot_model.dart';
-import 'package:flutter_application_hive/features/temrinnot/view/temrinnot_view.dart';
 import 'package:flutter_application_hive/view/mainpage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 

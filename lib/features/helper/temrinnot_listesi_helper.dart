@@ -8,11 +8,6 @@ import 'package:hive/hive.dart';
 class TemrinnotListesiHelper extends IListeHelper<TemrinnotModel> {
   TemrinnotListesiHelper(String key) : super(key);
 
-  @override
-  TemrinnotModel? getItem(String key, Box<TemrinnotModel>? box) {
-    return null;
-  }
-
   Future<List<TemrinnotModel>> temrinnotFiltreListesiGetir(int filtreTemrinId) async {
     List<TemrinnotModel> transactionsFiltreTemrinnot = [];
     if (filtreTemrinId == -1) {
@@ -81,8 +76,12 @@ class TemrinnotListesiHelper extends IListeHelper<TemrinnotModel> {
   }
 
   @override
-  Future<void> editItem(dynamic model) {
-    // TODO: implement editItem
-    throw UnimplementedError();
+  Future<void> editItem(dynamic model) async {
+    await model.save();
+  }
+
+  @override
+  getItem(String key, Box? _box) {
+    return _box?.get(key);
   }
 }
