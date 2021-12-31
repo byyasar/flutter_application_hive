@@ -4,9 +4,9 @@ Todo:
 
 
 Arayüz Geliştirmeleri:
-    ☐ Arayüzlere filtreleme eklenecek.
+    ✔ Arayüzlere filtreleme eklenecek. @done(21-12-31 15:18)
     ☐ Secimleri kaydetmek için store oluşturulacak.
-    ☐ Hive den sorgu yapmak için helper dosyası oluşturulacak.
+    ✔ Hive den sorgu yapmak için helper dosyası oluşturulacak. @done(21-12-31 15:18)
 
 Temrin not ekranı geliştirmeleri:
     ☐ Not ekleme textform field bu alana kontrol eklenecek. not kontrolü olacak 0-100 arasında.

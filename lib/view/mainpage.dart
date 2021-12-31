@@ -17,6 +17,8 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: _buildFloatingActionButton(context),
         appBar: AppBar(title: const Text('Temrin Not Sistemi')),
         body: const Center(
           child: Text('Temrin Not Girişi'),
@@ -44,8 +46,7 @@ class _MainPageState extends State<MainPage> {
                   style: TextStyle(fontSize: 24),
                 ),
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const SinifpageView()));
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SinifpageView()));
                 },
               ),
               const Divider(color: Colors.black, height: 2.0),
@@ -55,8 +56,7 @@ class _MainPageState extends State<MainPage> {
                   style: TextStyle(fontSize: 24),
                 ),
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const DerspageView()));
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => const DerspageView()));
                 },
               ),
               const Divider(color: Colors.black, height: 2.0),
@@ -66,8 +66,7 @@ class _MainPageState extends State<MainPage> {
                   style: TextStyle(fontSize: 24),
                 ),
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const OgrencipageView()));
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => const OgrencipageView()));
                 },
               ),
               const Divider(color: Colors.black, height: 2.0),
@@ -77,8 +76,7 @@ class _MainPageState extends State<MainPage> {
                   style: TextStyle(fontSize: 24),
                 ),
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const TemrinpageView()));
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => const TemrinpageView()));
                 },
               ),
               const Divider(color: Colors.black, height: 2.0),
@@ -88,14 +86,25 @@ class _MainPageState extends State<MainPage> {
                   style: TextStyle(fontSize: 24),
                 ),
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const TemrinnotpageView()));
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => const TemrinnotpageView()));
                 },
               ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildFloatingActionButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: FloatingActionButton(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          child: const Icon(Icons.note),
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const TemrinnotpageView()));
+          }),
     );
   }
 }
