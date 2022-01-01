@@ -19,6 +19,7 @@ import 'package:flutter_application_hive/features/temrin/model/temrin_model.dart
 import 'package:flutter_application_hive/features/temrin/store/temrin_store.dart';
 import 'package:flutter_application_hive/features/temrinnot/model/temrinnot_model.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class TemrinnotpageView extends StatefulWidget {
   const TemrinnotpageView({Key? key}) : super(key: key);
@@ -74,10 +75,11 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
     transaction.save();
   }
 
-  Future addTransactionTemrinnot(int id, int temrinId, int ogrenciId, int puan, String notlar) async {
-    final transaction = TemrinnotModel(id: id, temrinId: temrinId, ogrenciId: ogrenciId, puan: puan, notlar: notlar);
+  Future addTransactionTemrinnot(String key, int id, int temrinId, int ogrenciId, int puan, String notlar) async {
+    final transaction =
+        TemrinnotModel(id: id, temrinId: temrinId, ogrenciId: ogrenciId, puan: puan, notlar: notlar, gelmedi: false);
     final box = TemrinnotBoxes.getTransactions();
-    box.add(transaction);
+    box.put(key, transaction);
   }
 
   void editTransactionSinif(SinifModel transaction, int id, String sinifAd) {
@@ -96,7 +98,7 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
 
   @override
   Widget build(BuildContext context) {
-    List<int> secimler = [1, 1, 1]; //sınıf-dersadı-temrinkonusu
+    List<int> secimler = [2, 1, 1]; //sınıf-dersadı-temrinkonusu
     viewModelSinif.setFiltreSinifId(secimler[0]);
     viewModelDers.setFiltreDersId(secimler[1]);
     viewModelTemrin.setFiltretemrinId(secimler[2]);
@@ -117,6 +119,42 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
         viewModelSinif = model;
       },
       onPageBuilder: (context, value) => Scaffold(
+        floatingActionButton: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            FloatingActionButton(
+                heroTag: 'ekle',
+                child: const Icon(Icons.add),
+                onPressed: () async {
+                  final Box<TemrinnotModel> _box = TemrinnotBoxes.getTransactions();
+                  //await _box.putAt(0, TemrinnotModel(id: 1, temrinId: 1, ogrenciId: 1, puan: 50, notlar: ''));
+                  _box.put(
+                      '1-1', TemrinnotModel(id: 1, temrinId: 1, ogrenciId: 1, puan: 100, notlar: '', gelmedi: false));
+                  _box.put(
+                      '1-2', TemrinnotModel(id: 1, temrinId: 1, ogrenciId: 2, puan: 80, notlar: '', gelmedi: true));
+                  _box.put(
+                      '1-3', TemrinnotModel(id: 1, temrinId: 1, ogrenciId: 3, puan: 90, notlar: '', gelmedi: false));
+                  _box.put(
+                      '1-4', TemrinnotModel(id: 1, temrinId: 1, ogrenciId: 4, puan: 70, notlar: '', gelmedi: false));
+                  /* print('key:' +
+                      _box.values.last.key.toString() +
+                      '-temrinId:' +
+                      _box.values.last.temrinId.toString() +
+                      '-ogrenciId:' +
+                      _box.values.last.ogrenciId.toString() +
+                      '-puan:' +
+                      _box.values.last.puan.toString()); */
+                  // print(_box.get('1-1')!.puan.toString());
+                }),
+            FloatingActionButton(
+                heroTag: 'sil',
+                child: Icon(Icons.delete),
+                onPressed: () async {
+                  final Box<TemrinnotModel> _box = TemrinnotBoxes.getTransactions();
+                  await _box.clear();
+                }),
+          ],
+        ),
         appBar: AppBar(
           title: const Text('Temrinnot Listesi'),
           centerTitle: true,
@@ -223,7 +261,7 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
             ]),
             const Divider(height: 10, color: Colors.redAccent),
             const SizedBox(
-              height: 20,
+              height: 5,
             ),
             Visibility(
               visible: viewModelTemrin.filtretemrinId != -1 ? true : false,
@@ -256,7 +294,11 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
                         for (var item in _controllers) {
                           //print(_controllers.indexOf(item));
                           //print(transactionsOgrenciSinif[_controllers.indexOf(item)].name + " Not:" + item.text);
+                          String _key = viewModelTemrin.filtretemrinId.toString() +
+                              '-' +
+                              transactionsOgrenciSinif[_controllers.indexOf(item)].id.toString();
                           await addTransactionTemrinnot(
+                              _key,
                               1,
                               viewModelTemrin.filtretemrinId,
                               transactionsOgrenciSinif[_controllers.indexOf(item)].id,
@@ -327,8 +369,15 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
       itemBuilder: (BuildContext context, int index) {
         _controllers.add(TextEditingController());
         final transaction = transactionsOgrenciSinif[index];
+        print('öğrenci bilgisi id: ${transaction.id}');
+        print('temrin bilgisi id: ${filtretemrinList.length}');
+        for (TemrinnotModel temrinnot in filtretemrinList) {
+          if (temrinnot.ogrenciId == transaction.id) {
+            _controllers[index].text = temrinnot.puan.toString();
+          }
+        }
 
-        _controllers[index].text = filtretemrinList.isNotEmpty ? filtretemrinList[index].puan.toString() : "0";
+//_controllers[index].text = filtretemrinList.isNotEmpty ? filtretemrinList[index].puan.toString() : "0";
         //return Text("${transaction.name}");
         return CustomOgrenciCard(
           transaction: transaction,

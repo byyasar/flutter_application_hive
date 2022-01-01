@@ -1,5 +1,7 @@
-import 'package:flutter_application_hive/constants/hive_constans.dart';
 import 'package:hive/hive.dart';
+
+import 'package:flutter_application_hive/constants/hive_constans.dart';
+
 part 'temrinnot_model.g.dart';
 
 @HiveType(typeId: HiveConstants.temrinNotTypeId)
@@ -14,6 +16,9 @@ class TemrinnotModel extends HiveObject {
   int puan;
   @HiveField(4)
   String notlar;
+  @HiveField(5)
+  bool gelmedi ;
+  
 
   TemrinnotModel({
     required this.id,
@@ -21,5 +26,6 @@ class TemrinnotModel extends HiveObject {
     required this.ogrenciId,
     required this.puan,
     required this.notlar,
+    required this.gelmedi
   });
 }

@@ -75,7 +75,7 @@ class _TemrinnotDialogState extends State<TemrinnotDialog> {
     final box = TemrinnotBoxes.getTransactions();
     int sonId;
 
-    if (widget.transaction?.id == null) {
+    if (widget.transaction?.temrinId == null) {
       isEditing
           ? sonId = widget.transaction!.id
           : (box.values.isEmpty ? sonId = 1 : sonId = box.values.last.id + 1);

@@ -22,13 +22,14 @@ class TemrinnotModelAdapter extends TypeAdapter<TemrinnotModel> {
       ogrenciId: fields[2] as int,
       puan: fields[3] as int,
       notlar: fields[4] as String,
+      gelmedi: fields[5] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, TemrinnotModel obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -38,7 +39,9 @@ class TemrinnotModelAdapter extends TypeAdapter<TemrinnotModel> {
       ..writeByte(3)
       ..write(obj.puan)
       ..writeByte(4)
-      ..write(obj.notlar);
+      ..write(obj.notlar)
+      ..writeByte(5)
+      ..write(obj.gelmedi);
   }
 
   @override
