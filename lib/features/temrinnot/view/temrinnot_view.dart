@@ -21,6 +21,7 @@ import 'package:flutter_application_hive/features/temrinnot/model/temrinnot_mode
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+
 class TemrinnotpageView extends StatefulWidget {
   const TemrinnotpageView({Key? key}) : super(key: key);
 
@@ -102,6 +103,8 @@ class _TemrinnotpageViewState extends BaseState<TemrinnotpageView> {
     viewModelSinif.setFiltreSinifId(secimler[0]);
     viewModelDers.setFiltreDersId(secimler[1]);
     viewModelTemrin.setFiltretemrinId(secimler[2]);
+    print('viewModelTemrin.setFiltretemrinId(secimler[2]): $viewModelTemrin.setFiltretemrinId(secimler[2])');
+    
 
     String sinifsecText = "Sınıf Seç";
     String derssecText = "Ders Seç";

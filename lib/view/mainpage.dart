@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_hive/constants/app_constants.dart';
+import 'package:flutter_application_hive/features/dersler/model/ders_model.dart';
 import 'package:flutter_application_hive/features/dersler/view/ders_view.dart';
+import 'package:flutter_application_hive/features/helper/ders_listesi_helper.dart';
+import 'package:flutter_application_hive/features/helper/ogrenci_listesi_helper.dart';
+import 'package:flutter_application_hive/features/helper/sinif_listesi_helper.dart';
+import 'package:flutter_application_hive/features/ogrenci/model/ogrenci_model.dart';
 import 'package:flutter_application_hive/features/ogrenci/view/ogrenci_view.dart';
+import 'package:flutter_application_hive/features/siniflar/model/sinif_model.dart';
 import 'package:flutter_application_hive/features/siniflar/view/sinif_view.dart';
 import 'package:flutter_application_hive/features/temrin/view/temrin_view.dart';
 import 'package:flutter_application_hive/features/temrinnot/view/temrinnot_view.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
+import 'package:logger/logger.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -99,12 +109,74 @@ class _MainPageState extends State<MainPage> {
   Widget _buildFloatingActionButton(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: FloatingActionButton(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          child: const Icon(Icons.note),
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const TemrinnotpageView()));
-          }),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+              heroTag: 'temrin',
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              child: const Icon(Icons.note),
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const TemrinnotpageView()));
+              }),
+          FloatingActionButton(
+              heroTag: 'data',
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              child: const Icon(Icons.data_saver_off),
+              onPressed: () async {
+                var raw = await http.get(Uri.parse(ApplicationConstants.sinifUrl));
+                if (raw.statusCode == 200) {
+                  var jsonFeedback = convert.jsonDecode(raw.body);
+                  Logger().i('this is json Feedback ${jsonFeedback}');
+                  SinifListesiHelper sinifListesiHelper = SinifListesiHelper(ApplicationConstants.boxSinif);
+
+                  for (var sinif in jsonFeedback) {
+                    sinifListesiHelper.addItem(SinifModel(id: sinif['id'], sinifAd: sinif['sinifAd']));
+                  }
+                } else if (raw.statusCode == 404) {
+                  print('sayfa bulunamadı');
+                }
+              }),
+          FloatingActionButton(
+              heroTag: 'dataders',
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              child: const Icon(Icons.data_saver_on),
+              onPressed: () async {
+                var raw = await http.get(Uri.parse(ApplicationConstants.dersUrl));
+                if (raw.statusCode == 200) {
+                  var jsonFeedback = convert.jsonDecode(raw.body);
+                  Logger().i('this is json Feedback ${jsonFeedback}');
+                  DersListesiHelper dersListesiHelper = DersListesiHelper(ApplicationConstants.boxDers);
+
+                  for (var ders in jsonFeedback) {
+                    dersListesiHelper
+                        .addItem(DersModel(id: ders['id'], sinifId: ders['sinifId'], dersad: ders['dersAd']));
+                  }
+                } else if (raw.statusCode == 404) {
+                  print('sayfa bulunamadı');
+                }
+              }),
+          FloatingActionButton(
+              heroTag: 'dataOgrenci',
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              child: const Icon(Icons.star_rounded),
+              onPressed: () async {
+                var raw = await http.get(Uri.parse(ApplicationConstants.ogrencilerUrl));
+                if (raw.statusCode == 200) {
+                  var jsonFeedback = convert.jsonDecode(raw.body);
+                  Logger().i('this is json Feedback ${jsonFeedback}');
+                  OgrenciListesiHelper ogrenciListesiHelper = OgrenciListesiHelper(ApplicationConstants.boxOgrenci);
+
+                  for (var ogrenci in jsonFeedback) {
+                    ogrenciListesiHelper
+                        .addItem(OgrenciModel(id: ogrenci['id'], name: ogrenci['ogrenciName'],nu: ogrenci['ogrenciNu'], sinifId: ogrenci['sinifId']));
+                  }
+                } else if (raw.statusCode == 404) {
+                  print('sayfa bulunamadı');
+                }
+              }),
+        ],
+      ),
     );
   }
 }
