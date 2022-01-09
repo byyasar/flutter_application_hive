@@ -57,6 +57,7 @@ class _CustomOgrenciCardState extends State<CustomOgrenciCard> {
                 controller: widget.controller,
                 textAlign: TextAlign.center,
                 maxLength: 3,
+                keyboardType: TextInputType.number,
                 style: const TextStyle(color: Colors.blueAccent, fontSize: 28),
               )),
           //todo: bu alana kontrol eklenecek
