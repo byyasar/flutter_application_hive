@@ -50,20 +50,17 @@ class _MainPageState extends BaseState<MainPage> {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: _buildFloatingActionButton(context),
         appBar: AppBar(title: const Text('Temrin Not Sistemi')),
-        body: Container(
-          color: Colors.amberAccent,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text('Sınıf:', style: TextStyle(fontSize: 18)),
-                _buildSinifSec(context),
-                const Text('Ders:', style: TextStyle(fontSize: 18)),
-                _buildDersSec(context),
-                const Text('Temrin:', style: TextStyle(fontSize: 18)),
-                _buildTemrinSec(context),
-              ],
-            ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('Sınıf:', style: TextStyle(fontSize: 18)),
+              _buildSinifSec(context),
+              const Text('Ders:', style: TextStyle(fontSize: 18)),
+              _buildDersSec(context),
+              const Text('Temrin:', style: TextStyle(fontSize: 18)),
+              _buildTemrinSec(context),
+            ],
           ),
         ),
         drawer: _buildDrawer(context),
@@ -147,6 +144,7 @@ class _MainPageState extends BaseState<MainPage> {
         children: [
           Observer(builder: (_) {
             return FloatingActionButton.extended(
+                icon: const Icon(Icons.add_chart_rounded),
                 backgroundColor: _viewModelTemrin.filtretemrinId == -1 ? Colors.grey : Colors.green,
                 onPressed: _viewModelTemrin.filtretemrinId == -1
                     ? null
