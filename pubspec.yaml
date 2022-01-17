@@ -41,6 +41,7 @@ dependencies:
   flutter_mobx: ^2.0.2
   mobx_codegen: ^2.0.4
   dropdown_search: ^2.0.1
+  kartal: ^2.3.1
 
  
 

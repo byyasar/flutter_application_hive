@@ -88,7 +88,8 @@ class _MainPageState extends BaseState<MainPage> {
               style: TextStyle(fontSize: 24),
             ),
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SinifpageView()));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const SinifpageView()));
             },
           ),
           const Divider(color: Colors.black, height: 2.0),
@@ -98,7 +99,8 @@ class _MainPageState extends BaseState<MainPage> {
               style: TextStyle(fontSize: 24),
             ),
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const DerspageView()));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const DerspageView()));
             },
           ),
           const Divider(color: Colors.black, height: 2.0),
@@ -108,7 +110,8 @@ class _MainPageState extends BaseState<MainPage> {
               style: TextStyle(fontSize: 24),
             ),
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const OgrencipageView()));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const OgrencipageView()));
             },
           ),
           const Divider(color: Colors.black, height: 2.0),
@@ -118,7 +121,8 @@ class _MainPageState extends BaseState<MainPage> {
               style: TextStyle(fontSize: 24),
             ),
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const TemrinpageView()));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const TemrinpageView()));
             },
           ),
           const Divider(color: Colors.black, height: 2.0),
@@ -128,7 +132,14 @@ class _MainPageState extends BaseState<MainPage> {
               style: TextStyle(fontSize: 24),
             ),
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const TemrinnotpageView()));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => TemrinNotViewPage(
+                        parametreler: [
+                          _viewModelSinif.filtreSinifId,
+                          _viewModelDers.filtredersId,
+                          _viewModelTemrin.filtretemrinId
+                        ],
+                      )));
             },
           ),
         ],
@@ -145,11 +156,20 @@ class _MainPageState extends BaseState<MainPage> {
           Observer(builder: (_) {
             return FloatingActionButton.extended(
                 icon: const Icon(Icons.add_chart_rounded),
-                backgroundColor: _viewModelTemrin.filtretemrinId == -1 ? Colors.grey : Colors.green,
+                backgroundColor: _viewModelTemrin.filtretemrinId == -1
+                    ? Colors.grey
+                    : Colors.green,
                 onPressed: _viewModelTemrin.filtretemrinId == -1
                     ? null
                     : () {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const TemrinnotpageView()));
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => TemrinNotViewPage(
+                                  parametreler: [
+                                    _viewModelSinif.filtreSinifId,
+                                    _viewModelDers.filtredersId,
+                                    _viewModelTemrin.filtretemrinId
+                                  ],
+                                )));
                       },
                 label: const Text('Temrin Not Gir'));
           }),
@@ -231,19 +251,24 @@ class _MainPageState extends BaseState<MainPage> {
   }
 
   _addTransactionDers(int id, String dersad, int sinifId) async {
-    final dersModel = DersModel(id: id, dersad: dersad, sinifId: _viewModelSinif.filtreSinifId);
+    final dersModel = DersModel(
+        id: id, dersad: dersad, sinifId: _viewModelSinif.filtreSinifId);
     final box = DersBoxes.getTransactions();
     box.add(dersModel);
   }
 
   _addTransactionTemrin(int id, String temrinKonusu, int dersId) async {
-    final transaction = TemrinModel(id: id, temrinKonusu: temrinKonusu, dersId: dersId);
+    final transaction =
+        TemrinModel(id: id, temrinKonusu: temrinKonusu, dersId: dersId);
     final box = TemrinBoxes.getTransactions();
     box.add(transaction);
   }
 
   _buildSinifSec(BuildContext context) => myCustomMenuButton(context, () {
-        showDialog(context: context, builder: (context) => CustomSinifDialog(onClickedDone: _addTransactionSinif))
+        showDialog(
+                context: context,
+                builder: (context) =>
+                    CustomSinifDialog(onClickedDone: _addTransactionSinif))
             .then((value) {
           _tumSecimleriSifirla();
           if (value != null) {
@@ -255,12 +280,15 @@ class _MainPageState extends BaseState<MainPage> {
             }
             _viewModelSinif.setSinifAd(_sinifSecText);
 
-            Logger().i('Seçilen sınıf id ${value.sinifId} sınıf ${value.sinifAd}');
+            Logger()
+                .i('Seçilen sınıf id ${value.sinifId} sınıf ${value.sinifAd}');
           }
         });
       },
           Observer(
-              builder: (context) => Text(_viewModelSinif.sinifAd.isEmpty ? _sinifSecText : _viewModelSinif.sinifAd)),
+              builder: (context) => Text(_viewModelSinif.sinifAd.isEmpty
+                  ? _sinifSecText
+                  : _viewModelSinif.sinifAd)),
           const Icon(Icons.class__outlined));
   _buildDersSec(BuildContext context) => Observer(builder: (context) {
         return myCustomMenuButton(
@@ -281,11 +309,14 @@ class _MainPageState extends BaseState<MainPage> {
                           _dersSecText = "Ders Seç";
                         }
                         _viewModelDers.setDersAd(_dersSecText);
-                        Logger().i('Seçilen ders id ${value.dersId} ders: ${value.dersAd}');
+                        Logger().i(
+                            'Seçilen ders id ${value.dersId} ders: ${value.dersAd}');
                       }
                     });
                   },
-            Text(_viewModelDers.dersAd.isEmpty ? _dersSecText : _viewModelDers.dersAd),
+            Text(_viewModelDers.dersAd.isEmpty
+                ? _dersSecText
+                : _viewModelDers.dersAd),
             const Icon(Icons.class__outlined));
       });
   _buildTemrinSec(BuildContext context) => Observer(builder: (context) {
@@ -295,10 +326,11 @@ class _MainPageState extends BaseState<MainPage> {
                 ? null
                 : () {
                     showDialog(
-                        context: context,
-                        builder: (context) => CustomTemrinDialog(
-                            gelenDersId: _viewModelDers.filtredersId,
-                            onClickedDone: _addTransactionTemrin)).then((value) {
+                            context: context,
+                            builder: (context) => CustomTemrinDialog(
+                                gelenDersId: _viewModelDers.filtredersId,
+                                onClickedDone: _addTransactionTemrin))
+                        .then((value) {
                       if (value != null) {
                         _temrinSecText = value.temrinKonusu;
                         _viewModelTemrin.setFiltretemrinId(value.temrinId);
@@ -306,11 +338,14 @@ class _MainPageState extends BaseState<MainPage> {
                           _temrinSecText = "Temrin Seç";
                         }
                         _viewModelTemrin.settemrinKonusu(_temrinSecText);
-                        Logger().i('Seçilen temrin id ${value.temrinId} temrin konusu: ${value.temrinKonusu}');
+                        Logger().i(
+                            'Seçilen temrin id ${value.temrinId} temrin konusu: ${value.temrinKonusu}');
                       }
                     });
                   },
-            Text(_viewModelTemrin.temrinKonusu.isEmpty ? _temrinSecText : _viewModelTemrin.temrinKonusu),
+            Text(_viewModelTemrin.temrinKonusu.isEmpty
+                ? _temrinSecText
+                : _viewModelTemrin.temrinKonusu),
             const Icon(Icons.class__outlined));
       });
 
