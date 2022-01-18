@@ -24,10 +24,10 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Temrinnot Listesi'),
-          centerTitle: true,
-        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: _buildFlaotingActionButton(),
+        appBar:
+            AppBar(title: const Text('Temrinnot Listesi'), centerTitle: true),
         body: Container(
           color: Colors.white,
           child: Column(
@@ -54,6 +54,15 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
         ),
       ),
     );
+  }
+
+  FloatingActionButton _buildFlaotingActionButton() {
+    return FloatingActionButton(
+        child: const Icon(Icons.save),
+        onPressed: () {
+          
+        },
+      );
   }
 
   _buildOgrenciListesi(BuildContext context, int filtreSinifId,
