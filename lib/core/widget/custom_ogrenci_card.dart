@@ -23,7 +23,8 @@ class _CustomOgrenciCardState extends State<CustomOgrenciCard> {
   bool? _chacked = false;
   @override
   Widget build(BuildContext context) {
-    SinifListesiHelper _sinifListesiHelper = SinifListesiHelper(ApplicationConstants.boxSinif);
+    SinifListesiHelper _sinifListesiHelper =
+        SinifListesiHelper(ApplicationConstants.boxSinif);
     return Card(
       color: Colors.white60,
       child: Row(
@@ -34,12 +35,15 @@ class _CustomOgrenciCardState extends State<CustomOgrenciCard> {
               title: Text(
                 (widget.index + 1).toString() + " - " + widget.transaction.name,
                 maxLines: 2,
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
               subtitle: Text(
                   "ogrid: ${widget.transaction.id.toString()} Nu:  ${widget.transaction.nu} Sınıf ${_sinifListesiHelper.getItemId(widget.transaction.sinifId)!.sinifAd}"),
               children: [
-                TextFormField(),
+                TextFormField(
+                  controller: widget.controller,
+                ),
                 CheckboxListTile(
                     title: const Text("Gelmedi"),
                     value: _chacked,
