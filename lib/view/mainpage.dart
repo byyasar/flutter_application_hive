@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_hive/constants/app_constants.dart';
 import 'package:flutter_application_hive/core/base/base_state.dart';
 import 'package:flutter_application_hive/core/boxes.dart';
 import 'package:flutter_application_hive/core/widget/custom_ders_dialog.dart';
@@ -8,6 +9,10 @@ import 'package:flutter_application_hive/core/widget/custom_temrin_dialog.dart';
 import 'package:flutter_application_hive/features/dersler/model/ders_model.dart';
 import 'package:flutter_application_hive/features/dersler/store/ders_store.dart';
 import 'package:flutter_application_hive/features/dersler/view/ders_view.dart';
+import 'package:flutter_application_hive/features/helper/ders_listesi_helper.dart';
+import 'package:flutter_application_hive/features/helper/ogrenci_listesi_helper.dart';
+import 'package:flutter_application_hive/features/helper/sinif_listesi_helper.dart';
+import 'package:flutter_application_hive/features/ogrenci/model/ogrenci_model.dart';
 import 'package:flutter_application_hive/features/ogrenci/view/ogrenci_view.dart';
 import 'package:flutter_application_hive/features/siniflar/model/sinif_model.dart';
 import 'package:flutter_application_hive/features/siniflar/store/sinif_store.dart';
@@ -17,8 +22,8 @@ import 'package:flutter_application_hive/features/temrin/store/temrin_store.dart
 import 'package:flutter_application_hive/features/temrin/view/temrin_view.dart';
 import 'package:flutter_application_hive/features/temrinnot/view/temrinnot_view.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-//import 'package:http/http.dart' as http;
-//import 'dart:convert' as convert;
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
 import 'package:logger/logger.dart';
 
 class MainPage extends StatefulWidget {
@@ -45,9 +50,9 @@ class _MainPageState extends BaseState<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    _viewModelDers.setFiltreDersId(4);
+    /* _viewModelDers.setFiltreDersId(4);
     _viewModelSinif.setFiltreSinifId(2);
-    _viewModelTemrin.setFiltretemrinId(1);
+    _viewModelTemrin.setFiltretemrinId(1); */
     return SafeArea(
       child: Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -91,8 +96,7 @@ class _MainPageState extends BaseState<MainPage> {
               style: TextStyle(fontSize: 24),
             ),
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const SinifpageView()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SinifpageView()));
             },
           ),
           const Divider(color: Colors.black, height: 2.0),
@@ -102,8 +106,7 @@ class _MainPageState extends BaseState<MainPage> {
               style: TextStyle(fontSize: 24),
             ),
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const DerspageView()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const DerspageView()));
             },
           ),
           const Divider(color: Colors.black, height: 2.0),
@@ -113,8 +116,7 @@ class _MainPageState extends BaseState<MainPage> {
               style: TextStyle(fontSize: 24),
             ),
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const OgrencipageView()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const OgrencipageView()));
             },
           ),
           const Divider(color: Colors.black, height: 2.0),
@@ -124,8 +126,7 @@ class _MainPageState extends BaseState<MainPage> {
               style: TextStyle(fontSize: 24),
             ),
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const TemrinpageView()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const TemrinpageView()));
             },
           ),
           const Divider(color: Colors.black, height: 2.0),
@@ -159,9 +160,7 @@ class _MainPageState extends BaseState<MainPage> {
           Observer(builder: (_) {
             return FloatingActionButton.extended(
                 icon: const Icon(Icons.add_chart_rounded),
-                backgroundColor: _viewModelTemrin.filtretemrinId == -1
-                    ? Colors.grey
-                    : Colors.green,
+                backgroundColor: _viewModelTemrin.filtretemrinId == -1 ? Colors.grey : Colors.green,
                 onPressed: _viewModelTemrin.filtretemrinId == -1
                     ? null
                     : () {
@@ -176,13 +175,6 @@ class _MainPageState extends BaseState<MainPage> {
                       },
                 label: const Text('Temrin Not Gir'));
           }),
-          /* FloatingActionButton(
-              heroTag: 'temrin',
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-              child: const Icon(Icons.note),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const TemrinnotpageView()));
-              }),
           FloatingActionButton(
               heroTag: 'data',
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -241,7 +233,7 @@ class _MainPageState extends BaseState<MainPage> {
                 } else if (raw.statusCode == 404) {
                   Logger().e('sayfa bulunamadı');
                 }
-              }), */
+              }),
         ],
       ),
     );
@@ -254,24 +246,19 @@ class _MainPageState extends BaseState<MainPage> {
   }
 
   _addTransactionDers(int id, String dersad, int sinifId) async {
-    final dersModel = DersModel(
-        id: id, dersad: dersad, sinifId: _viewModelSinif.filtreSinifId);
+    final dersModel = DersModel(id: id, dersad: dersad, sinifId: _viewModelSinif.filtreSinifId);
     final box = DersBoxes.getTransactions();
     box.add(dersModel);
   }
 
   _addTransactionTemrin(int id, String temrinKonusu, int dersId) async {
-    final transaction =
-        TemrinModel(id: id, temrinKonusu: temrinKonusu, dersId: dersId);
+    final transaction = TemrinModel(id: id, temrinKonusu: temrinKonusu, dersId: dersId);
     final box = TemrinBoxes.getTransactions();
     box.add(transaction);
   }
 
   _buildSinifSec(BuildContext context) => myCustomMenuButton(context, () {
-        showDialog(
-                context: context,
-                builder: (context) =>
-                    CustomSinifDialog(onClickedDone: _addTransactionSinif))
+        showDialog(context: context, builder: (context) => CustomSinifDialog(onClickedDone: _addTransactionSinif))
             .then((value) {
           _tumSecimleriSifirla();
           if (value != null) {
@@ -283,15 +270,12 @@ class _MainPageState extends BaseState<MainPage> {
             }
             _viewModelSinif.setSinifAd(_sinifSecText);
 
-            Logger()
-                .i('Seçilen sınıf id ${value.sinifId} sınıf ${value.sinifAd}');
+            Logger().i('Seçilen sınıf id ${value.sinifId} sınıf ${value.sinifAd}');
           }
         });
       },
           Observer(
-              builder: (context) => Text(_viewModelSinif.sinifAd.isEmpty
-                  ? _sinifSecText
-                  : _viewModelSinif.sinifAd)),
+              builder: (context) => Text(_viewModelSinif.sinifAd.isEmpty ? _sinifSecText : _viewModelSinif.sinifAd)),
           const Icon(Icons.class__outlined));
   _buildDersSec(BuildContext context) => Observer(builder: (context) {
         return myCustomMenuButton(
@@ -312,14 +296,11 @@ class _MainPageState extends BaseState<MainPage> {
                           _dersSecText = "Ders Seç";
                         }
                         _viewModelDers.setDersAd(_dersSecText);
-                        Logger().i(
-                            'Seçilen ders id ${value.dersId} ders: ${value.dersAd}');
+                        Logger().i('Seçilen ders id ${value.dersId} ders: ${value.dersAd}');
                       }
                     });
                   },
-            Text(_viewModelDers.dersAd.isEmpty
-                ? _dersSecText
-                : _viewModelDers.dersAd),
+            Text(_viewModelDers.dersAd.isEmpty ? _dersSecText : _viewModelDers.dersAd),
             const Icon(Icons.class__outlined));
       });
   _buildTemrinSec(BuildContext context) => Observer(builder: (context) {
@@ -329,11 +310,10 @@ class _MainPageState extends BaseState<MainPage> {
                 ? null
                 : () {
                     showDialog(
-                            context: context,
-                            builder: (context) => CustomTemrinDialog(
-                                gelenDersId: _viewModelDers.filtredersId,
-                                onClickedDone: _addTransactionTemrin))
-                        .then((value) {
+                        context: context,
+                        builder: (context) => CustomTemrinDialog(
+                            gelenDersId: _viewModelDers.filtredersId,
+                            onClickedDone: _addTransactionTemrin)).then((value) {
                       if (value != null) {
                         _temrinSecText = value.temrinKonusu;
                         _viewModelTemrin.setFiltretemrinId(value.temrinId);
@@ -341,14 +321,11 @@ class _MainPageState extends BaseState<MainPage> {
                           _temrinSecText = "Temrin Seç";
                         }
                         _viewModelTemrin.settemrinKonusu(_temrinSecText);
-                        Logger().i(
-                            'Seçilen temrin id ${value.temrinId} temrin konusu: ${value.temrinKonusu}');
+                        Logger().i('Seçilen temrin id ${value.temrinId} temrin konusu: ${value.temrinKonusu}');
                       }
                     });
                   },
-            Text(_viewModelTemrin.temrinKonusu.isEmpty
-                ? _temrinSecText
-                : _viewModelTemrin.temrinKonusu),
+            Text(_viewModelTemrin.temrinKonusu.isEmpty ? _temrinSecText : _viewModelTemrin.temrinKonusu),
             const Icon(Icons.class__outlined));
       });
 

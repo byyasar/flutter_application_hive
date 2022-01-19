@@ -6,13 +6,15 @@ import 'package:flutter_application_hive/features/ogrenci/model/ogrenci_model.da
 class CustomOgrenciCard extends StatefulWidget {
   final OgrenciModel transaction;
   final int index;
-  final TextEditingController controller;
+  final TextEditingController puanController;
+  final TextEditingController aciklamaController;
 
   const CustomOgrenciCard({
     Key? key,
     required this.transaction,
     required this.index,
-    required this.controller,
+    required this.puanController,
+    required this.aciklamaController,
   }) : super(key: key);
 
   @override
@@ -23,8 +25,7 @@ class _CustomOgrenciCardState extends State<CustomOgrenciCard> {
   bool? _chacked = false;
   @override
   Widget build(BuildContext context) {
-    SinifListesiHelper _sinifListesiHelper =
-        SinifListesiHelper(ApplicationConstants.boxSinif);
+    SinifListesiHelper _sinifListesiHelper = SinifListesiHelper(ApplicationConstants.boxSinif);
     return Card(
       color: Colors.white60,
       child: Row(
@@ -35,14 +36,13 @@ class _CustomOgrenciCardState extends State<CustomOgrenciCard> {
               title: Text(
                 (widget.index + 1).toString() + " - " + widget.transaction.name,
                 maxLines: 2,
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
               subtitle: Text(
                   "ogrid: ${widget.transaction.id.toString()} Nu:  ${widget.transaction.nu} Sınıf ${_sinifListesiHelper.getItemId(widget.transaction.sinifId)!.sinifAd}"),
               children: [
                 TextFormField(
-                  controller: widget.controller,
+                  controller: widget.aciklamaController,
                 ),
                 CheckboxListTile(
                     title: const Text("Gelmedi"),
@@ -58,7 +58,7 @@ class _CustomOgrenciCardState extends State<CustomOgrenciCard> {
           Expanded(
               flex: 2,
               child: TextFormField(
-                controller: widget.controller,
+                controller: widget.puanController,
                 textAlign: TextAlign.center,
                 maxLength: 3,
                 keyboardType: TextInputType.number,
