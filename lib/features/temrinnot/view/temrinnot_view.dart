@@ -8,8 +8,9 @@ import 'package:flutter_application_hive/features/helper/temrinnot_listesi_helpe
 import 'package:flutter_application_hive/features/ogrenci/model/ogrenci_model.dart';
 import 'package:flutter_application_hive/features/temrinnot/model/temrinnot_model.dart';
 import 'package:hive/hive.dart';
-import 'package:logger/logger.dart';
+//import 'package:logger/logger.dart';
 
+// ignore: must_be_immutable
 class TemrinNotViewPage extends StatefulWidget {
   List parametreler = [];
 
@@ -22,7 +23,6 @@ class TemrinNotViewPage extends StatefulWidget {
 class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
   List<TextEditingController> _puanControllers = [];
   List<TextEditingController> _aciklamaControllers = [];
-  //final TextEditingController _controller = TextEditingController();
   List<OgrenciModel> _transactionsOgrenciSinif = [];
   List<TemrinnotModel> _transactionsTemrinnot = [];
   List<int> _puanlar = [];
@@ -48,7 +48,7 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
             children: [
               Text(
                   ' Sınıf:${widget.parametreler[0]} Ders :${widget.parametreler[1]} Temrin: ${widget.parametreler[2]}'),
-              Container(
+              SizedBox(
                 height: dynamicHeight(.8),
                 child: FutureBuilder(
                     future: TemrinnotListesiHelper(ApplicationConstants.boxTemrinNot)
@@ -144,10 +144,10 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
   void _buildTemrinNotListele() async {
     _transactionsTemrinnot = await TemrinnotListesiHelper(ApplicationConstants.boxTemrinNot)
         .temrinnotFiltreListesiGetir(widget.parametreler[2]);
-    for (var item in _transactionsTemrinnot) {
-      print('id: ${item.id} öğrenci id: ${item.ogrenciId} puan: ${item.puan} ${item.key}');
+    /* for (var item in _transactionsTemrinnot) {
+    //  print('id: ${item.id} öğrenci id: ${item.ogrenciId} puan: ${item.puan} ${item.key}');
       // _puanlar[item.id] = item.puan;
-    }
+    } */
   }
 
   Future<void> _buildTemrinNotSil() async {
@@ -159,7 +159,7 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
     _transactionsTemrinnot = await TemrinnotListesiHelper(ApplicationConstants.boxTemrinNot)
         .temrinnotFiltreListesiGetir(widget.parametreler[2]);
     for (var item in _transactionsTemrinnot) {
-      print('Tid: ${item.temrinId} id: ${item.id} öğrenci id: ${item.ogrenciId} puan: ${item.puan} ${item.key}');
+      // print('Tid: ${item.temrinId} id: ${item.id} öğrenci id: ${item.ogrenciId} puan: ${item.puan} ${item.key}');
       _puanControllers[item.id].text = item.puan.toString();
       _aciklamaControllers[item.id].text = item.notlar;
     }

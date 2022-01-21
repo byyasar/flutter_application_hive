@@ -39,6 +39,21 @@ mixin _$OgrenciStore on _OgrenciId, Store {
     });
   }
 
+  final _$ogrenciAdAtom = Atom(name: '_OgrenciId.ogrenciAd');
+
+  @override
+  String get ogrenciAd {
+    _$ogrenciAdAtom.reportRead();
+    return super.ogrenciAd;
+  }
+
+  @override
+  set ogrenciAd(String value) {
+    _$ogrenciAdAtom.reportWrite(value, super.ogrenciAd, () {
+      super.ogrenciAd = value;
+    });
+  }
+
   final _$_OgrenciIdActionController = ActionController(name: '_OgrenciId');
 
   @override
@@ -47,6 +62,17 @@ mixin _$OgrenciStore on _OgrenciId, Store {
         name: '_OgrenciId.setOgrenciId');
     try {
       return super.setOgrenciId(ogrenciId);
+    } finally {
+      _$_OgrenciIdActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setOgrenciAd(String ogrenciAd) {
+    final _$actionInfo = _$_OgrenciIdActionController.startAction(
+        name: '_OgrenciId.setOgrenciAd');
+    try {
+      return super.setOgrenciAd(ogrenciAd);
     } finally {
       _$_OgrenciIdActionController.endAction(_$actionInfo);
     }
@@ -67,7 +93,8 @@ mixin _$OgrenciStore on _OgrenciId, Store {
   String toString() {
     return '''
 ogrenciId: ${ogrenciId},
-filtreOgrenciId: ${filtreOgrenciId}
+filtreOgrenciId: ${filtreOgrenciId},
+ogrenciAd: ${ogrenciAd}
     ''';
   }
 }

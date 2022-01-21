@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_hive/constants/app_constants.dart';
-import 'package:flutter_application_hive/features/dialog/ogrenci_dialog.dart';
 import 'package:flutter_application_hive/features/helper/ogrenci_listesi_helper.dart';
+import 'package:flutter_application_hive/features/ogrenci/dialog/ogrenci_dialog.dart';
 import 'package:flutter_application_hive/features/ogrenci/model/ogrenci_model.dart';
 import 'package:flutter_application_hive/features/ogrenci/widget/ogrenci_card.dart';
 import 'package:flutter_application_hive/core/boxes.dart';

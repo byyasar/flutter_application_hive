@@ -26,6 +26,12 @@ class TemrinnotListesiHelper extends IListeHelper<TemrinnotModel> {
     }
   }
 
+  Future<List<TemrinnotModel>> fetcAlldata() async {
+    List<TemrinnotModel> transactionsTemrinnot =
+        TemrinnotBoxes.getTransactions().values.toList().cast<TemrinnotModel>();
+    return transactionsTemrinnot;
+  }
+
   @override
   List<TemrinnotModel>? getValues() {
     List<TemrinnotModel> transactionsTemrinnot =
@@ -86,7 +92,5 @@ class TemrinnotListesiHelper extends IListeHelper<TemrinnotModel> {
   }
 
   @override
-  TemrinnotModel? getItemId(int id) {
-  
-  }
+  TemrinnotModel? getItemId(int id) {}
 }

@@ -1,49 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_hive/constants/app_constants.dart';
 import 'package:flutter_application_hive/core/base/base_state.dart';
 import 'package:flutter_application_hive/core/boxes.dart';
-import 'package:flutter_application_hive/core/widget/build_drawer.dart';
 import 'package:flutter_application_hive/core/widget/custom_ders_dialog.dart';
 import 'package:flutter_application_hive/core/widget/custom_menu_button.dart';
+import 'package:flutter_application_hive/core/widget/custom_ogrenci_dialog.dart';
 import 'package:flutter_application_hive/core/widget/custom_sinif_dialog.dart';
-import 'package:flutter_application_hive/core/widget/custom_temrin_dialog.dart';
 import 'package:flutter_application_hive/features/dersler/model/ders_model.dart';
 import 'package:flutter_application_hive/features/dersler/store/ders_store.dart';
-import 'package:flutter_application_hive/features/helper/ders_listesi_helper.dart';
-import 'package:flutter_application_hive/features/helper/ogrenci_listesi_helper.dart';
-import 'package:flutter_application_hive/features/helper/sinif_listesi_helper.dart';
 import 'package:flutter_application_hive/features/ogrenci/model/ogrenci_model.dart';
+import 'package:flutter_application_hive/features/ogrenci/store/ogrenci_store.dart';
 import 'package:flutter_application_hive/features/siniflar/model/sinif_model.dart';
 import 'package:flutter_application_hive/features/siniflar/store/sinif_store.dart';
-import 'package:flutter_application_hive/features/temrin/model/temrin_model.dart';
-import 'package:flutter_application_hive/features/temrin/store/temrin_store.dart';
-import 'package:flutter_application_hive/features/temrinnot/view/temrinnot_view.dart';
+import 'package:flutter_application_hive/features/sonuclar/view/sonuclar_view.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert' as convert;
+//import 'package:http/http.dart' as http;
+//import 'dart:convert' as convert;
 import 'package:logger/logger.dart';
+import 'package:flutter_application_hive/core/widget/build_drawer.dart';
 
-class MainPage extends StatefulWidget {
-  const MainPage({Key? key}) : super(key: key);
+class SonuclarSelectPage extends StatefulWidget {
+  const SonuclarSelectPage({Key? key}) : super(key: key);
 
   @override
-  State<MainPage> createState() => _MainPageState();
+  State<SonuclarSelectPage> createState() => _SonuclarSelectPageState();
 }
 
-class _MainPageState extends BaseState<MainPage> {
-  /* List<SinifModel> _transactionsSinif = [];
-  List<DersModel> _transactionsDers = [];
-  List<TemrinModel> _transactionsTemrin = []; */
+class _SonuclarSelectPageState extends BaseState<SonuclarSelectPage> {
+  
 
   final _viewModelSinif = SinifStore();
   final _viewModelDers = DersStore();
-  final _viewModelTemrin = TemrinStore();
+  //final _viewModelTemrin = TemrinStore();
+  final _viewModelOgrenci = OgrenciStore();
 
   String _sinifSecText = "Sınıf Seç";
   String _dersSecText = "Ders Seç";
-  String _temrinSecText = "Temrin Seç";
+  //String _temrinSecText = "Temrin Seç";
+  String _ogrenciSecText = "Öğrenci Seç";
 
-  //final DersListesiHelper _dersListesiHelper = DersListesiHelper(ApplicationConstants.boxDers);
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +48,7 @@ class _MainPageState extends BaseState<MainPage> {
       child: Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: _buildFloatingActionButton(context),
-        appBar: AppBar(title: const Text('Temrin Not Sistemi')),
+        appBar: AppBar(title: const Text('Temrin Not Sistemi-Öğrenci Not Seç')),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -63,8 +57,10 @@ class _MainPageState extends BaseState<MainPage> {
               _buildSinifSec(context),
               const Text('Ders:', style: TextStyle(fontSize: 18)),
               _buildDersSec(context),
-              const Text('Temrin:', style: TextStyle(fontSize: 18)),
-              _buildTemrinSec(context),
+             //const Text('Temrin:', style: TextStyle(fontSize: 18)),
+              //_buildTemrinSec(context),
+              const Text('Öğrenci:', style: TextStyle(fontSize: 18)),
+              _buildOgrenciSec(context),
             ],
           ),
         ),
@@ -72,9 +68,6 @@ class _MainPageState extends BaseState<MainPage> {
       ),
     );
   }
-
-  
-  
 
   Widget _buildFloatingActionButton(BuildContext context) {
     return Padding(
@@ -85,80 +78,21 @@ class _MainPageState extends BaseState<MainPage> {
           Observer(builder: (_) {
             return FloatingActionButton.extended(
                 icon: const Icon(Icons.add_chart_rounded),
-                backgroundColor: _viewModelTemrin.filtretemrinId == -1 ? Colors.grey : Colors.green,
-                onPressed: _viewModelTemrin.filtretemrinId == -1
+                backgroundColor: _viewModelOgrenci.filtreOgrenciId == -1 ? Colors.grey : Colors.green,
+                onPressed: _viewModelOgrenci.filtreOgrenciId == -1
                     ? null
                     : () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => TemrinNotViewPage(
+                            builder: (context) => SonuclarViewPage(
                                   parametreler: [
                                     _viewModelSinif.filtreSinifId,
                                     _viewModelDers.filtredersId,
-                                    _viewModelTemrin.filtretemrinId
+                                    _viewModelOgrenci.filtreOgrenciId
                                   ],
                                 )));
                       },
-                label: const Text('Temrin Not Gir'));
+                label: const Text('Öğrenci Notları Listele'));
           }),
-          FloatingActionButton(
-              heroTag: 'data',
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-              child: const Icon(Icons.data_saver_off),
-              onPressed: () async {
-                var raw = await http.get(Uri.parse(ApplicationConstants.sinifUrl));
-                if (raw.statusCode == 200) {
-                  var jsonFeedback = convert.jsonDecode(raw.body);
-                  //Logger().i('this is json Feedback ${jsonFeedback}');
-                  SinifListesiHelper sinifListesiHelper = SinifListesiHelper(ApplicationConstants.boxSinif);
-
-                  for (var sinif in jsonFeedback) {
-                    sinifListesiHelper.addItem(SinifModel(id: sinif['id'], sinifAd: sinif['sinifAd']));
-                  }
-                } else if (raw.statusCode == 404) {
-                  //print('sayfa bulunamadı');
-                }
-              }),
-          FloatingActionButton(
-              heroTag: 'dataders',
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-              child: const Icon(Icons.data_saver_on),
-              onPressed: () async {
-                var raw = await http.get(Uri.parse(ApplicationConstants.dersUrl));
-                if (raw.statusCode == 200) {
-                  var jsonFeedback = convert.jsonDecode(raw.body);
-                  Logger().i('this is json Feedback $jsonFeedback');
-                  DersListesiHelper dersListesiHelper = DersListesiHelper(ApplicationConstants.boxDers);
-
-                  for (var ders in jsonFeedback) {
-                    dersListesiHelper
-                        .addItem(DersModel(id: ders['id'], sinifId: ders['sinifId'], dersad: ders['dersAd']));
-                  }
-                } else if (raw.statusCode == 404) {
-                  Logger().e('sayfa bulunamadı');
-                }
-              }),
-          FloatingActionButton(
-              heroTag: 'dataOgrenci',
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-              child: const Icon(Icons.star_rounded),
-              onPressed: () async {
-                var raw = await http.get(Uri.parse(ApplicationConstants.ogrencilerUrl));
-                if (raw.statusCode == 200) {
-                  var jsonFeedback = convert.jsonDecode(raw.body);
-                  Logger().i('this is json Feedback $jsonFeedback');
-                  OgrenciListesiHelper ogrenciListesiHelper = OgrenciListesiHelper(ApplicationConstants.boxOgrenci);
-
-                  for (var ogrenci in jsonFeedback) {
-                    ogrenciListesiHelper.addItem(OgrenciModel(
-                        id: ogrenci['id'],
-                        name: ogrenci['ogrenciName'],
-                        nu: ogrenci['ogrenciNu'],
-                        sinifId: ogrenci['sinifId']));
-                  }
-                } else if (raw.statusCode == 404) {
-                  Logger().e('sayfa bulunamadı');
-                }
-              }),
         ],
       ),
     );
@@ -176,10 +110,16 @@ class _MainPageState extends BaseState<MainPage> {
     box.add(dersModel);
   }
 
-  _addTransactionTemrin(int id, String temrinKonusu, int dersId) async {
+  /* _addTransactionTemrin(int id, String temrinKonusu, int dersId) async {
     final transaction = TemrinModel(id: id, temrinKonusu: temrinKonusu, dersId: dersId);
     final box = TemrinBoxes.getTransactions();
     box.add(transaction);
+  } */
+
+  _addTransactionOgrenci(int id, String name, int nu, int sinifId) {
+    final ogrenciModel = OgrenciModel(id: id, name: name, nu: nu, sinifId: sinifId);
+    final box = OgrenciBoxes.getTransactions();
+    box.add(ogrenciModel);
   }
 
   _buildSinifSec(BuildContext context) => myCustomMenuButton(context, () {
@@ -213,7 +153,7 @@ class _MainPageState extends BaseState<MainPage> {
                         builder: (context) => CustomDersDialog(
                             gelensinifId: _viewModelSinif.filtreSinifId,
                             onClickedDone: _addTransactionDers)).then((value) {
-                      _temrinSecimiSifirla();
+                      //_temrinSecimiSifirla();
                       if (value != null) {
                         _dersSecText = value.dersAd;
                         _viewModelDers.setFiltreDersId(value.dersId);
@@ -228,7 +168,32 @@ class _MainPageState extends BaseState<MainPage> {
             Text(_viewModelDers.dersAd.isEmpty ? _dersSecText : _viewModelDers.dersAd),
             const Icon(Icons.class__outlined));
       });
-  _buildTemrinSec(BuildContext context) => Observer(builder: (context) {
+  _buildOgrenciSec(BuildContext context) => Observer(builder: (context) {
+        return myCustomMenuButton(
+            context,
+            _viewModelDers.filtredersId == -1
+                ? null
+                : () {
+                    showDialog(
+                        context: context,
+                        builder: (context) => CustomOgrenciDialog(
+                            gelenSinifId: _viewModelSinif.filtreSinifId,
+                            onClickedDone: _addTransactionOgrenci)).then((value) {
+                      if (value != null) {
+                        _ogrenciSecText = value.ogrenciAd;
+                        _viewModelOgrenci.setFiltreOgrenciId(value.ogrenciId);
+                        if (value.ogrenciId == -1) {
+                          _ogrenciSecText = "Öğrenci Seç";
+                        }
+                        _viewModelOgrenci.setOgrenciAd(_ogrenciSecText);
+                        Logger().i('Seçilen ogrenci id ${value.ogrenciAd} ');
+                      }
+                    });
+                  },
+            Text(_viewModelOgrenci.ogrenciAd.isEmpty ? _ogrenciSecText : _viewModelOgrenci.ogrenciAd),
+            const Icon(Icons.class__outlined));
+      });
+  /* _buildTemrinSec(BuildContext context) => Observer(builder: (context) {
         return myCustomMenuButton(
             context,
             _viewModelDers.filtredersId == -1
@@ -252,12 +217,13 @@ class _MainPageState extends BaseState<MainPage> {
                   },
             Text(_viewModelTemrin.temrinKonusu.isEmpty ? _temrinSecText : _viewModelTemrin.temrinKonusu),
             const Icon(Icons.class__outlined));
-      });
+      }); */
 
   void _tumSecimleriSifirla() {
     Logger().i('tum secimler sıfırlandı');
     _dersSecimiSifirla();
-    _temrinSecimiSifirla();
+    // _temrinSecimiSifirla();,
+    _ogrenciSecimiSifirla();
   }
 
   void _dersSecimiSifirla() {
@@ -267,10 +233,18 @@ class _MainPageState extends BaseState<MainPage> {
     _viewModelDers.setDersAd(_dersSecText);
   }
 
-  void _temrinSecimiSifirla() {
+  void _ogrenciSecimiSifirla() {
+    //Logger().i('ders secimleri sıfırlandı');
+    _viewModelOgrenci.setFiltreOgrenciId(-1);
+    _ogrenciSecText = "Öğrenci Seç";
+    _viewModelOgrenci.setOgrenciAd(_ogrenciSecText);
+  }
+
+  /* void _temrinSecimiSifirla() {
     Logger().i('temrin secimleri sıfırlandı');
     _viewModelTemrin.setFiltretemrinId(-1);
     _temrinSecText = "Temrin Seç";
     _viewModelTemrin.settemrinKonusu(_temrinSecText);
-  }
+  } */
+
 }

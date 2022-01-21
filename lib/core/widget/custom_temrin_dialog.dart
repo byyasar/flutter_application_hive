@@ -18,7 +18,7 @@ class CustomTemrinDialog extends StatefulWidget {
     Key? key,
     this.transaction,
     required this.onClickedDone,
-    this.gelenDersId,
+    required this.gelenDersId,
   }) : super(key: key);
 
   @override
