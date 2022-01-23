@@ -26,8 +26,6 @@ class SonuclarSelectPage extends StatefulWidget {
 }
 
 class _SonuclarSelectPageState extends BaseState<SonuclarSelectPage> {
-  
-
   final _viewModelSinif = SinifStore();
   final _viewModelDers = DersStore();
   //final _viewModelTemrin = TemrinStore();
@@ -38,7 +36,6 @@ class _SonuclarSelectPageState extends BaseState<SonuclarSelectPage> {
   //String _temrinSecText = "Temrin Seç";
   String _ogrenciSecText = "Öğrenci Seç";
 
-
   @override
   Widget build(BuildContext context) {
     /* _viewModelDers.setFiltreDersId(4);
@@ -48,7 +45,7 @@ class _SonuclarSelectPageState extends BaseState<SonuclarSelectPage> {
       child: Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: _buildFloatingActionButton(context),
-        appBar: AppBar(title: const Text('Temrin Not Sistemi-Öğrenci Not Seç')),
+        appBar: AppBar(title: const Text('TNS-Öğrenci Seç')),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -57,7 +54,7 @@ class _SonuclarSelectPageState extends BaseState<SonuclarSelectPage> {
               _buildSinifSec(context),
               const Text('Ders:', style: TextStyle(fontSize: 18)),
               _buildDersSec(context),
-             //const Text('Temrin:', style: TextStyle(fontSize: 18)),
+              //const Text('Temrin:', style: TextStyle(fontSize: 18)),
               //_buildTemrinSec(context),
               const Text('Öğrenci:', style: TextStyle(fontSize: 18)),
               _buildOgrenciSec(context),
@@ -87,7 +84,9 @@ class _SonuclarSelectPageState extends BaseState<SonuclarSelectPage> {
                                   parametreler: [
                                     _viewModelSinif.filtreSinifId,
                                     _viewModelDers.filtredersId,
-                                    _viewModelOgrenci.filtreOgrenciId
+                                    _viewModelOgrenci.filtreOgrenciId,
+                                    _viewModelOgrenci.ogrenciAd,
+                                    _viewModelDers.dersAd
                                   ],
                                 )));
                       },

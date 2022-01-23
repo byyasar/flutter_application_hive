@@ -41,7 +41,7 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
         resizeToAvoidBottomInset: false,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: _buildFlaotingActionButton(),
-        appBar: AppBar(title: const Text('Temrinnot Listesi'), centerTitle: true),
+        appBar: AppBar(title: const Text('TNS-Temrin Not Girişi'), centerTitle: true),
         body: Container(
           color: Colors.white,
           child: Column(

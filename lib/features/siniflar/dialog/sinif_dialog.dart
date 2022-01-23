@@ -42,15 +42,13 @@ class _SinifDialogState extends State<SinifDialog> {
   @override
   Widget build(BuildContext context) {
     final isEditing = widget.transaction != null;
-    final title = isEditing ? 'Sinifi Düzenle' : 'Sinif Ekle';
+    final title = isEditing ? 'Sınıfı Düzenle' : 'Sınıf Ekle';
     //final SinifModel = widget.transaction;
     final box = SinifBoxes.getTransactions();
     int sonId;
     //int sonId = isEditing ?  (widget.transaction.?id==null?0:widget.transaction.id):box.values.last.id + 1;
     if (widget.transaction?.id == null) {
-      isEditing
-          ? sonId = widget.transaction!.id
-          : (box.values.isEmpty ? sonId = 1 : sonId = box.values.last.id + 1);
+      isEditing ? sonId = widget.transaction!.id : (box.values.isEmpty ? sonId = 1 : sonId = box.values.last.id + 1);
     } else {
       sonId = isEditing ? widget.transaction!.id : 1;
     }
@@ -100,42 +98,8 @@ class _SinifDialogState extends State<SinifDialog> {
         controller: sinifadController,
         decoration: const InputDecoration(
           border: OutlineInputBorder(),
-          hintText: 'Sinif Adını Giriniz',
+          hintText: 'Sınıf Adını Giriniz',
         ),
-        validator: (sinifAd) =>
-            sinifAd != null && sinifAd.isEmpty ? 'Sınıf Adını Yazınız' : null,
+        validator: (sinifAd) => sinifAd != null && sinifAd.isEmpty ? 'Sınıf Adını Yazınız' : null,
       );
-
-  /* Widget buildCancelButton(BuildContext context) => TextButton(
-        child: const Text('İptal'),
-        onPressed: () => Navigator.of(context).pop(),
-      ); */
-
-/*   Widget buildAddButton(BuildContext context, int? sonId,
-      {required bool isEditing}) {
-    final text = isEditing ? 'Kaydet' : 'Ekle';
-
-    return TextButton(
-      child: Row(
-        children: [
-          Icon(Icons.add_box, color: Colors.green.shade400),
-          Text(text),
-        ],
-      ),
-      onPressed: () async {
-        final isValid = formKey.currentState!.validate();
-
-        if (isValid) {
-          String? sinifAd = sinifadController.text.toUpperCase();
-          // int? nu = int.parse(nuController.text);
-
-          int id = sonId ?? 0;
-
-          widget.onClickedDone(id, sinifAd);
-
-          Navigator.of(context).pop();
-        }
-      },
-    );
-  } */
 }

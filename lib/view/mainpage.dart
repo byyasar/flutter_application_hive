@@ -54,7 +54,7 @@ class _MainPageState extends BaseState<MainPage> {
       child: Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: _buildFloatingActionButton(context),
-        appBar: AppBar(title: const Text('Temrin Not Sistemi')),
+        appBar: AppBar(title: const Text('TNS-Temrin Seçimi')),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -72,9 +72,6 @@ class _MainPageState extends BaseState<MainPage> {
       ),
     );
   }
-
-  
-  
 
   Widget _buildFloatingActionButton(BuildContext context) {
     return Padding(

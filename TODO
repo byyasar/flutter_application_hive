@@ -21,11 +21,12 @@ Sonuçlar ekranı geliştirmeleri:
     ☐ ortalama gözükecek
     ☐ eksikler gözükecek
 
-
-Bug:
+BugFix:
     ☐ temrin adı güncelleme kaydettikten sonra isim güncellenmiyor yeniden açınca düzeliyor.
+
 Özellikler:
     ☐ Excelden liste çekme eklenecek.
+    ☐ Execel e export etme.
     ☐ Raporlar bölümü oluşturulacak.
     
 
