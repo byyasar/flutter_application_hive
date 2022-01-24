@@ -8,6 +8,7 @@ Arayüz Geliştirmeleri:
     ☐ Secimleri kaydetmek için store oluşturulacak.
     ✔ Hive den sorgu yapmak için helper dosyası oluşturulacak. @done(21-12-31 15:18)
 
+
 Temrin not ekranı geliştirmeleri:
     ☐ Not ekleme textform field bu alana kontrol eklenecek. not kontrolü olacak 0-100 arasında.
     ✔ Temrin not ekranında ders adı değiştiğinde temrin konusu sıfırlanacak. @done (1/22/2022, 2:32:45 AM)
@@ -15,11 +16,14 @@ Temrin not ekranı geliştirmeleri:
     ☐ Temrin not ekranına gelmedi tick eklenecek.
     ☐ Temrin not ekranına tarih eklenecek.
     ✔ Temrin not ekranına notlar alanı eklenecek. @done (1/22/2022, 2:33:14 AM)
+    ☐ Temrin ekranında filtre uygulanmışsa temrin ekle ders seçilmine gerek kalmasın.
+
 
 Sonuçlar ekranı geliştirmeleri:
     ☐ notlar gözükecek
     ☐ ortalama gözükecek
     ☐ eksikler gözükecek
+    ☐ kaydet çalıştığında toast mesaj bilgilendirme eklenmeli
 
 BugFix:
     ☐ temrin adı güncelleme kaydettikten sonra isim güncellenmiyor yeniden açınca düzeliyor.
