@@ -12,6 +12,7 @@ import 'package:flutter_application_hive/features/dersler/store/ders_store.dart'
 import 'package:flutter_application_hive/features/helper/ders_listesi_helper.dart';
 import 'package:flutter_application_hive/features/helper/ogrenci_listesi_helper.dart';
 import 'package:flutter_application_hive/features/helper/sinif_listesi_helper.dart';
+import 'package:flutter_application_hive/features/helper/temrin_listesi_helper.dart';
 import 'package:flutter_application_hive/features/ogrenci/model/ogrenci_model.dart';
 import 'package:flutter_application_hive/features/siniflar/model/sinif_model.dart';
 import 'package:flutter_application_hive/features/siniflar/store/sinif_store.dart';
@@ -151,6 +152,25 @@ class _MainPageState extends BaseState<MainPage> {
                         name: ogrenci['ogrenciName'],
                         nu: ogrenci['ogrenciNu'],
                         sinifId: ogrenci['sinifId']));
+                  }
+                } else if (raw.statusCode == 404) {
+                  Logger().e('sayfa bulunamadı');
+                }
+              }),
+          FloatingActionButton(
+              heroTag: 'dataTemrin',
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              child: const Icon(Icons.title),
+              onPressed: () async {
+                var raw = await http.get(Uri.parse(ApplicationConstants.temrinUrl));
+                if (raw.statusCode == 200) {
+                  var jsonFeedback = convert.jsonDecode(raw.body);
+                  Logger().i('this is json Feedback $jsonFeedback');
+                  TemrinListesiHelper temrinListesiHelper = TemrinListesiHelper(ApplicationConstants.boxTemrin);
+
+                  for (var temrin in jsonFeedback) {
+                    temrinListesiHelper.addItem(
+                        TemrinModel(id: temrin['id'], temrinKonusu: temrin['temrinKonusu'], dersId: temrin['dersId']));
                   }
                 } else if (raw.statusCode == 404) {
                   Logger().e('sayfa bulunamadı');

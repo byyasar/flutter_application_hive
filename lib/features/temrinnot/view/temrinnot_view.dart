@@ -107,7 +107,7 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
       padding: const EdgeInsets.all(8),
       itemCount: _transactionsOgrenciSinif.length,
       itemBuilder: (BuildContext context, int index) {
-        _puanlar[index] = int.parse(_puanControllers[index].text.isEmpty ? '0' : _puanControllers[index].text);
+        _puanlar[index] = int.parse(_puanControllers[index].text.isEmpty ? '-1' : _puanControllers[index].text);
         _aciklamaControllers[index].text = _aciklamaBosKontrol(index);
         final transaction = _transactionsOgrenciSinif[index];
         return CustomOgrenciCard(
@@ -130,7 +130,7 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
       key =
           "${widget.parametreler[0]}-${widget.parametreler[1]}-${widget.parametreler[2]}-${_transactionsOgrenciSinif[i].id}";
       _addTransactionTemrinnot(key, i, widget.parametreler[2], _transactionsOgrenciSinif[i].id,
-          int.parse(_puanControllers[i].text.isEmpty ? '0' : _puanControllers[i].text), _aciklamaBosKontrol(i));
+          int.parse(_puanControllers[i].text.isEmpty ? '-1' : _puanControllers[i].text), _aciklamaBosKontrol(i));
     }
   }
 

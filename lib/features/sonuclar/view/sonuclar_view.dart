@@ -67,19 +67,17 @@ class _SonuclarViewPageState extends BaseState<SonuclarViewPage> {
         appBar: AppBar(title: const Text('Öğrenci Notları'), centerTitle: true),
         body: Container(
           height: dynamicHeight(1),
-          color: Colors.amber,
+          color: Colors.blueAccent,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               SizedBox(height: dynamicHeight(.01)),
               _buildOrtalama(),
-              //SizedBox(height: dynamicHeight(.01)),
+              SizedBox(height: dynamicHeight(.01)),
               //Text(
               //    'Öğrenci ${widget.parametreler[3]} Sınıf:${widget.parametreler[0]} Ders :${widget.parametreler[1]} Ogrenci Id: ${widget.parametreler[2]} '),
-              SizedBox(
-                height: dynamicHeight(.75),
-                child: _buildOgrenciNotListesi(context, _transactionTemrinnotGecici!),
-              ),
+              Expanded(child: _buildOgrenciNotListesi(context, _transactionTemrinnotGecici!)),
+              SizedBox(height: dynamicHeight(.01)),
             ],
           ),
         ),
@@ -99,7 +97,9 @@ class _SonuclarViewPageState extends BaseState<SonuclarViewPage> {
             trailing: Column(
               children: [
                 const Text('Ortalama'),
-                CircleAvatar(radius: 18, child: Text('${_viewModelSonuc.ortalama.round()}')),
+                CircleAvatar(
+                    radius: 18,
+                    child: Text('${_viewModelSonuc.ortalama.isNaN ? "-" : _viewModelSonuc.ortalama.round()}')),
               ],
             ),
             subtitle:
