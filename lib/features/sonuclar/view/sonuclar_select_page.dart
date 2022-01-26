@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_hive/core/base/base_state.dart';
 import 'package:flutter_application_hive/core/boxes.dart';
+import 'package:flutter_application_hive/core/widget/custom_appbar.dart';
 import 'package:flutter_application_hive/core/widget/custom_ders_dialog.dart';
 import 'package:flutter_application_hive/core/widget/custom_menu_button.dart';
 import 'package:flutter_application_hive/core/widget/custom_ogrenci_dialog.dart';
@@ -45,7 +46,7 @@ class _SonuclarSelectPageState extends BaseState<SonuclarSelectPage> {
       child: Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: _buildFloatingActionButton(context),
-        appBar: AppBar(title: const Text('TNS-Öğrenci Seç')),
+        appBar: customAppBar(context, 'TNS-Öğrenci Seç'),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

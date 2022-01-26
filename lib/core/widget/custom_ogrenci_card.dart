@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_hive/constants/app_constants.dart';
+import 'package:flutter_application_hive/constants/icon_constans.dart';
 import 'package:flutter_application_hive/features/helper/sinif_listesi_helper.dart';
 import 'package:flutter_application_hive/features/ogrenci/model/ogrenci_model.dart';
 
 class CustomOgrenciCard extends StatefulWidget {
   final OgrenciModel transaction;
   final int index;
-  final TextEditingController puanController;
+  final TextEditingController? puanController;
   final TextEditingController aciklamaController;
 
   const CustomOgrenciCard({
@@ -22,7 +23,6 @@ class CustomOgrenciCard extends StatefulWidget {
 }
 
 class _CustomOgrenciCardState extends State<CustomOgrenciCard> {
-  bool? _chacked = false;
   @override
   Widget build(BuildContext context) {
     SinifListesiHelper _sinifListesiHelper = SinifListesiHelper(ApplicationConstants.boxSinif);
@@ -31,43 +31,53 @@ class _CustomOgrenciCardState extends State<CustomOgrenciCard> {
       child: Row(
         children: [
           Expanded(
-            flex: 5,
+            flex: 9,
             child: ExpansionTile(
-              title: Text(
-                (widget.index + 1).toString() + " - " + widget.transaction.name,
-                maxLines: 2,
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              title: Row(
+                children: [
+                  Expanded(
+                    flex: 10,
+                    child: Text(
+                      (widget.index + 1).toString() + " - " + widget.transaction.name,
+                      maxLines: 2,
+                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    ),
+                  ),
+                  //const Spacer(flex: 1),
+                  Expanded(
+                      flex: 3,
+                      child: TextFormField(
+                        onTap: () => widget.puanController!.clear(),
+                        controller: widget.puanController,
+                        textAlign: TextAlign.center,
+                        maxLength: 3,
+                        keyboardType: TextInputType.number,
+                        style: const TextStyle(color: Colors.blueAccent, fontSize: 28),
+                      )),
+                ],
               ),
               subtitle: Text(
-                  "ogrid: ${widget.transaction.id.toString()} Nu:  ${widget.transaction.nu} Sınıf ${_sinifListesiHelper.getItemId(widget.transaction.sinifId)!.sinifAd}"),
+                  "Nu: ${widget.transaction.nu} Sınıf: ${_sinifListesiHelper.getItemId(widget.transaction.sinifId)!.sinifAd}"),
               children: [
                 TextFormField(
+                  decoration: const InputDecoration(
+                    hintText: 'Açıklama',
+                    focusColor: Colors.blue,
+                  ),
                   controller: widget.aciklamaController,
                 ),
-                CheckboxListTile(
-                    title: const Text("Gelmedi"),
-                    value: _chacked,
-                    onChanged: (value) {
-                      setState(() {
-                        _chacked = value;
-                      });
-                    })
               ],
             ),
           ),
           Expanded(
-              flex: 2,
-              child: TextFormField(
-                controller: widget.puanController,
-                textAlign: TextAlign.center,
-                maxLength: 3,
-                keyboardType: TextInputType.number,
-                style: const TextStyle(color: Colors.blueAccent, fontSize: 28),
-              )),
-          //todo: bu alana kontrol eklenecek
-          const Spacer(
             flex: 1,
-          )
+            child: IconButton(
+                onPressed: () {
+                  widget.puanController!.text = "G";
+                },
+                icon: IconsConstans.exitIcon),
+          ),
+
           /*  Expanded(
             flex: 1,
             child: IconButton(

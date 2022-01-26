@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_hive/constants/app_constants.dart';
 import 'package:flutter_application_hive/core/base/base_state.dart';
 import 'package:flutter_application_hive/core/boxes.dart';
+import 'package:flutter_application_hive/core/widget/custom_dialog_func.dart';
 import 'package:flutter_application_hive/core/widget/custom_ogrenci_card.dart';
 import 'package:flutter_application_hive/features/helper/ogrenci_listesi_helper.dart';
 import 'package:flutter_application_hive/features/helper/temrinnot_listesi_helper.dart';
 import 'package:flutter_application_hive/features/ogrenci/model/ogrenci_model.dart';
 import 'package:flutter_application_hive/features/temrinnot/model/temrinnot_model.dart';
 import 'package:hive/hive.dart';
-//import 'package:logger/logger.dart';
+import 'package:logger/logger.dart';
 
 // ignore: must_be_immutable
 class TemrinNotViewPage extends StatefulWidget {
@@ -43,13 +44,12 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
         floatingActionButton: _buildFlaotingActionButton(),
         appBar: AppBar(title: const Text('TNS-Temrin Not Girişi'), centerTitle: true),
         body: Container(
-          color: Colors.white,
+          color: Colors.blueAccent,
           child: Column(
             children: [
               Text(
                   ' Sınıf:${widget.parametreler[0]} Ders :${widget.parametreler[1]} Temrin: ${widget.parametreler[2]}'),
-              SizedBox(
-                height: dynamicHeight(.8),
+              Expanded(
                 child: FutureBuilder(
                     future: TemrinnotListesiHelper(ApplicationConstants.boxTemrinNot)
                         .temrinnotFiltreListesiGetir(widget.parametreler[2]),
@@ -69,32 +69,53 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
   }
 
   Widget _buildFlaotingActionButton() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        FloatingActionButton(
-          heroTag: '1',
-          child: const Icon(Icons.list),
-          onPressed: () {
-            //_buildTemrinNotKaydet();
-            _buildTemrinNotListele();
-          },
-        ),
-        FloatingActionButton(
-          heroTag: '2',
-          child: const Icon(Icons.save),
-          onPressed: () {
-            _buildTemrinNotKaydet();
-          },
-        ),
-        FloatingActionButton(
-          heroTag: '3',
-          child: const Icon(Icons.clear),
-          onPressed: () {
-            _buildTemrinNotSil();
-          },
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          FloatingActionButton(
+            heroTag: '1',
+            child: const Icon(Icons.list),
+            onPressed: () {
+              //_buildTemrinNotKaydet();
+              _buildTemrinNotListele();
+            },
+          ),
+          FloatingActionButton(
+            heroTag: '2',
+            child: const Icon(Icons.save),
+            onPressed: () {
+              _buildTemrinNotKaydet();
+            },
+          ),
+          FloatingActionButton(
+            heroTag: '3',
+            child: const Icon(Icons.clear),
+            onPressed:
+                _dialogGoster, /* async {
+              return await showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                        title: const Text('Eminmisiniz?'),
+                        content: const Text('Tüm kayıtlar silinsin mi?'),
+                        actions: [
+                          ElevatedButton(
+                              onPressed: () {
+                                _buildTemrinNotSil();
+                              },
+                              child: const Text('Sil')),
+                          ElevatedButton(
+                              onPressed: () {
+                                Navigator.of(context).pop(false);
+                              },
+                              child: const Text('İptal')),
+                        ],
+                      ));
+            }, */
+          ),
+        ],
+      ),
     );
   }
 
@@ -107,7 +128,10 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
       padding: const EdgeInsets.all(8),
       itemCount: _transactionsOgrenciSinif.length,
       itemBuilder: (BuildContext context, int index) {
-        _puanlar[index] = int.parse(_puanControllers[index].text.isEmpty ? '-1' : _puanControllers[index].text);
+        _puanlar[index] = int.parse(
+            _puanControllers[index].text.isEmpty || _puanControllers[index].text.toUpperCase() == 'G'
+                ? '-1'
+                : _puanControllers[index].text);
         _aciklamaControllers[index].text = _aciklamaBosKontrol(index);
         final transaction = _transactionsOgrenciSinif[index];
         return CustomOgrenciCard(
@@ -125,13 +149,51 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
   }
 
   void _buildTemrinNotKaydet() {
-    String key = "";
-    for (var i = 0; i < _transactionsOgrenciSinif.length; i++) {
-      key =
-          "${widget.parametreler[0]}-${widget.parametreler[1]}-${widget.parametreler[2]}-${_transactionsOgrenciSinif[i].id}";
-      _addTransactionTemrinnot(key, i, widget.parametreler[2], _transactionsOgrenciSinif[i].id,
-          int.parse(_puanControllers[i].text.isEmpty ? '-1' : _puanControllers[i].text), _aciklamaBosKontrol(i));
+    try {
+      String key = "";
+      for (var i = 0; i < _transactionsOgrenciSinif.length; i++) {
+        key =
+            "${widget.parametreler[0]}-${widget.parametreler[1]}-${widget.parametreler[2]}-${_transactionsOgrenciSinif[i].id}";
+        _addTransactionTemrinnot(
+            key,
+            i,
+            widget.parametreler[2],
+            _transactionsOgrenciSinif[i].id,
+            int.parse(_puanControllers[i].text.isEmpty || _puanControllers[i].text.toUpperCase() == "G"
+                ? '-1'
+                : _puanControllers[i].text),
+            _aciklamaBosKontrol(i));
+        if (i == _transactionsOgrenciSinif.length - 1) {
+          customDialogInfo(context, 'Kayıt işlemi', 'Başarılı', 'Tamam');
+          //setState(() {});
+        } else {
+          //  showLoaderDialog(context);
+
+          //Navigator.pop(context);
+        }
+      }
+    } catch (e) {
+      Logger().e(e);
+      customDialogInfo(context, 'Kayıt işlemi', 'Hatalı $e', 'Tamam');
     }
+  }
+
+  showLoaderDialog(BuildContext context) {
+    AlertDialog alert = AlertDialog(
+      content: Row(
+        children: [
+          const CircularProgressIndicator(),
+          Container(margin: const EdgeInsets.only(left: 7), child: const Text("Loading...")),
+        ],
+      ),
+    );
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   Future _addTransactionTemrinnot(String key, int id, int temrinId, int ogrenciId, int puan, String notlar) async {
@@ -160,7 +222,7 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
         .temrinnotFiltreListesiGetir(widget.parametreler[2]);
     for (var item in _transactionsTemrinnot) {
       // print('Tid: ${item.temrinId} id: ${item.id} öğrenci id: ${item.ogrenciId} puan: ${item.puan} ${item.key}');
-      _puanControllers[item.id].text = item.puan.toString();
+      _puanControllers[item.id].text = item.puan == -1 ? 'G' : item.puan.toString();
       _aciklamaControllers[item.id].text = item.notlar;
     }
   }
@@ -176,5 +238,13 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
       _aciklamaControllers.add(TextEditingController());
       _puanlar.add(0);
     }
+  }
+
+  Future<void> _dialogGoster() async {
+    bool durum =
+        await customDialogFunc(context, 'Dikkatli olun. Eminmisiniz?', 'Tüm kayıtlar silinsin mi?', 'Sil', 'İptal');
+    print(durum);
+    durum ? _buildTemrinNotSil() : "";
+    //setState(() {});
   }
 }

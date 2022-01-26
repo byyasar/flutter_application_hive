@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_hive/constants/app_constants.dart';
+import 'package:flutter_application_hive/constants/icon_constans.dart';
 import 'package:flutter_application_hive/core/boxes.dart';
+import 'package:flutter_application_hive/core/widget/exitapp_dialog.dart';
 import 'package:flutter_application_hive/features/dersler/dialog/ders_dialog.dart';
 import 'package:flutter_application_hive/features/dersler/model/ders_model.dart';
 import 'package:flutter_application_hive/features/dersler/widget/ders_card.dart';
@@ -49,6 +51,12 @@ class _DerspageViewState extends State<DerspageView> {
               );
             }).toList();
           },
+        ),
+        IconButton(
+          onPressed: () {
+            exitAppDialog(context);
+          },
+          icon: IconsConstans.exitIcon,
         )
       ],
     );

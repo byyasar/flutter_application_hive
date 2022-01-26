@@ -1,13 +1,11 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_application_hive/core/widget/exitapp_dialog.dart';
 import 'package:flutter_application_hive/features/dersler/view/ders_view.dart';
 import 'package:flutter_application_hive/features/ogrenci/view/ogrenci_view.dart';
 import 'package:flutter_application_hive/features/siniflar/view/sinif_view.dart';
 import 'package:flutter_application_hive/features/sonuclar/view/sonuclar_select_page.dart';
 import 'package:flutter_application_hive/features/temrin/view/temrin_view.dart';
 import 'package:flutter_application_hive/view/mainpage.dart';
-import 'package:flutter/services.dart';
 
 Drawer buildDrawer(BuildContext context) {
   return Drawer(
@@ -82,16 +80,19 @@ Drawer buildDrawer(BuildContext context) {
             Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SonuclarSelectPage()));
           },
         ),
+        const Divider(color: Colors.black, height: 2.0),
         ListTile(
           title: const Text(
             'Çıkış',
             style: TextStyle(fontSize: 24),
           ),
           onTap: () {
-            SystemNavigator.pop();
-            exit(0);
+            //SystemNavigator.pop();
+            //exit(0);
+            exitAppDialog(context);
           },
         ),
+        const Divider(color: Colors.black, height: 2.0),
       ],
     ),
   );

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_hive/constants/app_constants.dart';
+import 'package:flutter_application_hive/constants/icon_constans.dart';
+import 'package:flutter_application_hive/core/widget/exitapp_dialog.dart';
 import 'package:flutter_application_hive/features/helper/ogrenci_listesi_helper.dart';
 import 'package:flutter_application_hive/features/ogrenci/dialog/ogrenci_dialog.dart';
 import 'package:flutter_application_hive/features/ogrenci/model/ogrenci_model.dart';
@@ -83,6 +85,12 @@ class _OgrencipageViewState extends State<OgrencipageView> {
               );
             }).toList();
           },
+        ),
+        IconButton(
+          onPressed: () {
+            exitAppDialog(context);
+          },
+          icon: IconsConstans.exitIcon,
         )
       ],
     );

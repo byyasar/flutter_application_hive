@@ -3,10 +3,12 @@ import 'package:flutter_application_hive/constants/app_constants.dart';
 import 'package:flutter_application_hive/core/base/base_state.dart';
 import 'package:flutter_application_hive/core/boxes.dart';
 import 'package:flutter_application_hive/core/widget/build_drawer.dart';
+import 'package:flutter_application_hive/core/widget/custom_appbar.dart';
 import 'package:flutter_application_hive/core/widget/custom_ders_dialog.dart';
 import 'package:flutter_application_hive/core/widget/custom_menu_button.dart';
 import 'package:flutter_application_hive/core/widget/custom_sinif_dialog.dart';
 import 'package:flutter_application_hive/core/widget/custom_temrin_dialog.dart';
+import 'package:flutter_application_hive/core/widget/exitapp_dialog.dart';
 import 'package:flutter_application_hive/features/dersler/model/ders_model.dart';
 import 'package:flutter_application_hive/features/dersler/store/ders_store.dart';
 import 'package:flutter_application_hive/features/helper/ders_listesi_helper.dart';
@@ -55,7 +57,7 @@ class _MainPageState extends BaseState<MainPage> {
       child: Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: _buildFloatingActionButton(context),
-        appBar: AppBar(title: const Text('TNS-Temrin Seçimi')),
+        appBar: customAppBar(context, 'TNS-Temrin Seçimi'),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

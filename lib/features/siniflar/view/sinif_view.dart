@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_hive/constants/app_constants.dart';
 import 'package:flutter_application_hive/core/boxes.dart';
+import 'package:flutter_application_hive/core/widget/custom_appbar.dart';
 import 'package:flutter_application_hive/features/helper/sinif_listesi_helper.dart';
 import 'package:flutter_application_hive/features/siniflar/dialog/sinif_dialog.dart';
 import 'package:flutter_application_hive/features/siniflar/model/sinif_model.dart';
@@ -21,14 +22,10 @@ class _SinifpageViewState extends State<SinifpageView> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: _buildAppBar,
+        appBar: customAppBar(context, 'TNS-Sınıf Listesi'),
         body: _buildBody,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: _buildFloatingAcionButton(context),
-      );
-  PreferredSizeWidget get _buildAppBar => AppBar(
-        title: const Text('Sınıf Listesi'),
-        centerTitle: true,
       );
 
   ValueListenableBuilder<Box<SinifModel>> get _buildBody {

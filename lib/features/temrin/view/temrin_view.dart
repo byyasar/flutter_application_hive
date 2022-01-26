@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_hive/constants/app_constants.dart';
+import 'package:flutter_application_hive/constants/icon_constans.dart';
 import 'package:flutter_application_hive/core/boxes.dart';
+import 'package:flutter_application_hive/core/widget/exitapp_dialog.dart';
 import 'package:flutter_application_hive/features/dersler/model/ders_model.dart';
 import 'package:flutter_application_hive/features/dersler/store/ders_store.dart';
 import 'package:flutter_application_hive/features/helper/temrin_listesi_helper.dart';
@@ -96,6 +98,12 @@ class _TemrinpageViewState extends State<TemrinpageView> {
               );
             }).toList();
           },
+        ),
+        IconButton(
+          onPressed: () {
+            exitAppDialog(context);
+          },
+          icon: IconsConstans.exitIcon,
         )
       ],
     );
