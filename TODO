@@ -13,7 +13,7 @@ Temrin not ekranı geliştirmeleri:
     ☐ Not ekleme textform field bu alana kontrol eklenecek. not kontrolü olacak 0-100 arasında.
     ✔ Temrin not ekranında ders adı değiştiğinde temrin konusu sıfırlanacak. @done (1/22/2022, 2:32:45 AM)
     ✘ Temrin not tek tek kaydet olacak. @cancelled (1/22/2022, 2:33:01 AM)
-    ☐ Temrin not ekranına gelmedi tick eklenecek.
+    ✘ Temrin not ekranına gelmedi tick eklenecek. @cancelled (1/27/2022, 2:56:55 AM)
     ☐ Temrin not ekranına tarih eklenecek.
     ✔ Temrin not ekranına notlar alanı eklenecek. @done (1/22/2022, 2:33:14 AM)
     ☐ Temrin ekranında filtre uygulanmışsa temrin ekle ders seçilmine gerek kalmasın.
@@ -23,7 +23,7 @@ Sonuçlar ekranı geliştirmeleri:
     ✔ notlar gözükecek @done (1/25/2022, 2:02:34 AM)
     ✔ ortalama gözükecek @done (1/25/2022, 2:02:39 AM)
     ☐ eksikler gözükecek
-    ☐ kaydet çalıştığında toast mesaj bilgilendirme eklenmeli
+    ✔ kaydet çalıştığında toast mesaj bilgilendirme eklenmeli @done (1/27/2022, 2:57:17 AM)
 
 BugFix:
     ☐ temrin adı güncelleme kaydettikten sonra isim güncellenmiyor yeniden açınca düzeliyor.
