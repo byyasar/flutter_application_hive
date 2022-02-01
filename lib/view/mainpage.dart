@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_hive/constants/icon_constans.dart';
 import 'package:flutter_application_hive/core/base/base_state.dart';
 import 'package:flutter_application_hive/core/boxes.dart';
 import 'package:flutter_application_hive/core/widget/build_drawer.dart';
@@ -15,7 +16,7 @@ import 'package:flutter_application_hive/features/temrin/model/temrin_model.dart
 import 'package:flutter_application_hive/features/temrin/store/temrin_store.dart';
 import 'package:flutter_application_hive/features/temrinnot/view/temrinnot_view.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:logger/logger.dart';
+//import 'package:logger/logger.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -53,7 +54,6 @@ class _MainPageState extends BaseState<MainPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              
               const Text('Sınıf:', style: TextStyle(fontSize: 18)),
               _buildSinifSec(context),
               const Text('Ders:', style: TextStyle(fontSize: 18)),
@@ -76,7 +76,7 @@ class _MainPageState extends BaseState<MainPage> {
         children: [
           Observer(builder: (_) {
             return FloatingActionButton.extended(
-                icon: const Icon(Icons.add_chart_rounded),
+                icon: IconsConstans.temrinnotIcon,
                 backgroundColor: _viewModelTemrin.filtretemrinId == -1 ? Colors.grey : Colors.green,
                 onPressed: _viewModelTemrin.filtretemrinId == -1
                     ? null
@@ -128,13 +128,13 @@ class _MainPageState extends BaseState<MainPage> {
             }
             _viewModelSinif.setSinifAd(_sinifSecText);
 
-            Logger().i('Seçilen sınıf id ${value.sinifId} sınıf ${value.sinifAd}');
+            //Logger().i('Seçilen sınıf id ${value.sinifId} sınıf ${value.sinifAd}');
           }
         });
       },
           Observer(
               builder: (context) => Text(_viewModelSinif.sinifAd.isEmpty ? _sinifSecText : _viewModelSinif.sinifAd)),
-          const Icon(Icons.class__outlined),
+          IconsConstans.sinifIcon,
           null);
   _buildDersSec(BuildContext context) => Observer(builder: (context) {
         return myCustomMenuButton(
@@ -155,12 +155,12 @@ class _MainPageState extends BaseState<MainPage> {
                           _dersSecText = "Ders Seç";
                         }
                         _viewModelDers.setDersAd(_dersSecText);
-                        Logger().i('Seçilen ders id ${value.dersId} ders: ${value.dersAd}');
+                        //Logger().i('Seçilen ders id ${value.dersId} ders: ${value.dersAd}');
                       }
                     });
                   },
             Text(_viewModelDers.dersAd.isEmpty ? _dersSecText : _viewModelDers.dersAd),
-            const Icon(Icons.class__outlined),
+            IconsConstans.dersIcon,
             null);
       });
   _buildTemrinSec(BuildContext context) => Observer(builder: (context) {
@@ -181,30 +181,30 @@ class _MainPageState extends BaseState<MainPage> {
                           _temrinSecText = "Temrin Seç";
                         }
                         _viewModelTemrin.settemrinKonusu(_temrinSecText);
-                        Logger().i('Seçilen temrin id ${value.temrinId} temrin konusu: ${value.temrinKonusu}');
+                        // Logger().i('Seçilen temrin id ${value.temrinId} temrin konusu: ${value.temrinKonusu}');
                       }
                     });
                   },
             Text(_viewModelTemrin.temrinKonusu.isEmpty ? _temrinSecText : _viewModelTemrin.temrinKonusu),
-            const Icon(Icons.class__outlined),
+            IconsConstans.temrinIcon,
             null);
       });
 
   void _tumSecimleriSifirla() {
-    Logger().i('tum secimler sıfırlandı');
+    // Logger().i('tum secimler sıfırlandı');
     _dersSecimiSifirla();
     _temrinSecimiSifirla();
   }
 
   void _dersSecimiSifirla() {
-    Logger().i('ders secimleri sıfırlandı');
+    //Logger().i('ders secimleri sıfırlandı');
     _viewModelDers.setFiltreDersId(-1);
     _dersSecText = "Ders Seç";
     _viewModelDers.setDersAd(_dersSecText);
   }
 
   void _temrinSecimiSifirla() {
-    Logger().i('temrin secimleri sıfırlandı');
+    // Logger().i('temrin secimleri sıfırlandı');
     _viewModelTemrin.setFiltretemrinId(-1);
     _temrinSecText = "Temrin Seç";
     _viewModelTemrin.settemrinKonusu(_temrinSecText);

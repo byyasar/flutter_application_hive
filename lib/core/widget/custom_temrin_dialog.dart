@@ -78,6 +78,7 @@ class _CustomTemrinDialogState extends BaseState<CustomTemrinDialog> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               buildCancelButton(context),
+               const SizedBox(width: 10),
               buildOkButton(context, buildOkButtononPressed),
             ],
           ),

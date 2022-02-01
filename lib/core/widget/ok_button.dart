@@ -1,15 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_hive/constants/icon_constans.dart';
+import 'package:flutter_application_hive/core/widget/custom_menu_button.dart';
 
 Widget buildOkButton(BuildContext context, VoidCallback onPressed) =>
-    TextButton(
-      child: Row(
-        children: [
-          Icon(
-            Icons.subdirectory_arrow_left,
-            color: Colors.red.shade400,
-          ),
-          const Text('Tamam', style: TextStyle(fontSize: 18.0)),
-        ],
-      ),
-      onPressed: onPressed,
-    );
+    myCustomMenuButton(context, onPressed, const Text('Tamam'), IconsConstans.okIcon, Colors.green);

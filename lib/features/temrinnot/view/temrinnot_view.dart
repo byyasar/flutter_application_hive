@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_hive/constants/app_constants.dart';
+import 'package:flutter_application_hive/constants/icon_constans.dart';
 import 'package:flutter_application_hive/core/base/base_state.dart';
 import 'package:flutter_application_hive/core/boxes.dart';
 import 'package:flutter_application_hive/core/widget/custom_dialog_func.dart';
@@ -9,7 +10,7 @@ import 'package:flutter_application_hive/features/helper/temrinnot_listesi_helpe
 import 'package:flutter_application_hive/features/ogrenci/model/ogrenci_model.dart';
 import 'package:flutter_application_hive/features/temrinnot/model/temrinnot_model.dart';
 //import 'package:hive/hive.dart';
-import 'package:logger/logger.dart';
+//import 'package:logger/logger.dart';
 
 // ignore: must_be_immutable
 class TemrinNotViewPage extends StatefulWidget {
@@ -46,7 +47,7 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
           floatingActionButton: _buildFlaotingActionButton(),
           appBar: AppBar(title: const Text('TNS-Temrin Not Girişi'), centerTitle: true),
           body: Container(
-            color: Colors.blueAccent,
+            //color: Colors.blueAccent,
             child: Column(
               children: [
                 Text(
@@ -76,7 +77,7 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
       padding: const EdgeInsets.all(8.0),
       child: FloatingActionButton(
         heroTag: '2',
-        child: const Icon(Icons.save),
+        child: IconsConstans.saveIcon,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         onPressed: () {
           _buildTemrinNotKaydet();
@@ -139,7 +140,7 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
         }
       }
     } catch (e) {
-      Logger().e(e);
+      //Logger().e(e);
       customDialogInfo(context, 'Kayıt işlemi', 'Hatalı $e', 'Tamam');
     }
   }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_hive/constants/icon_constans.dart';
+import 'package:flutter_application_hive/core/widget/custom_menu_button.dart';
 
 class BuildAddButton extends StatelessWidget {
   final VoidCallback onPressed;
@@ -17,7 +19,8 @@ class BuildAddButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final text = isEditing ? 'Kaydet' : 'Ekle';
-    return TextButton(
+    return myCustomMenuButton(context, onPressed, Text(text), IconsConstans.addIcon, Colors.green);
+    /* TextButton(
       child: Row(
         children: [
           Icon(Icons.add_box, color: Colors.blue.shade400),
@@ -25,6 +28,6 @@ class BuildAddButton extends StatelessWidget {
         ],
       ),
       onPressed: onPressed,
-    );
+    ); */
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_hive/constants/app_constants.dart';
+import 'package:flutter_application_hive/constants/icon_constans.dart';
 import 'package:flutter_application_hive/core/base/base_state.dart';
 import 'package:flutter_application_hive/core/boxes.dart';
 import 'package:flutter_application_hive/core/widget/build_drawer.dart';
@@ -40,22 +41,22 @@ class _SettingsViewState extends BaseState<SettingsView> {
                 const Center(child: Text('Uzak sunucudan data çek')),
                 myCustomMenuButton(context, () {
                   siniflariGetir;
-                }, const Text('Sınıfları Getir'), const Icon(Icons.home_work), null),
+                }, const Text('Sınıfları Getir'), IconsConstans.sinifIcon, null),
                 myCustomMenuButton(context, () {
                   dersleriGetir;
-                }, const Text('Dersleri Getir'), const Icon(Icons.play_lesson), null),
+                }, const Text('Dersleri Getir'), IconsConstans.dersIcon, null),
                 myCustomMenuButton(context, () {
                   temrinleriGetir;
-                }, const Text('Temrinleri Getir'), const Icon(Icons.work), null),
+                }, const Text('Temrinleri Getir'), IconsConstans.temrinIcon, null),
                 myCustomMenuButton(context, () {
                   ogrencileriGetir;
-                }, const Text('Öğrencileri Getir'), const Icon(Icons.wc), null),
+                }, const Text('Öğrencileri Getir'), IconsConstans.ogrenciIcon, null),
                 const Divider(color: Colors.black, height: 2.0),
                 const SizedBox(height: 20),
                 const Center(child: Text('Tüm dataları sil')),
                 myCustomMenuButton(context, () {
                   _dialogGoster();
-                }, const Text('Tüm dataları sil'), const Icon(Icons.warning), Colors.red),
+                }, const Text('Tüm dataları sil'), IconsConstans.warningIcon, Colors.red),
               ],
             )));
   }

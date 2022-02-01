@@ -35,8 +35,7 @@ class _CustomDersDialogState extends BaseState<CustomDersDialog> {
     super.initState();
 
     if (transactionsDersGecici.isEmpty) {
-      transactionsDersGecici =
-          DersBoxes.getTransactions().values.toList().cast<DersModel>();
+      transactionsDersGecici = DersBoxes.getTransactions().values.toList().cast<DersModel>();
       for (var ders in transactionsDersGecici) {
         if (ders.sinifId == widget.gelensinifId) {
           transactionsDers.add(ders);
@@ -78,6 +77,7 @@ class _CustomDersDialogState extends BaseState<CustomDersDialog> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               buildCancelButton(context),
+              const SizedBox(width: 10),
               buildOkButton(context, buildOkButtononPressed),
             ],
           ),
@@ -91,22 +91,17 @@ class _CustomDersDialogState extends BaseState<CustomDersDialog> {
     Navigator.of(context).pop(viewModel);
   }
 
-  Widget buildDers(BuildContext context, List<DersModel> transactionsDers) =>
-      SizedBox(
+  Widget buildDers(BuildContext context, List<DersModel> transactionsDers) => SizedBox(
         width: MediaQuery.of(context).size.width * .6,
         child: DropdownSearch<String>(
           mode: Mode.MENU,
           items: buildItems(),
           onChanged: (value) {
             //print('seçilen $value');
-            int dersId = transactionsDers
-                .singleWhere((element) => element.dersad == value)
-                .id;
+            int dersId = transactionsDers.singleWhere((element) => element.dersad == value).id;
             viewModel.setDersId(dersId);
             viewModel.setFiltreDersId(dersId);
-            viewModel.setDersAd(transactionsDers
-                .singleWhere((element) => element.id == viewModel.dersId)
-                .dersad);
+            viewModel.setDersAd(transactionsDers.singleWhere((element) => element.id == viewModel.dersId).dersad);
             //print('storedan glen id' + DersStore.DersId.toString());
           },
           selectedItem: viewModel.dersAd,

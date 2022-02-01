@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_hive/core/widget/custom_menu_button.dart';
 
 Future<bool> customDialogFunc(
     BuildContext context, String title, String content, String okText, String cancelText) async {
@@ -7,33 +8,29 @@ Future<bool> customDialogFunc(
       builder: (context) => AlertDialog(
             title: Text(title),
             content: Text(content),
+            actionsAlignment: MainAxisAlignment.center,
             actions: [
-              ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(true);
-                  },
-                  child: Text(okText)),
-              ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(false);
-                  },
-                  child: Text(cancelText)),
+              myCustomMenuButton(context, () {
+                Navigator.of(context).pop(true);
+              }, Text(okText), const Icon(Icons.check_box_rounded), Colors.red),
+              const SizedBox(width: 10),
+              myCustomMenuButton(context, () {
+                Navigator.of(context).pop(false);
+              }, Text(cancelText), const Icon(Icons.cancel), Colors.green),
             ],
           ));
 }
 
-Future<Widget> customDialogInfo(BuildContext context, String title, String content, String okText) async {
+Future<bool> customDialogInfo(BuildContext context, String title, String content, String okText) async {
   return await showDialog(
       context: context,
       builder: (context) => AlertDialog(
             title: Text(title),
             content: Text(content),
             actions: [
-              ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(false);
-                  },
-                  child: Text(okText)),
+              myCustomMenuButton(context, () {
+                Navigator.of(context).pop(false);
+              }, Text(okText), const Icon(Icons.check_box_rounded), Colors.green),
             ],
           ));
 }

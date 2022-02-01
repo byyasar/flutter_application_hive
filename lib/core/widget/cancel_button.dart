@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_hive/constants/icon_constans.dart';
+import 'package:flutter_application_hive/core/widget/custom_menu_button.dart';
 
-Widget buildCancelButton(BuildContext context) => TextButton(
+Widget buildCancelButton(BuildContext context) => myCustomMenuButton(
+    context, () => Navigator.of(context).pop(), const Text('İptal'), IconsConstans.exitIcon, Colors.red);
+/* TextButton(
       child: Row(
         children: [
           Icon(
@@ -12,3 +16,4 @@ Widget buildCancelButton(BuildContext context) => TextButton(
       ),
       onPressed: () => Navigator.of(context).pop(),
     );
+ */

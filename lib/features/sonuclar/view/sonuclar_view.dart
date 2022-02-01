@@ -68,7 +68,7 @@ class _SonuclarViewPageState extends BaseState<SonuclarViewPage> {
         appBar: AppBar(title: const Text('Öğrenci Notları'), centerTitle: true),
         body: Container(
           height: dynamicHeight(1),
-          color: Colors.blueAccent,
+          // color: Colors.blueAccent,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -89,7 +89,7 @@ class _SonuclarViewPageState extends BaseState<SonuclarViewPage> {
   Observer _buildOrtalama() {
     return Observer(
       builder: (context) => Card(
-        color: Colors.yellowAccent.shade700,
+        color: Colors.blueAccent,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -99,6 +99,7 @@ class _SonuclarViewPageState extends BaseState<SonuclarViewPage> {
               children: [
                 const Text('Ortalama'),
                 CircleAvatar(
+                    backgroundColor: Colors.yellow,
                     radius: 18,
                     child: Text('${_viewModelSonuc.ortalama.isNaN ? "-" : _viewModelSonuc.ortalama.round()}')),
               ],
@@ -131,7 +132,7 @@ dersin temrin sayısı alınacak
               child: ListTile(
                 leading: CircleAvatar(radius: 12, child: Text('${index + 1}')),
                 trailing: CircleAvatar(
-                  backgroundColor: data[index].puan <= 0 ? Colors.red.shade300 : Colors.yellow.shade100,
+                  backgroundColor: data[index].puan <= 0 ? Colors.red : Colors.yellow,
                   child: Text('${data[index].puan == -1 ? 'G' : data[index].puan}',
                       style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 ),

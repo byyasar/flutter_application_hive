@@ -27,7 +27,7 @@ class _CustomOgrenciCardState extends State<CustomOgrenciCard> {
   Widget build(BuildContext context) {
     SinifListesiHelper _sinifListesiHelper = SinifListesiHelper(ApplicationConstants.boxSinif);
     return Card(
-      color: Colors.white60,
+      //color: Colors.white60,
       child: Row(
         children: [
           Expanded(
@@ -52,19 +52,22 @@ class _CustomOgrenciCardState extends State<CustomOgrenciCard> {
                         textAlign: TextAlign.center,
                         maxLength: 3,
                         keyboardType: TextInputType.number,
-                        style: const TextStyle(color: Colors.blueAccent, fontSize: 28),
+                        style: const TextStyle(color: Colors.blue, fontSize: 28),
                       )),
                 ],
               ),
               subtitle: Text(
                   "Nu: ${widget.transaction.nu} Sınıf: ${_sinifListesiHelper.getItemId(widget.transaction.sinifId)!.sinifAd}"),
               children: [
-                TextFormField(
-                  decoration: const InputDecoration(
-                    hintText: 'Açıklama',
-                    focusColor: Colors.blue,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      hintText: 'Açıklama',
+                      focusColor: Colors.blue,
+                    ),
+                    controller: widget.aciklamaController,
                   ),
-                  controller: widget.aciklamaController,
                 ),
               ],
             ),
@@ -75,7 +78,7 @@ class _CustomOgrenciCardState extends State<CustomOgrenciCard> {
                 onPressed: () {
                   widget.puanController!.text = "G";
                 },
-                icon: IconsConstans.exitIcon),
+                icon: IconsConstans.gelmediIcon),
           ),
 
           /*  Expanded(

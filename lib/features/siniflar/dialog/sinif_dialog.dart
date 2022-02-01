@@ -73,6 +73,7 @@ class _SinifDialogState extends State<SinifDialog> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             buildCancelButton(context),
+             const SizedBox(width: 10),
             BuildAddButton(
               context: context,
               sonId: sonId,

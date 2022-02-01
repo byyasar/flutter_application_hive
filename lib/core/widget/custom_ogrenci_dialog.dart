@@ -70,6 +70,7 @@ class _CustomOgrenciDialogState extends BaseState<CustomOgrenciDialog> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               buildCancelButton(context),
+               const SizedBox(width: 10),
               buildOkButton(context, buildOkButtononPressed),
             ],
           ),

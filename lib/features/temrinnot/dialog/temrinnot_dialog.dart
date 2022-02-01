@@ -11,8 +11,7 @@ import 'package:flutter_application_hive/features/temrinnot/model/temrinnot_mode
 class TemrinnotDialog extends StatefulWidget {
   final TemrinnotModel? transaction;
 
-  final Function(int id, int temrinId, int ogrenciId, int puan, String notlar)
-      onClickedDone;
+  final Function(int id, int temrinId, int ogrenciId, int puan, String notlar) onClickedDone;
 
   const TemrinnotDialog({
     Key? key,
@@ -44,20 +43,16 @@ class _TemrinnotDialogState extends State<TemrinnotDialog> {
       temrinnotpuanController.text = transaction.puan.toString();
     }
     if (transactionsSinif.isEmpty) {
-      transactionsSinif =
-          SinifBoxes.getTransactions().values.toList().cast<SinifModel>();
+      transactionsSinif = SinifBoxes.getTransactions().values.toList().cast<SinifModel>();
     }
     if (transactionsTemrin.isEmpty) {
-      transactionsTemrin =
-          TemrinBoxes.getTransactions().values.toList().cast<TemrinModel>();
+      transactionsTemrin = TemrinBoxes.getTransactions().values.toList().cast<TemrinModel>();
     }
     if (transactionsOgrenci.isEmpty) {
-      transactionsOgrenci =
-          OgrenciBoxes.getTransactions().values.toList().cast<OgrenciModel>();
+      transactionsOgrenci = OgrenciBoxes.getTransactions().values.toList().cast<OgrenciModel>();
     }
     if (transactionsDers.isEmpty) {
-      transactionsDers =
-          DersBoxes.getTransactions().values.toList().cast<DersModel>();
+      transactionsDers = DersBoxes.getTransactions().values.toList().cast<DersModel>();
     }
   }
 
@@ -76,9 +71,7 @@ class _TemrinnotDialogState extends State<TemrinnotDialog> {
     int sonId;
 
     if (widget.transaction?.temrinId == null) {
-      isEditing
-          ? sonId = widget.transaction!.id
-          : (box.values.isEmpty ? sonId = 1 : sonId = box.values.last.id + 1);
+      isEditing ? sonId = widget.transaction!.id : (box.values.isEmpty ? sonId = 1 : sonId = box.values.last.id + 1);
     } else {
       sonId = isEditing ? widget.transaction!.id : 1;
       //sinifStore.setSinifId(widget.transaction!.sinifId);
@@ -109,6 +102,7 @@ class _TemrinnotDialogState extends State<TemrinnotDialog> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             buildCancelButton(context),
+            const SizedBox(width: 10),
             BuildAddButton(
               context: context,
               sonId: sonId,
@@ -119,11 +113,9 @@ class _TemrinnotDialogState extends State<TemrinnotDialog> {
                 if (isValid) {
                   int temrinId = 0;
                   int ogrenciId = 0;
-                  int temrinnotPuan =
-                      int.tryParse(temrinnotpuanController.text)!;
+                  int temrinnotPuan = int.tryParse(temrinnotpuanController.text)!;
                   String temrinnotNotlar = temrinnotnotlarController.text;
-                  widget.onClickedDone(sonId, temrinId, ogrenciId,
-                      temrinnotPuan, temrinnotNotlar);
+                  widget.onClickedDone(sonId, temrinId, ogrenciId, temrinnotPuan, temrinnotNotlar);
                   Navigator.of(context).pop();
                 }
               },
@@ -134,25 +126,17 @@ class _TemrinnotDialogState extends State<TemrinnotDialog> {
     );
   }
 
-
-
   Widget buildTemrinnotad() => TextFormField(
         controller: temrinnotnotlarController,
         decoration: const InputDecoration(
           border: OutlineInputBorder(),
           hintText: 'Temrinnot Adını Giriniz',
         ),
-        validator: (temrinnotnotlar) =>
-            temrinnotnotlar != null && temrinnotnotlar.isEmpty
-                ? 'Temrinnot Konusu'
-                : null,
+        validator: (temrinnotnotlar) => temrinnotnotlar != null && temrinnotnotlar.isEmpty ? 'Temrinnot Konusu' : null,
       );
 
   List<String> buildItems() {
-    List<String> items = DersBoxes.getTransactions()
-        .values
-        .map((e) => e.dersad.toString())
-        .toList();
+    List<String> items = DersBoxes.getTransactions().values.map((e) => e.dersad.toString()).toList();
     return items;
   }
 }

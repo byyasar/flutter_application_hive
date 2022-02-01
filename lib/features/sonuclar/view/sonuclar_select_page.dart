@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_hive/constants/icon_constans.dart';
 import 'package:flutter_application_hive/core/base/base_state.dart';
 import 'package:flutter_application_hive/core/boxes.dart';
 import 'package:flutter_application_hive/core/widget/custom_appbar.dart';
@@ -76,7 +77,7 @@ class _SonuclarSelectPageState extends BaseState<SonuclarSelectPage> {
         children: [
           Observer(builder: (_) {
             return FloatingActionButton.extended(
-                icon: const Icon(Icons.add_chart_rounded),
+                icon: IconsConstans.puanlarIcon,
                 backgroundColor: _viewModelOgrenci.filtreOgrenciId == -1 ? Colors.grey : Colors.green,
                 onPressed: _viewModelOgrenci.filtreOgrenciId == -1
                     ? null
@@ -136,13 +137,13 @@ class _SonuclarSelectPageState extends BaseState<SonuclarSelectPage> {
             }
             _viewModelSinif.setSinifAd(_sinifSecText);
 
-            Logger().i('Seçilen sınıf id ${value.sinifId} sınıf ${value.sinifAd}');
+            //Logger().i('Seçilen sınıf id ${value.sinifId} sınıf ${value.sinifAd}');
           }
         });
       },
           Observer(
               builder: (context) => Text(_viewModelSinif.sinifAd.isEmpty ? _sinifSecText : _viewModelSinif.sinifAd)),
-          const Icon(Icons.class__outlined),
+          IconsConstans.sinifIcon,
           null);
   _buildDersSec(BuildContext context) => Observer(builder: (context) {
         return myCustomMenuButton(
@@ -163,12 +164,12 @@ class _SonuclarSelectPageState extends BaseState<SonuclarSelectPage> {
                           _dersSecText = "Ders Seç";
                         }
                         _viewModelDers.setDersAd(_dersSecText);
-                        Logger().i('Seçilen ders id ${value.dersId} ders: ${value.dersAd}');
+                        // Logger().i('Seçilen ders id ${value.dersId} ders: ${value.dersAd}');
                       }
                     });
                   },
             Text(_viewModelDers.dersAd.isEmpty ? _dersSecText : _viewModelDers.dersAd),
-            const Icon(Icons.class__outlined),
+            IconsConstans.dersIcon,
             null);
       });
   _buildOgrenciSec(BuildContext context) => Observer(builder: (context) {
@@ -189,12 +190,12 @@ class _SonuclarSelectPageState extends BaseState<SonuclarSelectPage> {
                           _ogrenciSecText = "Öğrenci Seç";
                         }
                         _viewModelOgrenci.setOgrenciAd(_ogrenciSecText);
-                        Logger().i('Seçilen ogrenci id ${value.ogrenciAd} ');
+                        // Logger().i('Seçilen ogrenci id ${value.ogrenciAd} ');
                       }
                     });
                   },
             Text(_viewModelOgrenci.ogrenciAd.isEmpty ? _ogrenciSecText : _viewModelOgrenci.ogrenciAd),
-            const Icon(Icons.class__outlined),
+            IconsConstans.ogrenciIcon,
             null);
       });
   /* _buildTemrinSec(BuildContext context) => Observer(builder: (context) {
