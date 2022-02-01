@@ -51,6 +51,7 @@ class _SonuclarSelectPageState extends BaseState<SonuclarSelectPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              //Image.asset('assets/logo.jpeg'),
               const Text('Sınıf:', style: TextStyle(fontSize: 18)),
               _buildSinifSec(context),
               const Text('Ders:', style: TextStyle(fontSize: 18)),
@@ -141,7 +142,8 @@ class _SonuclarSelectPageState extends BaseState<SonuclarSelectPage> {
       },
           Observer(
               builder: (context) => Text(_viewModelSinif.sinifAd.isEmpty ? _sinifSecText : _viewModelSinif.sinifAd)),
-          const Icon(Icons.class__outlined),null);
+          const Icon(Icons.class__outlined),
+          null);
   _buildDersSec(BuildContext context) => Observer(builder: (context) {
         return myCustomMenuButton(
             context,
@@ -166,7 +168,8 @@ class _SonuclarSelectPageState extends BaseState<SonuclarSelectPage> {
                     });
                   },
             Text(_viewModelDers.dersAd.isEmpty ? _dersSecText : _viewModelDers.dersAd),
-            const Icon(Icons.class__outlined),null);
+            const Icon(Icons.class__outlined),
+            null);
       });
   _buildOgrenciSec(BuildContext context) => Observer(builder: (context) {
         return myCustomMenuButton(
@@ -191,7 +194,8 @@ class _SonuclarSelectPageState extends BaseState<SonuclarSelectPage> {
                     });
                   },
             Text(_viewModelOgrenci.ogrenciAd.isEmpty ? _ogrenciSecText : _viewModelOgrenci.ogrenciAd),
-            const Icon(Icons.class__outlined),null);
+            const Icon(Icons.class__outlined),
+            null);
       });
   /* _buildTemrinSec(BuildContext context) => Observer(builder: (context) {
         return myCustomMenuButton(

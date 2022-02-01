@@ -53,6 +53,7 @@ class _MainPageState extends BaseState<MainPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              
               const Text('Sınıf:', style: TextStyle(fontSize: 18)),
               _buildSinifSec(context),
               const Text('Ders:', style: TextStyle(fontSize: 18)),
