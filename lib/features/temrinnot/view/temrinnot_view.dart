@@ -8,7 +8,7 @@ import 'package:flutter_application_hive/features/helper/ogrenci_listesi_helper.
 import 'package:flutter_application_hive/features/helper/temrinnot_listesi_helper.dart';
 import 'package:flutter_application_hive/features/ogrenci/model/ogrenci_model.dart';
 import 'package:flutter_application_hive/features/temrinnot/model/temrinnot_model.dart';
-import 'package:hive/hive.dart';
+//import 'package:hive/hive.dart';
 import 'package:logger/logger.dart';
 
 // ignore: must_be_immutable
@@ -38,30 +38,33 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: _buildFlaotingActionButton(),
-        appBar: AppBar(title: const Text('TNS-Temrin Not Girişi'), centerTitle: true),
-        body: Container(
-          color: Colors.blueAccent,
-          child: Column(
-            children: [
-              Text(
-                  ' Sınıf:${widget.parametreler[0]} Ders :${widget.parametreler[1]} Temrin: ${widget.parametreler[2]}'),
-              Expanded(
-                child: FutureBuilder(
-                    future: TemrinnotListesiHelper(ApplicationConstants.boxTemrinNot)
-                        .temrinnotFiltreListesiGetir(widget.parametreler[2]),
-                    builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      if (snapshot.hasData) {
-                        return _buildOgrenciListesi(context, widget.parametreler[0], snapshot.data);
-                      } else {
-                        return const Text("Datayok");
-                      }
-                    }),
-              )
-            ],
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          floatingActionButton: _buildFlaotingActionButton(),
+          appBar: AppBar(title: const Text('TNS-Temrin Not Girişi'), centerTitle: true),
+          body: Container(
+            color: Colors.blueAccent,
+            child: Column(
+              children: [
+                Text(
+                    ' Sınıf:${widget.parametreler[0]} Ders :${widget.parametreler[1]} Temrin: ${widget.parametreler[2]}'),
+                Expanded(
+                  child: FutureBuilder(
+                      future: TemrinnotListesiHelper(ApplicationConstants.boxTemrinNot)
+                          .temrinnotFiltreListesiGetir(widget.parametreler[2]),
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        if (snapshot.hasData) {
+                          return _buildOgrenciListesi(context, widget.parametreler[0], snapshot.data);
+                        } else {
+                          return const Text("Datayok");
+                        }
+                      }),
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -71,50 +74,13 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
   Widget _buildFlaotingActionButton() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          FloatingActionButton(
-            heroTag: '1',
-            child: const Icon(Icons.list),
-            onPressed: () {
-              //_buildTemrinNotKaydet();
-              _buildTemrinNotListele();
-            },
-          ),
-          FloatingActionButton(
-            heroTag: '2',
-            child: const Icon(Icons.save),
-            onPressed: () {
-              _buildTemrinNotKaydet();
-            },
-          ),
-          FloatingActionButton(
-            heroTag: '3',
-            child: const Icon(Icons.clear),
-            onPressed:
-                _dialogGoster, /* async {
-              return await showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                        title: const Text('Eminmisiniz?'),
-                        content: const Text('Tüm kayıtlar silinsin mi?'),
-                        actions: [
-                          ElevatedButton(
-                              onPressed: () {
-                                _buildTemrinNotSil();
-                              },
-                              child: const Text('Sil')),
-                          ElevatedButton(
-                              onPressed: () {
-                                Navigator.of(context).pop(false);
-                              },
-                              child: const Text('İptal')),
-                        ],
-                      ));
-            }, */
-          ),
-        ],
+      child: FloatingActionButton(
+        heroTag: '2',
+        child: const Icon(Icons.save),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        onPressed: () {
+          _buildTemrinNotKaydet();
+        },
       ),
     );
   }
@@ -203,19 +169,19 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
     box.put(key, transaction);
   }
 
-  void _buildTemrinNotListele() async {
+/*   void _buildTemrinNotListele() async {
     _transactionsTemrinnot = await TemrinnotListesiHelper(ApplicationConstants.boxTemrinNot)
         .temrinnotFiltreListesiGetir(widget.parametreler[2]);
     /* for (var item in _transactionsTemrinnot) {
     //  print('id: ${item.id} öğrenci id: ${item.ogrenciId} puan: ${item.puan} ${item.key}');
       // _puanlar[item.id] = item.puan;
     } */
-  }
-
+  } */
+/* 
   Future<void> _buildTemrinNotSil() async {
     final Box<TemrinnotModel> _box = TemrinnotBoxes.getTransactions();
     await _box.clear();
-  }
+  } */
 
   _gettemrinnotdata() async {
     _transactionsTemrinnot = await TemrinnotListesiHelper(ApplicationConstants.boxTemrinNot)
@@ -240,11 +206,11 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
     }
   }
 
-  Future<void> _dialogGoster() async {
+  /*  Future<void> _dialogGoster() async {
     bool durum =
         await customDialogFunc(context, 'Dikkatli olun. Eminmisiniz?', 'Tüm kayıtlar silinsin mi?', 'Sil', 'İptal');
-    print(durum);
+    // print(durum);
     durum ? _buildTemrinNotSil() : "";
     //setState(() {});
-  }
+  } */
 }

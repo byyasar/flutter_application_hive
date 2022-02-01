@@ -13,14 +13,14 @@ abstract class _SonucId with Store {
 
   @computed
   double get ortalama {
-    print('ortalama=${(toplam / sayac)}');
+    //print('ortalama=${(toplam / sayac)}');
     return (toplam / sayac);
   }
 
   @action
   void sayacArttir() {
     sayac += 1;
-    print('sayac: $sayac');
+    //print('sayac: $sayac');
   }
 
   @action
@@ -31,6 +31,6 @@ abstract class _SonucId with Store {
   @action
   void toplamaEkle(int puan) {
     toplam += puan;
-    print(toplam);
+    //print(toplam);
   }
 }

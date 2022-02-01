@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_hive/core/widget/exitapp_dialog.dart';
 import 'package:flutter_application_hive/features/dersler/view/ders_view.dart';
 import 'package:flutter_application_hive/features/ogrenci/view/ogrenci_view.dart';
+import 'package:flutter_application_hive/features/settings/settings.dart';
 import 'package:flutter_application_hive/features/siniflar/view/sinif_view.dart';
 import 'package:flutter_application_hive/features/sonuclar/view/sonuclar_select_page.dart';
 import 'package:flutter_application_hive/features/temrin/view/temrin_view.dart';
@@ -78,6 +79,16 @@ Drawer buildDrawer(BuildContext context) {
           ),
           onTap: () {
             Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SonuclarSelectPage()));
+          },
+        ),
+        const Divider(color: Colors.black, height: 2.0),
+        ListTile(
+          title: const Text(
+            'Ayarlar',
+            style: TextStyle(fontSize: 24),
+          ),
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SettingsView()));
           },
         ),
         const Divider(color: Colors.black, height: 2.0),

@@ -10,6 +10,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hive/hive.dart';
 //import 'package:logger/logger.dart';
 
+// ignore: must_be_immutable
 class SonuclarViewPage extends StatefulWidget {
   List parametreler = [];
 
