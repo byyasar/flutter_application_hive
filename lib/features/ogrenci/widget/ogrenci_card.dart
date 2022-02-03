@@ -15,7 +15,7 @@ class OgrenciCard extends StatelessWidget {
     SinifListesiHelper _sinifListesiHelper = SinifListesiHelper(ApplicationConstants.boxSinif);
 
     return Card(
-      color: Colors.white60,
+      //color: Colors.white60,
       child: ExpansionTile(
         tilePadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
         title: Text(

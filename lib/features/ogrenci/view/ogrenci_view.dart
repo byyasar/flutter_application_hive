@@ -52,7 +52,7 @@ class _OgrencipageViewState extends State<OgrencipageView> {
 
   Widget _buildFloatingActionButton(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(bottom: 24),
       child: FloatingActionButton(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         child: const Icon(Icons.add),
@@ -68,7 +68,7 @@ class _OgrencipageViewState extends State<OgrencipageView> {
 
   PreferredSizeWidget get _buildAppBar {
     return AppBar(
-      title: const Text('Öğrenci Listesi'),
+      title: const Text('TNS-Öğrenci Listesi'),
       centerTitle: true,
       actions: <Widget>[
         PopupMenuButton<String>(

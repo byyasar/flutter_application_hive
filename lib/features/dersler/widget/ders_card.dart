@@ -16,7 +16,7 @@ class DersCard extends StatelessWidget {
     //final Box<SinifModel> _boxSinif = SinifBoxes.getTransactions();
     //final Box<DersModel> _boxDers = DersBoxes.getTransactions();
     return Card(
-      color: Colors.white60,
+      //color: Colors.white60,
       child: ExpansionTile(
         tilePadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
         title: Text(

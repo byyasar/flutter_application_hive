@@ -82,7 +82,7 @@ class _TemrinpageViewState extends State<TemrinpageView> {
 
   AppBar _buildAppBar() {
     return AppBar(
-      title: const Text('Temrin Listesi'),
+      title: const Center(child: Text('TNS-Temrin Listesi')),
       actions: <Widget>[
         PopupMenuButton<String>(
           onCanceled: () => _viewDersModel.setFiltreDersId(-1),

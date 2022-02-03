@@ -6,17 +6,12 @@ class SinifCard extends StatelessWidget {
   final int index;
   final Widget butons;
 
-  const SinifCard(
-      {Key? key,
-      required this.transaction,
-      required this.index,
-      required this.butons})
-      : super(key: key);
+  const SinifCard({Key? key, required this.transaction, required this.index, required this.butons}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.white60,
+      //color: Colors.white60,
       child: ExpansionTile(
         tilePadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
         title: Text(

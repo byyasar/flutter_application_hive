@@ -17,7 +17,7 @@ import 'package:flutter_application_hive/features/sonuclar/view/sonuclar_view.da
 import 'package:flutter_mobx/flutter_mobx.dart';
 //import 'package:http/http.dart' as http;
 //import 'dart:convert' as convert;
-import 'package:logger/logger.dart';
+//import 'package:logger/logger.dart';
 import 'package:flutter_application_hive/core/widget/build_drawer.dart';
 
 class SonuclarSelectPage extends StatefulWidget {
@@ -47,7 +47,7 @@ class _SonuclarSelectPageState extends BaseState<SonuclarSelectPage> {
       child: Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: _buildFloatingActionButton(context),
-        appBar: customAppBar(context, 'TNS-Öğrenci Seç'),
+        appBar: customAppBar(context, 'TNS-Not Listeleme'),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -71,7 +71,7 @@ class _SonuclarSelectPageState extends BaseState<SonuclarSelectPage> {
 
   Widget _buildFloatingActionButton(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(bottom: 24),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -225,14 +225,14 @@ class _SonuclarSelectPageState extends BaseState<SonuclarSelectPage> {
       }); */
 
   void _tumSecimleriSifirla() {
-    Logger().i('tum secimler sıfırlandı');
+    // Logger().i('tum secimler sıfırlandı');
     _dersSecimiSifirla();
     // _temrinSecimiSifirla();,
     _ogrenciSecimiSifirla();
   }
 
   void _dersSecimiSifirla() {
-    Logger().i('ders secimleri sıfırlandı');
+    //Logger().i('ders secimleri sıfırlandı');
     _viewModelDers.setFiltreDersId(-1);
     _dersSecText = "Ders Seç";
     _viewModelDers.setDersAd(_dersSecText);
@@ -246,7 +246,7 @@ class _SonuclarSelectPageState extends BaseState<SonuclarSelectPage> {
   }
 
   /* void _temrinSecimiSifirla() {
-    Logger().i('temrin secimleri sıfırlandı');
+    //Logger().i('temrin secimleri sıfırlandı');
     _viewModelTemrin.setFiltretemrinId(-1);
     _temrinSecText = "Temrin Seç";
     _viewModelTemrin.settemrinKonusu(_temrinSecText);

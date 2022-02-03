@@ -65,8 +65,8 @@ class _SonuclarViewPageState extends BaseState<SonuclarViewPage> {
         resizeToAvoidBottomInset: false,
         //floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         //floatingActionButton: _buildFlaotingActionButton(),
-        appBar: AppBar(title: const Text('Öğrenci Notları'), centerTitle: true),
-        body: Container(
+        appBar: AppBar(title: const Text('TNS - Öğrenci Notları'), centerTitle: true),
+        body: SizedBox(
           height: dynamicHeight(1),
           // color: Colors.blueAccent,
           child: Column(
@@ -121,26 +121,22 @@ dersin temrin sayısı alınacak
         padding: const EdgeInsets.symmetric(vertical: 5),
         itemCount: data.length,
         itemBuilder: (BuildContext context, int index) {
-          return SizedBox(
-            height: dynamicHeight(.1),
-            // color: Colors.amber,
-            child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+          return Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            elevation: 2,
+            child: ListTile(
+              leading: CircleAvatar(radius: 12, child: Text('${index + 1}')),
+              trailing: CircleAvatar(
+                backgroundColor: data[index].puan <= 0 ? Colors.red : Colors.yellow,
+                child: Text('${data[index].puan == -1 ? 'G' : data[index].puan}',
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               ),
-              elevation: 2,
-              child: ListTile(
-                leading: CircleAvatar(radius: 12, child: Text('${index + 1}')),
-                trailing: CircleAvatar(
-                  backgroundColor: data[index].puan <= 0 ? Colors.red : Colors.yellow,
-                  child: Text('${data[index].puan == -1 ? 'G' : data[index].puan}',
-                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                ),
-                title: Text(
-                    '${_transactionTemrin.singleWhere((element) => element.id == data[index].temrinId).temrinKonusu} '),
-                //subtitle: Text('key: ${data[index].key} Tid ${data[index].temrinId} puan ${data[index].puan}'),
-                subtitle: Text('Notlar: ${data[index].notlar}'),
-              ),
+              title: Text(
+                  '${_transactionTemrin.singleWhere((element) => element.id == data[index].temrinId).temrinKonusu} '),
+              //subtitle: Text('key: ${data[index].key} Tid ${data[index].temrinId} puan ${data[index].puan}'),
+              subtitle: Text('Notlar: ${data[index].notlar}'),
             ),
           );
         });

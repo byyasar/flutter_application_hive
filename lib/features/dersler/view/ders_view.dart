@@ -34,7 +34,7 @@ class _DerspageViewState extends State<DerspageView> {
 
   PreferredSizeWidget get _buildAppBar {
     return AppBar(
-      title: const Text('Ders Listesi'),
+      title: const Text('TNS-Ders Listesi'),
       centerTitle: true,
       actions: <Widget>[
         PopupMenuButton<String>(
@@ -76,7 +76,7 @@ class _DerspageViewState extends State<DerspageView> {
               transactions = box.values.toList().cast<DersModel>();
             }
             // ignore: avoid_print
-            print(transactions.length);
+            //print(transactions.length);
             //return Text(transactions[1].detail);
             return buildContent(transactions);
           });
@@ -85,7 +85,7 @@ class _DerspageViewState extends State<DerspageView> {
 
   Widget _buildFloatingActionButton(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(bottom: 24),
       child: FloatingActionButton(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         child: const Icon(Icons.add),

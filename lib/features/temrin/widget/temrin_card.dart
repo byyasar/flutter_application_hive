@@ -14,7 +14,7 @@ class TemrinCard extends StatelessWidget {
   Widget build(BuildContext context) {
     DersListesiHelper _dersListesiHelper = DersListesiHelper(ApplicationConstants.boxDers);
     return Card(
-      color: Colors.white60,
+      //color: Colors.white60,
       child: ExpansionTile(
         tilePadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
         title: Text(

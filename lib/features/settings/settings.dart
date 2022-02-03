@@ -93,14 +93,14 @@ class _SettingsViewState extends BaseState<SettingsView> {
     var raw = await http.get(Uri.parse(ApplicationConstants.dersUrl));
     if (raw.statusCode == 200) {
       var jsonFeedback = convert.jsonDecode(raw.body);
-      Logger().i('this is json Feedback $jsonFeedback');
+     // Logger().i('this is json Feedback $jsonFeedback');
       DersListesiHelper dersListesiHelper = DersListesiHelper(ApplicationConstants.boxDers);
 
       for (var ders in jsonFeedback) {
         dersListesiHelper.addItem(DersModel(id: ders['id'], sinifId: ders['sinifId'], dersad: ders['dersAd']));
       }
     } else if (raw.statusCode == 404) {
-      Logger().e('sayfa bulunamadı');
+     // Logger().e('sayfa bulunamadı');
     }
   }
 
@@ -108,7 +108,7 @@ class _SettingsViewState extends BaseState<SettingsView> {
     var raw = await http.get(Uri.parse(ApplicationConstants.ogrencilerUrl));
     if (raw.statusCode == 200) {
       var jsonFeedback = convert.jsonDecode(raw.body);
-      Logger().i('this is json Feedback $jsonFeedback');
+      //Logger().i('this is json Feedback $jsonFeedback');
       OgrenciListesiHelper ogrenciListesiHelper = OgrenciListesiHelper(ApplicationConstants.boxOgrenci);
 
       for (var ogrenci in jsonFeedback) {
@@ -116,7 +116,7 @@ class _SettingsViewState extends BaseState<SettingsView> {
             id: ogrenci['id'], name: ogrenci['ogrenciName'], nu: ogrenci['ogrenciNu'], sinifId: ogrenci['sinifId']));
       }
     } else if (raw.statusCode == 404) {
-      Logger().e('sayfa bulunamadı');
+      //Logger().e('sayfa bulunamadı');
     }
   }
 
@@ -124,7 +124,7 @@ class _SettingsViewState extends BaseState<SettingsView> {
     var raw = await http.get(Uri.parse(ApplicationConstants.temrinUrl));
     if (raw.statusCode == 200) {
       var jsonFeedback = convert.jsonDecode(raw.body);
-      Logger().i('this is json Feedback $jsonFeedback');
+      //Logger().i('this is json Feedback $jsonFeedback');
       TemrinListesiHelper temrinListesiHelper = TemrinListesiHelper(ApplicationConstants.boxTemrin);
 
       for (var temrin in jsonFeedback) {
@@ -132,7 +132,7 @@ class _SettingsViewState extends BaseState<SettingsView> {
             .addItem(TemrinModel(id: temrin['id'], temrinKonusu: temrin['temrinKonusu'], dersId: temrin['dersId']));
       }
     } else if (raw.statusCode == 404) {
-      Logger().e('sayfa bulunamadı');
+      //Logger().e('sayfa bulunamadı');
     }
   }
 }

@@ -46,26 +46,23 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
           floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
           floatingActionButton: _buildFlaotingActionButton(),
           appBar: AppBar(title: const Text('TNS-Temrin Not Girişi'), centerTitle: true),
-          body: Container(
-            //color: Colors.blueAccent,
-            child: Column(
-              children: [
-                Text(
-                    ' Sınıf:${widget.parametreler[0]} Ders :${widget.parametreler[1]} Temrin: ${widget.parametreler[2]}'),
-                Expanded(
-                  child: FutureBuilder(
-                      future: TemrinnotListesiHelper(ApplicationConstants.boxTemrinNot)
-                          .temrinnotFiltreListesiGetir(widget.parametreler[2]),
-                      builder: (BuildContext context, AsyncSnapshot snapshot) {
-                        if (snapshot.hasData) {
-                          return _buildOgrenciListesi(context, widget.parametreler[0], snapshot.data);
-                        } else {
-                          return const Text("Datayok");
-                        }
-                      }),
-                )
-              ],
-            ),
+          body: Column(
+            children: [
+              Text(
+                  ' Sınıf:${widget.parametreler[0]} Ders :${widget.parametreler[1]} Temrin: ${widget.parametreler[2]}'),
+              Expanded(
+                child: FutureBuilder(
+                    future: TemrinnotListesiHelper(ApplicationConstants.boxTemrinNot)
+                        .temrinnotFiltreListesiGetir(widget.parametreler[2]),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      if (snapshot.hasData) {
+                        return _buildOgrenciListesi(context, widget.parametreler[0], snapshot.data);
+                      } else {
+                        return const Text("Datayok");
+                      }
+                    }),
+              )
+            ],
           ),
         ),
       ),
@@ -74,7 +71,7 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
 
   Widget _buildFlaotingActionButton() {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(bottom: 24),
       child: FloatingActionButton(
         heroTag: '2',
         child: IconsConstans.saveIcon,
