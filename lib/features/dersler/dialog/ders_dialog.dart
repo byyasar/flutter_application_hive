@@ -135,33 +135,7 @@ class _DersDialogState extends State<DersDialog> {
             dersad != null && dersad.isEmpty ? 'Öğrenci Adını' : null,
       );
 
-  /*  Widget buildAddButton(BuildContext context, int? sonId,
-      {required bool isEditing}) {
-    final text = isEditing ? 'Kaydet' : 'Ekle';
 
-    return TextButton(
-      child: Row(
-        children: [
-          Icon(Icons.add_box, color: Colors.green.shade400),
-          Text(text),
-        ],
-      ),
-      onPressed: () async {
-        final isValid = formKey.currentState!.validate();
-
-        if (isValid) {
-          String? dersad = dersadController.text.toUpperCase();
-          // int? nu = int.parse(nuController.text);
-
-          int id = sonId ?? 0;
-
-          widget.onClickedDone(id, dersad, sinifStore.sinifId);
-
-          Navigator.of(context).pop();
-        }
-      },
-    );
-  } */
 
   List<String> buildItems() {
     List<String> items = SinifBoxes.getTransactions()
