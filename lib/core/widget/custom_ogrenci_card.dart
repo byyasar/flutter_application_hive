@@ -42,7 +42,7 @@ class _CustomOgrenciCardState extends State<CustomOgrenciCard> {
         children: [
           Expanded(
             flex: 9,
-            child: ExpansionTile(
+            child: ListTile(
               title: Row(
                 children: [
                   Expanded(
@@ -54,21 +54,7 @@ class _CustomOgrenciCardState extends State<CustomOgrenciCard> {
                     ),
                   ),
                   //const Spacer(flex: 1),
-                  Expanded(
-                      flex: 3,
-                      child: TextFormField(
-                        onTap: () => widget.puanController!.clear(),
-                        controller: widget.puanController,
-                        textAlign: TextAlign.center,
-                        maxLength: 3,
-                        keyboardType: TextInputType.number,
-                        style: const TextStyle(fontSize: 28),
-                      )),
-                ],
-              ),
-              subtitle: Text(
-                  "Nu: ${widget.transaction.nu} Sınıf: ${_sinifListesiHelper.getItemId(widget.transaction.sinifId)!.sinifAd}"),
-              children: [
+                  /*children: [
                 TextFormField(
                     decoration: const InputDecoration(labelText: '1-Bilgi -20P', focusColor: Colors.blue),
                     controller: widget.kriter1Controller),
@@ -89,7 +75,25 @@ class _CustomOgrenciCardState extends State<CustomOgrenciCard> {
                 TextFormField(
                     decoration: const InputDecoration(labelText: 'Açıklama', focusColor: Colors.blue),
                     controller: widget.aciklamaController),
-              ],
+              ], */
+                  Expanded(
+                      flex: 3,
+                      child: CircleAvatar(child: Text( widget.puanController!.text),)
+                      
+                      /* TextFormField(
+                        onTap: () => widget.puanController!.clear(),
+                        controller: widget.puanController,
+                        textAlign: TextAlign.center,
+                        maxLength: 3,
+                        keyboardType: TextInputType.number,
+                        style: const TextStyle(fontSize: 28),
+                      )*/), 
+                ],
+              ),
+              onLongPress:(){debugPrint('uzun basıldı ${widget.puanController}');},
+              subtitle: Text(
+                  "Nu: ${widget.transaction.nu} Sınıf: ${_sinifListesiHelper.getItemId(widget.transaction.sinifId)!.sinifAd}"),
+              
             ),
           ),
           Expanded(
