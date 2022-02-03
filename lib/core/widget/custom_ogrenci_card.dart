@@ -9,6 +9,11 @@ class CustomOgrenciCard extends StatefulWidget {
   final int index;
   final TextEditingController? puanController;
   final TextEditingController aciklamaController;
+  final TextEditingController kriter1Controller;
+  final TextEditingController kriter2Controller;
+  final TextEditingController kriter3Controller;
+  final TextEditingController kriter4Controller;
+  final TextEditingController kriter5Controller;
 
   const CustomOgrenciCard({
     Key? key,
@@ -16,6 +21,11 @@ class CustomOgrenciCard extends StatefulWidget {
     required this.index,
     required this.puanController,
     required this.aciklamaController,
+    required this.kriter1Controller,
+    required this.kriter2Controller,
+    required this.kriter3Controller,
+    required this.kriter4Controller,
+    required this.kriter5Controller,
   }) : super(key: key);
 
   @override
@@ -52,23 +62,33 @@ class _CustomOgrenciCardState extends State<CustomOgrenciCard> {
                         textAlign: TextAlign.center,
                         maxLength: 3,
                         keyboardType: TextInputType.number,
-                        style: const TextStyle(color: Colors.blue, fontSize: 28),
+                        style: const TextStyle(fontSize: 28),
                       )),
                 ],
               ),
               subtitle: Text(
                   "Nu: ${widget.transaction.nu} Sınıf: ${_sinifListesiHelper.getItemId(widget.transaction.sinifId)!.sinifAd}"),
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
+                TextFormField(
+                    decoration: const InputDecoration(labelText: '1-Bilgi -20P', focusColor: Colors.blue),
+                    controller: widget.kriter1Controller),
+                TextFormField(
+                    decoration:
+                        const InputDecoration(labelText: '2-Çözümü anlama ve aktarma -30P', focusColor: Colors.blue),
+                    controller: widget.kriter2Controller),
+                TextFormField(
                     decoration: const InputDecoration(
-                      hintText: 'Açıklama',
-                      focusColor: Colors.blue,
-                    ),
-                    controller: widget.aciklamaController,
-                  ),
-                ),
+                        labelText: '3-Doğru şekilde uygulama ve çalıştırma -30P', focusColor: Colors.blue),
+                    controller: widget.kriter3Controller),
+                TextFormField(
+                    decoration: const InputDecoration(labelText: '4-Tasarım -10P', focusColor: Colors.blue),
+                    controller: widget.kriter4Controller),
+                TextFormField(
+                    decoration: const InputDecoration(labelText: '5-Süre -10P', focusColor: Colors.blue),
+                    controller: widget.kriter5Controller),
+                TextFormField(
+                    decoration: const InputDecoration(labelText: 'Açıklama', focusColor: Colors.blue),
+                    controller: widget.aciklamaController),
               ],
             ),
           ),
@@ -80,18 +100,8 @@ class _CustomOgrenciCardState extends State<CustomOgrenciCard> {
                 },
                 icon: IconsConstans.gelmediIcon),
           ),
-
-          /*  Expanded(
-            flex: 1,
-            child: IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.save),
-            ),
-          ), */
         ],
       ),
     );
   }
 }
-//ANCHOR: ÖĞRENCİ KART
-//TODO: ÖĞRENCİ KART
