@@ -138,6 +138,17 @@ mixin _$TemrinnotStore on _TemrinnotId, Store {
   }
 
   @override
+  void setToplam(int toplam) {
+    final _$actionInfo = _$_TemrinnotIdActionController.startAction(
+        name: '_TemrinnotId.setToplam');
+    try {
+      return super.setToplam(toplam);
+    } finally {
+      _$_TemrinnotIdActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 temrinnotId: ${temrinnotId},

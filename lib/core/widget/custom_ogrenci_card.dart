@@ -11,6 +11,7 @@ class CustomOgrenciCard extends StatefulWidget {
   final int temrinId;
   final TextEditingController? puanController;
   final List<int>? parametreler;
+  final List<int>? kriterler;
 
   //final TemrinnotModel? temrinnotModel;
 
@@ -21,6 +22,7 @@ class CustomOgrenciCard extends StatefulWidget {
     required this.puanController,
     required this.temrinId,
     required this.parametreler,
+    required this.kriterler,
 
     // required this.temrinnotModel,
   }) : super(key: key);
@@ -80,6 +82,7 @@ class _CustomOgrenciCardState extends State<CustomOgrenciCard> {
                           onClickedDone: addTransaction,
                           ogrenciId: widget.transaction.id,
                           parametreler: widget.parametreler,
+                          kriterler: widget.kriterler,
                         )).then((value) {
                   //print('Gelen puan ${value.puan}  ogrenci id: ${_viewModelOgrenci.filtreOgrenciId}');
                   setState(() {
@@ -91,7 +94,7 @@ class _CustomOgrenciCardState extends State<CustomOgrenciCard> {
                   "Nu: ${widget.transaction.nu} Sınıf: ${_sinifListesiHelper.getItemId(widget.transaction.sinifId)!.sinifAd}"),
             ),
           ),
-          Expanded(
+          /*   Expanded(
             flex: 1,
             child: IconButton(
                 onPressed: () {
@@ -100,7 +103,7 @@ class _CustomOgrenciCardState extends State<CustomOgrenciCard> {
                   });
                 },
                 icon: IconsConstans.gelmediIcon),
-          ),
+          ), */
         ],
       ),
     );

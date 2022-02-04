@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_hive/constants/app_constants.dart';
-import 'package:flutter_application_hive/constants/icon_constans.dart';
 import 'package:flutter_application_hive/core/base/base_state.dart';
-import 'package:flutter_application_hive/core/boxes.dart';
-import 'package:flutter_application_hive/core/widget/custom_dialog_func.dart';
 import 'package:flutter_application_hive/core/widget/custom_ogrenci_card.dart';
 import 'package:flutter_application_hive/features/helper/ogrenci_listesi_helper.dart';
 import 'package:flutter_application_hive/features/helper/temrinnot_listesi_helper.dart';
@@ -14,7 +11,7 @@ import 'package:flutter_application_hive/features/temrinnot/model/temrinnot_mode
 
 // ignore: must_be_immutable
 class TemrinNotViewPage extends StatefulWidget {
-  List<int> parametreler = [];
+  List<int>? parametreler;
 
   TemrinNotViewPage({Key? key, required this.parametreler}) : super(key: key);
 
@@ -28,6 +25,7 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
   List<TemrinnotModel> _transactionsTemrinnot = [];
   List<TextEditingController> _aciklamaControllers = [];
   List<int> _puanlar = [];
+  List<List<int>> _kriterler = [];
 
   @override
   initState() {
@@ -49,14 +47,14 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
           body: Column(
             children: [
               Text(
-                  ' Sınıf:${widget.parametreler[0]} Ders :${widget.parametreler[1]} Temrin: ${widget.parametreler[2]}'),
+                  ' Sınıf:${widget.parametreler![0]} Ders :${widget.parametreler![1]} Temrin: ${widget.parametreler![2]}'),
               Expanded(
                 child: FutureBuilder(
                     future: TemrinnotListesiHelper(ApplicationConstants.boxTemrinNot)
-                        .temrinnotFiltreListesiGetir(widget.parametreler[2]),
+                        .temrinnotFiltreListesiGetir(widget.parametreler![2]),
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
                       if (snapshot.hasData) {
-                        return _buildOgrenciListesi(context, widget.parametreler[0]);
+                        return _buildOgrenciListesi(context, widget.parametreler![0]);
                       } else {
                         return const Text("Datayok");
                       }
@@ -69,7 +67,7 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
     );
   }
 
-  Widget _buildFlaotingActionButton() {
+/*   Widget _buildFlaotingActionButton() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 24),
       child: FloatingActionButton(
@@ -81,7 +79,7 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
         },
       ),
     );
-  }
+  } */
 
   _buildOgrenciListesi(BuildContext context, int filtreSinifId) {
     /* List<TemrinnotModel> _gelentemrinnotListesi = [];
@@ -103,7 +101,8 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
           transaction: transaction,
           index: index,
           puanController: _puanControllers[index],
-          temrinId: widget.parametreler[2], parametreler: widget.parametreler,
+          temrinId: widget.parametreler![2], parametreler: widget.parametreler,
+          kriterler: _kriterler[index],
 
           //temrinnotModel: _gelentemrinnotListesi[index],
         );
@@ -120,7 +119,7 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
     }
   }
 
-  void _buildTemrinNotKaydet() {
+  /* void _buildTemrinNotKaydet() {
     try {
       String key = "";
       for (var i = 0; i < _transactionsOgrenciSinif.length; i++) {
@@ -135,7 +134,7 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
                 ? '-1'
                 : _puanControllers[i].text),
             _bosKontrol(i, '_aciklamaControllers'),
-            [0, 0, 0, 0, 0]);
+            kriterler);
         if (i == _transactionsOgrenciSinif.length - 1) {
           customDialogInfo(context, 'Kayıt işlemi', 'Başarılı', 'Tamam');
           //setState(() {});
@@ -149,7 +148,7 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
       //Logger().e(e);
       customDialogInfo(context, 'Kayıt işlemi', 'Hatalı $e', 'Tamam');
     }
-  }
+  } */
 
   showLoaderDialog(BuildContext context) {
     AlertDialog alert = AlertDialog(
@@ -169,7 +168,7 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
     );
   }
 
-  Future _addTransactionTemrinnot(
+/*   Future _addTransactionTemrinnot(
       String key, int id, int temrinId, int ogrenciId, int puan, String notlar, List<int> kriterler) async {
     final transaction = TemrinnotModel(
         id: id,
@@ -181,15 +180,18 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
         kriterler: [0, 0, 0, 0, 0]);
     final box = TemrinnotBoxes.getTransactions();
     box.put(key, transaction);
-  }
+  } */
 
   _gettemrinnotdata() async {
     _transactionsTemrinnot = await TemrinnotListesiHelper(ApplicationConstants.boxTemrinNot)
-        .temrinnotFiltreListesiGetir(widget.parametreler[2]);
+        .temrinnotFiltreListesiGetir(widget.parametreler![2]);
     for (var item in _transactionsTemrinnot) {
       //print('Tid: ${item.temrinId} id: ${item.id} öğrenci id: ${item.ogrenciId} puan: ${item.puan} ${item.key}');
-      _puanControllers[item.id].text = item.puan == -1 ? 'G' : item.puan.toString();
+      _puanControllers[item.ogrenciId].text = item.puan == -1 ? 'G' : item.puan.toString();
       //_aciklamaControllers[item.id].text = item.notlar;
+      _kriterler[item.ogrenciId] = item.kriterler;
+      //_kriterler[item.id].addAll(item.kriterler);
+      print(_kriterler[item.id]);
     }
   }
 
@@ -197,13 +199,16 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
     _puanControllers = [];
     _aciklamaControllers = [];
     _puanlar = [];
+    _kriterler = [];
     _transactionsOgrenciSinif =
-        OgrenciListesiHelper(ApplicationConstants.boxOgrenci).getFilteredValues('SinifId', widget.parametreler[0])!;
+        OgrenciListesiHelper(ApplicationConstants.boxOgrenci).getFilteredValues('SinifId', widget.parametreler![0])!;
     for (var i = 0; i < _transactionsOgrenciSinif.length; i++) {
       _puanControllers.add(TextEditingController());
-
       //_aciklamaControllers.add(TextEditingController());
       _puanlar.add(0);
+      _kriterler.add([0, 0, 0, 0, 0]);
+      //_kriterler[i].addAll([0, 0, 0, 0, 0]);
+      //print(_kriterler);
     }
   }
 }

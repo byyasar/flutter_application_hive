@@ -13,6 +13,7 @@ class CustomKriterDialog extends StatefulWidget {
   final int? ogrenciId;
   //final int? temrinId;
   final List<int>? parametreler;
+  final List<int>? kriterler;
   final Function(int id) onClickedDone;
 
   const CustomKriterDialog({
@@ -21,6 +22,7 @@ class CustomKriterDialog extends StatefulWidget {
     required this.onClickedDone,
     required this.ogrenciId,
     required this.parametreler,
+    required this.kriterler,
   }) : super(key: key);
 
   @override
@@ -29,7 +31,8 @@ class CustomKriterDialog extends StatefulWidget {
 
 class _CustomKriterDialogState extends BaseState<CustomKriterDialog> {
   final formKey = GlobalKey<FormState>();
-  late TemrinnotStore viewModel;
+  //late TemrinnotStore viewModel;
+  TemrinnotStore _viewModel = TemrinnotStore();
 
   final _aciklamaController = TextEditingController();
   final _kriter1Controller = TextEditingController();
@@ -37,17 +40,25 @@ class _CustomKriterDialogState extends BaseState<CustomKriterDialog> {
   final _kriter3Controller = TextEditingController();
   final _kriter4Controller = TextEditingController();
   final _kriter5Controller = TextEditingController();
-  final List<int> _kriterler = [0, 0, 0, 0, 0];
+  //final List<int> _kriterler = [0, 0, 0, 0, 0];
   int _toplam = 0;
 
   @override
   void initState() {
     super.initState();
-    _kriter1Controller.text = _kriterler[0].toString();
-    _kriter2Controller.text = _kriterler[1].toString();
-    _kriter3Controller.text = _kriterler[2].toString();
-    _kriter4Controller.text = _kriterler[3].toString();
-    _kriter5Controller.text = _kriterler[4].toString();
+    _kriter1Controller.text = widget.kriterler![0].toString();
+    _kriter2Controller.text = widget.kriterler![1].toString();
+    _kriter3Controller.text = widget.kriterler![2].toString();
+    _kriter4Controller.text = widget.kriterler![3].toString();
+    _kriter5Controller.text = widget.kriterler![4].toString();
+    _toplam = int.tryParse(_kriter1Controller.text.isEmpty ? '0' : _kriter1Controller.text)! +
+        int.tryParse(_kriter2Controller.text.isEmpty ? '0' : _kriter2Controller.text)! +
+        int.tryParse(_kriter3Controller.text.isEmpty ? '0' : _kriter3Controller.text)! +
+        int.tryParse(_kriter4Controller.text.isEmpty ? '0' : _kriter4Controller.text)! +
+        int.tryParse(_kriter5Controller.text.isEmpty ? '0' : _kriter5Controller.text)!;
+    //_viewModel.setToplam(_toplam);
+    _viewModel.setKriterler(widget.kriterler!);
+    //print('acışış $_toplam');
   }
 
   @override
@@ -58,7 +69,7 @@ class _CustomKriterDialogState extends BaseState<CustomKriterDialog> {
   @override
   Widget build(BuildContext context) {
     return BaseView<TemrinnotStore>(
-      viewModel: TemrinnotStore(),
+      viewModel: _viewModel,
       onPageBuilder: (context, value) => AlertDialog(
         title: const Center(child: Text('Değerlendirme Kriterleri')),
         content: Form(
@@ -71,7 +82,7 @@ class _CustomKriterDialogState extends BaseState<CustomKriterDialog> {
                   const Divider(height: 10),
 
                   Observer(builder: (_) {
-                    _toplam = viewModel.toplam;
+                    _toplam = _viewModel.toplam;
                     return Text('TOPLAM =$_toplam');
                   }),
                   const Divider(height: 10),
@@ -86,8 +97,8 @@ class _CustomKriterDialogState extends BaseState<CustomKriterDialog> {
                     onChanged: (value) {
                       int puan = int.tryParse(value.isEmpty ? '0' : value)!;
                       if (puan >= 0 && puan <= 20) {
-                        _kriterler[0] = int.tryParse(value.isEmpty ? '0' : value)!;
-                        viewModel.setKriterler(_kriterler);
+                        widget.kriterler![0] = int.tryParse(value.isEmpty ? '0' : value)!;
+                        _viewModel.setKriterler(widget.kriterler!);
                       } else {
                         _kriter1Controller.text = '0';
                       }
@@ -105,8 +116,8 @@ class _CustomKriterDialogState extends BaseState<CustomKriterDialog> {
                     onChanged: (value) {
                       int puan = int.tryParse(value.isEmpty ? '0' : value)!;
                       if (puan >= 0 && puan <= 30) {
-                        _kriterler[1] = int.tryParse(value.isEmpty ? '0' : value)!;
-                        viewModel.setKriterler(_kriterler);
+                        widget.kriterler![1] = int.tryParse(value.isEmpty ? '0' : value)!;
+                        _viewModel.setKriterler(widget.kriterler!);
                       } else {
                         _kriter2Controller.text = '0';
                       }
@@ -124,8 +135,8 @@ class _CustomKriterDialogState extends BaseState<CustomKriterDialog> {
                     onChanged: (value) {
                       int puan = int.tryParse(value.isEmpty ? '0' : value)!;
                       if (puan >= 0 && puan <= 30) {
-                        _kriterler[2] = int.tryParse(value.isEmpty ? '0' : value)!;
-                        viewModel.setKriterler(_kriterler);
+                        widget.kriterler![2] = int.tryParse(value.isEmpty ? '0' : value)!;
+                        _viewModel.setKriterler(widget.kriterler!);
                       } else {
                         _kriter3Controller.text = '0';
                       }
@@ -141,8 +152,8 @@ class _CustomKriterDialogState extends BaseState<CustomKriterDialog> {
                     onChanged: (value) {
                       int puan = int.tryParse(value.isEmpty ? '0' : value)!;
                       if (puan >= 0 && puan <= 10) {
-                        _kriterler[3] = int.tryParse(value.isEmpty ? '0' : value)!;
-                        viewModel.setKriterler(_kriterler);
+                        widget.kriterler![3] = int.tryParse(value.isEmpty ? '0' : value)!;
+                        _viewModel.setKriterler(widget.kriterler!);
                       } else {
                         _kriter4Controller.text = '0';
                       }
@@ -158,8 +169,8 @@ class _CustomKriterDialogState extends BaseState<CustomKriterDialog> {
                     onChanged: (value) {
                       int puan = int.tryParse(value.isEmpty ? '0' : value)!;
                       if (puan >= 0 && puan <= 10) {
-                        _kriterler[4] = int.tryParse(value.isEmpty ? '0' : value)!;
-                        viewModel.setKriterler(_kriterler);
+                        widget.kriterler![4] = int.tryParse(value.isEmpty ? '0' : value)!;
+                        _viewModel.setKriterler(widget.kriterler!);
                       } else {
                         _kriter5Controller.text = '0';
                       }
@@ -170,7 +181,7 @@ class _CustomKriterDialogState extends BaseState<CustomKriterDialog> {
                     decoration: const InputDecoration(labelText: 'Açıklama', focusColor: Colors.blue),
                     controller: _aciklamaController,
                     onChanged: (value) {
-                      viewModel.setAciklama(value);
+                      _viewModel.setAciklama(value);
                     },
                   ),
                 ],
@@ -190,19 +201,19 @@ class _CustomKriterDialogState extends BaseState<CustomKriterDialog> {
         ],
       ),
       onModelReady: (model) {
-        viewModel = model;
+        _viewModel = model;
       },
     );
   }
 
   void buildOkButtononPressed() {
-    print('model : $viewModel ogrenciid:${widget.ogrenciId} temrin id: ${widget.parametreler![2]}');
+    print('model : $_viewModel ogrenciid:${widget.ogrenciId} temrin id: ${widget.parametreler![2]}');
     String key =
         "${widget.parametreler![0]}-${widget.parametreler![1]}-${widget.parametreler![2]}-${widget.ogrenciId!}";
     print('key $key');
-    _addTransactionTemrinnot(key, widget.transaction!.id, widget.parametreler![2], widget.ogrenciId!, viewModel.puan,
-        _aciklamaController.text, viewModel.kriterler);
-    Navigator.of(context).pop(viewModel);
+    _addTransactionTemrinnot(key, 0, widget.parametreler![2], widget.ogrenciId!, _viewModel.toplam,
+        _aciklamaController.text, _viewModel.kriterler);
+    Navigator.of(context).pop(_viewModel);
   }
 
   Future _addTransactionTemrinnot(

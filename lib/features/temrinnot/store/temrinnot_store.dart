@@ -43,13 +43,19 @@ abstract class _TemrinnotId with Store {
     //print('aciklama $aciklama');
   }
 
+  @action
+  void setToplam(int toplam) {
+    puan = toplam;
+    print('set toplam $puan');
+  }
+
   @computed
   int get toplam {
     int toplam = 0;
     for (var puan in kriterler) {
       toplam += puan;
     }
-    puan = toplam;
+    setToplam(toplam);
     return toplam;
   }
 }
