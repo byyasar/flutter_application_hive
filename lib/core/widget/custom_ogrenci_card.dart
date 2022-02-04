@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_hive/constants/app_constants.dart';
 import 'package:flutter_application_hive/constants/icon_constans.dart';
+import 'package:flutter_application_hive/core/widget/custom_kriternot_dialog.dart';
 import 'package:flutter_application_hive/features/helper/sinif_listesi_helper.dart';
 import 'package:flutter_application_hive/features/ogrenci/model/ogrenci_model.dart';
 
@@ -8,24 +9,12 @@ class CustomOgrenciCard extends StatefulWidget {
   final OgrenciModel transaction;
   final int index;
   final TextEditingController? puanController;
-  final TextEditingController aciklamaController;
-  final TextEditingController kriter1Controller;
-  final TextEditingController kriter2Controller;
-  final TextEditingController kriter3Controller;
-  final TextEditingController kriter4Controller;
-  final TextEditingController kriter5Controller;
 
   const CustomOgrenciCard({
     Key? key,
     required this.transaction,
     required this.index,
     required this.puanController,
-    required this.aciklamaController,
-    required this.kriter1Controller,
-    required this.kriter2Controller,
-    required this.kriter3Controller,
-    required this.kriter4Controller,
-    required this.kriter5Controller,
   }) : super(key: key);
 
   @override
@@ -78,8 +67,10 @@ class _CustomOgrenciCardState extends State<CustomOgrenciCard> {
               ], */
                   Expanded(
                       flex: 3,
-                      child: CircleAvatar(child: Text( widget.puanController!.text),)
-                      
+                      child: CircleAvatar(
+                        child: Text(widget.puanController!.text),
+                      )
+
                       /* TextFormField(
                         onTap: () => widget.puanController!.clear(),
                         controller: widget.puanController,
@@ -87,13 +78,20 @@ class _CustomOgrenciCardState extends State<CustomOgrenciCard> {
                         maxLength: 3,
                         keyboardType: TextInputType.number,
                         style: const TextStyle(fontSize: 28),
-                      )*/), 
+                      )*/
+                      ),
                 ],
               ),
-              onLongPress:(){debugPrint('uzun basıldı ${widget.puanController}');},
+              onLongPress: () {
+                debugPrint('uzun basıldı ${widget.puanController}');
+                showDialog(
+                    context: context,
+                    builder: (context) => CustomKriterDialog(
+                          onClickedDone: addTransaction,
+                        ));
+              },
               subtitle: Text(
                   "Nu: ${widget.transaction.nu} Sınıf: ${_sinifListesiHelper.getItemId(widget.transaction.sinifId)!.sinifAd}"),
-              
             ),
           ),
           Expanded(
@@ -108,4 +106,6 @@ class _CustomOgrenciCardState extends State<CustomOgrenciCard> {
       ),
     );
   }
+
+  addTransaction(int id) {}
 }

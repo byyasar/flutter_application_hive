@@ -20,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 3), () async {
+    Future.delayed(const Duration(seconds: 1), () async {
       await Hive.initFlutter();
       Hive.registerAdapter(OgrenciModelAdapter());
       Hive.registerAdapter(DersModelAdapter());

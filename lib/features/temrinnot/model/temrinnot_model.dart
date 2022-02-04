@@ -17,15 +17,16 @@ class TemrinnotModel extends HiveObject {
   @HiveField(4)
   String notlar;
   @HiveField(5)
-  bool gelmedi ;
-  
+  bool gelmedi;
+  @HiveField(6, defaultValue: [0])
+  List<int> kriterler;
 
-  TemrinnotModel({
-    required this.id,
-    required this.temrinId,
-    required this.ogrenciId,
-    required this.puan,
-    required this.notlar,
-    required this.gelmedi
-  });
+  TemrinnotModel(
+      {required this.id,
+      required this.temrinId,
+      required this.ogrenciId,
+      required this.puan,
+      required this.notlar,
+      required this.gelmedi,
+      required this.kriterler});
 }

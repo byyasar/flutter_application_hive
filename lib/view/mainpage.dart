@@ -42,9 +42,9 @@ class _MainPageState extends BaseState<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    /* _viewModelDers.setFiltreDersId(4);
-    _viewModelSinif.setFiltreSinifId(2);
-    _viewModelTemrin.setFiltretemrinId(1); */
+    _viewModelDers.setFiltreDersId(0);
+    _viewModelSinif.setFiltreSinifId(0);
+    _viewModelTemrin.setFiltretemrinId(0); 
     return SafeArea(
       child: Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

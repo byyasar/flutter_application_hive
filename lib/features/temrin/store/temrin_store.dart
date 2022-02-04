@@ -31,4 +31,6 @@ abstract class _TemrinId with Store {
     this.temrinKonusu = temrinKonusu;
     //print('temrin adı:$temrinKonusu');
   }
+
+
 }
