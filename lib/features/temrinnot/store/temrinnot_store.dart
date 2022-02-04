@@ -34,13 +34,13 @@ abstract class _TemrinnotId with Store {
   @action
   void setKriterler(List<int> kriterler) {
     this.kriterler = kriterler;
-    print('kriterler $kriterler');
+    // print('kriterler $kriterler');
   }
 
   @action
   void setAciklama(String aciklama) {
     this.aciklama = aciklama;
-    print('aciklama $aciklama');
+    //print('aciklama $aciklama');
   }
 
   @computed
@@ -49,6 +49,7 @@ abstract class _TemrinnotId with Store {
     for (var puan in kriterler) {
       toplam += puan;
     }
+    puan = toplam;
     return toplam;
   }
 }

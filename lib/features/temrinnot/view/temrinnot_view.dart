@@ -14,7 +14,7 @@ import 'package:flutter_application_hive/features/temrinnot/model/temrinnot_mode
 
 // ignore: must_be_immutable
 class TemrinNotViewPage extends StatefulWidget {
-  List parametreler = [];
+  List<int> parametreler = [];
 
   TemrinNotViewPage({Key? key, required this.parametreler}) : super(key: key);
 
@@ -24,12 +24,6 @@ class TemrinNotViewPage extends StatefulWidget {
 
 class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
   List<TextEditingController> _puanControllers = [];
-  /*  
-  List<TextEditingController> _kriter1Controller = [];
-  List<TextEditingController> _kriter2Controller = [];
-  List<TextEditingController> _kriter3Controller = [];
-  List<TextEditingController> _kriter4Controller = [];
-  List<TextEditingController> _kriter5Controller = []; */
   List<OgrenciModel> _transactionsOgrenciSinif = [];
   List<TemrinnotModel> _transactionsTemrinnot = [];
   List<TextEditingController> _aciklamaControllers = [];
@@ -49,8 +43,8 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
         padding: const EdgeInsets.all(8.0),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-          floatingActionButton: _buildFlaotingActionButton(),
+          //floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          //floatingActionButton: _buildFlaotingActionButton(),
           appBar: AppBar(title: const Text('TNS-Temrin Not Girişi'), centerTitle: true),
           body: Column(
             children: [
@@ -62,7 +56,7 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
                         .temrinnotFiltreListesiGetir(widget.parametreler[2]),
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
                       if (snapshot.hasData) {
-                        return _buildOgrenciListesi(context, widget.parametreler[0], snapshot.data);
+                        return _buildOgrenciListesi(context, widget.parametreler[0]);
                       } else {
                         return const Text("Datayok");
                       }
@@ -89,9 +83,9 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
     );
   }
 
-  _buildOgrenciListesi(BuildContext context, int filtreSinifId, List<TemrinnotModel> temrinnotModelList) {
-    // List filtretemrinList = [];
-    //filtretemrinList = temrinnotModelList;
+  _buildOgrenciListesi(BuildContext context, int filtreSinifId) {
+    /* List<TemrinnotModel> _gelentemrinnotListesi = [];
+    _gelentemrinnotListesi = temrinnotModelList; */
 
     return ListView.builder(
       shrinkWrap: true,
@@ -102,13 +96,16 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
             _puanControllers[index].text.isEmpty || _puanControllers[index].text.toUpperCase() == 'G'
                 ? '-1'
                 : _puanControllers[index].text);
-        _aciklamaControllers[index].text = _bosKontrol(index, '_aciklamaControllers');
+        // _aciklamaControllers[index].text = _bosKontrol(index, '_aciklamaControllers');
 
         final transaction = _transactionsOgrenciSinif[index];
         return CustomOgrenciCard(
           transaction: transaction,
           index: index,
           puanController: _puanControllers[index],
+          temrinId: widget.parametreler[2], parametreler: widget.parametreler,
+
+          //temrinnotModel: _gelentemrinnotListesi[index],
         );
       },
     );
@@ -118,17 +115,6 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
     switch (kontrollername) {
       case '_aciklamaControllers':
         return _aciklamaControllers[index].text.isEmpty ? '' : _aciklamaControllers[index].text;
-      /*      case '_kriter1Controller':
-        return _kriter1Controller[index].text.isEmpty ? '' : _kriter1Controller[index].text;
-      case '_kriter2Controller':
-        return _kriter2Controller[index].text.isEmpty ? '' : _kriter2Controller[index].text;
-      case '_kriter3Controller':
-        return _kriter3Controller[index].text.isEmpty ? '' : _kriter3Controller[index].text;
-      case '_kriter4Controller':
-        return _kriter4Controller[index].text.isEmpty ? '' : _kriter4Controller[index].text;
-      case '_kriter5Controller':
-        return _kriter5Controller[index].text.isEmpty ? '' : _kriter5Controller[index].text;
- */
       default:
         return '';
     }
@@ -203,34 +189,20 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
     for (var item in _transactionsTemrinnot) {
       //print('Tid: ${item.temrinId} id: ${item.id} öğrenci id: ${item.ogrenciId} puan: ${item.puan} ${item.key}');
       _puanControllers[item.id].text = item.puan == -1 ? 'G' : item.puan.toString();
-      _aciklamaControllers[item.id].text = item.notlar;
-      /*   _kriter1Controller[item.id].text = item.puan.toString();
-      _kriter2Controller[item.id].text = item.puan.toString();
-      _kriter3Controller[item.id].text = item.puan.toString();
-      _kriter4Controller[item.id].text = item.puan.toString();
-      _kriter5Controller[item.id].text = item.puan.toString(); */
+      //_aciklamaControllers[item.id].text = item.notlar;
     }
   }
 
-  void _buildSinifListesi() {
+  Future<void> _buildSinifListesi() async {
     _puanControllers = [];
     _aciklamaControllers = [];
-    /* _kriter1Controller = [];
-    _kriter2Controller = [];
-    _kriter3Controller = [];
-    _kriter4Controller = [];
-    _kriter5Controller = []; */
     _puanlar = [];
     _transactionsOgrenciSinif =
         OgrenciListesiHelper(ApplicationConstants.boxOgrenci).getFilteredValues('SinifId', widget.parametreler[0])!;
     for (var i = 0; i < _transactionsOgrenciSinif.length; i++) {
       _puanControllers.add(TextEditingController());
-      _aciklamaControllers.add(TextEditingController());
-      /*   _kriter1Controller.add(TextEditingController());
-      _kriter2Controller.add(TextEditingController());
-      _kriter3Controller.add(TextEditingController());
-      _kriter4Controller.add(TextEditingController());
-      _kriter5Controller.add(TextEditingController()); */
+
+      //_aciklamaControllers.add(TextEditingController());
       _puanlar.add(0);
     }
   }

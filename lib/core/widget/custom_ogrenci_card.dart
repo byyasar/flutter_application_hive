@@ -8,13 +8,21 @@ import 'package:flutter_application_hive/features/ogrenci/model/ogrenci_model.da
 class CustomOgrenciCard extends StatefulWidget {
   final OgrenciModel transaction;
   final int index;
+  final int temrinId;
   final TextEditingController? puanController;
+  final List<int>? parametreler;
+
+  //final TemrinnotModel? temrinnotModel;
 
   const CustomOgrenciCard({
     Key? key,
     required this.transaction,
     required this.index,
     required this.puanController,
+    required this.temrinId,
+    required this.parametreler,
+
+    // required this.temrinnotModel,
   }) : super(key: key);
 
   @override
@@ -22,8 +30,11 @@ class CustomOgrenciCard extends StatefulWidget {
 }
 
 class _CustomOgrenciCardState extends State<CustomOgrenciCard> {
+  //final _viewModelTemrin = TemrinStore();
   @override
   Widget build(BuildContext context) {
+    //final _viewModelTemrin = TemrinStore();
+
     SinifListesiHelper _sinifListesiHelper = SinifListesiHelper(ApplicationConstants.boxSinif);
     return Card(
       //color: Colors.white60,
@@ -42,29 +53,6 @@ class _CustomOgrenciCardState extends State<CustomOgrenciCard> {
                       style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                   ),
-                  //const Spacer(flex: 1),
-                  /*children: [
-                TextFormField(
-                    decoration: const InputDecoration(labelText: '1-Bilgi -20P', focusColor: Colors.blue),
-                    controller: widget.kriter1Controller),
-                TextFormField(
-                    decoration:
-                        const InputDecoration(labelText: '2-Çözümü anlama ve aktarma -30P', focusColor: Colors.blue),
-                    controller: widget.kriter2Controller),
-                TextFormField(
-                    decoration: const InputDecoration(
-                        labelText: '3-Doğru şekilde uygulama ve çalıştırma -30P', focusColor: Colors.blue),
-                    controller: widget.kriter3Controller),
-                TextFormField(
-                    decoration: const InputDecoration(labelText: '4-Tasarım -10P', focusColor: Colors.blue),
-                    controller: widget.kriter4Controller),
-                TextFormField(
-                    decoration: const InputDecoration(labelText: '5-Süre -10P', focusColor: Colors.blue),
-                    controller: widget.kriter5Controller),
-                TextFormField(
-                    decoration: const InputDecoration(labelText: 'Açıklama', focusColor: Colors.blue),
-                    controller: widget.aciklamaController),
-              ], */
                   Expanded(
                       flex: 3,
                       child: CircleAvatar(
@@ -84,11 +72,20 @@ class _CustomOgrenciCardState extends State<CustomOgrenciCard> {
               ),
               onLongPress: () {
                 debugPrint('uzun basıldı ${widget.puanController}');
+                // _viewModelOgrenci.setFiltreOgrenciId(widget.transaction.id);
+                // _viewModelTemrin.setFiltretemrinId(widget.temrinId);
                 showDialog(
                     context: context,
                     builder: (context) => CustomKriterDialog(
                           onClickedDone: addTransaction,
-                        ));
+                          ogrenciId: widget.transaction.id,
+                          parametreler: widget.parametreler,
+                        )).then((value) {
+                  //print('Gelen puan ${value.puan}  ogrenci id: ${_viewModelOgrenci.filtreOgrenciId}');
+                  setState(() {
+                    widget.puanController!.text = value.puan.toString();
+                  });
+                });
               },
               subtitle: Text(
                   "Nu: ${widget.transaction.nu} Sınıf: ${_sinifListesiHelper.getItemId(widget.transaction.sinifId)!.sinifAd}"),
@@ -98,7 +95,9 @@ class _CustomOgrenciCardState extends State<CustomOgrenciCard> {
             flex: 1,
             child: IconButton(
                 onPressed: () {
-                  widget.puanController!.text = "G";
+                  setState(() {
+                    widget.puanController!.text = "G";
+                  });
                 },
                 icon: IconsConstans.gelmediIcon),
           ),
@@ -107,5 +106,7 @@ class _CustomOgrenciCardState extends State<CustomOgrenciCard> {
     );
   }
 
-  addTransaction(int id) {}
+  addTransaction(int id) {
+    // print('Gelen temrinnot $id');
+  }
 }

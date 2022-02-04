@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_hive/core/base/base_state.dart';
+import 'package:flutter_application_hive/core/boxes.dart';
 import 'package:flutter_application_hive/core/view/base_view.dart';
 import 'package:flutter_application_hive/core/widget/cancel_button.dart';
 import 'package:flutter_application_hive/core/widget/ok_button.dart';
@@ -9,13 +10,17 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 
 class CustomKriterDialog extends StatefulWidget {
   final TemrinnotModel? transaction;
-
+  final int? ogrenciId;
+  //final int? temrinId;
+  final List<int>? parametreler;
   final Function(int id) onClickedDone;
 
   const CustomKriterDialog({
     Key? key,
     this.transaction,
     required this.onClickedDone,
+    required this.ogrenciId,
+    required this.parametreler,
   }) : super(key: key);
 
   @override
@@ -25,6 +30,7 @@ class CustomKriterDialog extends StatefulWidget {
 class _CustomKriterDialogState extends BaseState<CustomKriterDialog> {
   final formKey = GlobalKey<FormState>();
   late TemrinnotStore viewModel;
+
   final _aciklamaController = TextEditingController();
   final _kriter1Controller = TextEditingController();
   final _kriter2Controller = TextEditingController();
@@ -32,6 +38,7 @@ class _CustomKriterDialogState extends BaseState<CustomKriterDialog> {
   final _kriter4Controller = TextEditingController();
   final _kriter5Controller = TextEditingController();
   final List<int> _kriterler = [0, 0, 0, 0, 0];
+  int _toplam = 0;
 
   @override
   void initState() {
@@ -64,7 +71,8 @@ class _CustomKriterDialogState extends BaseState<CustomKriterDialog> {
                   const Divider(height: 10),
 
                   Observer(builder: (_) {
-                    return Text('TOPLAM =${viewModel.toplam}');
+                    _toplam = viewModel.toplam;
+                    return Text('TOPLAM =$_toplam');
                   }),
                   const Divider(height: 10),
                   //"buildTemrin(context, transactionsTemrin),
@@ -188,7 +196,26 @@ class _CustomKriterDialogState extends BaseState<CustomKriterDialog> {
   }
 
   void buildOkButtononPressed() {
-    print(viewModel);
+    print('model : $viewModel ogrenciid:${widget.ogrenciId} temrin id: ${widget.parametreler![2]}');
+    String key =
+        "${widget.parametreler![0]}-${widget.parametreler![1]}-${widget.parametreler![2]}-${widget.ogrenciId!}";
+    print('key $key');
+    _addTransactionTemrinnot(key, widget.transaction!.id, widget.parametreler![2], widget.ogrenciId!, viewModel.puan,
+        _aciklamaController.text, viewModel.kriterler);
     Navigator.of(context).pop(viewModel);
+  }
+
+  Future _addTransactionTemrinnot(
+      String key, int id, int temrinId, int ogrenciId, int puan, String notlar, List<int> kriterler) async {
+    final transaction = TemrinnotModel(
+        id: id,
+        temrinId: temrinId,
+        ogrenciId: ogrenciId,
+        puan: puan,
+        notlar: notlar,
+        gelmedi: false,
+        kriterler: kriterler);
+    final box = TemrinnotBoxes.getTransactions();
+    box.put(key, transaction);
   }
 }

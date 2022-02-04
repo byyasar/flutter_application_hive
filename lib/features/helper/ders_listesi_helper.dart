@@ -21,12 +21,14 @@ class DersListesiHelper extends IListeHelper {
     }
   }
 
-@override
+  @override
   DersModel? getItemId(int id) {
     List<DersModel> transactionsDersListesiGecici = DersBoxes.getTransactions().values.toList().cast<DersModel>();
     for (var ders in transactionsDersListesiGecici) {
       if (ders.id == id) {
         return ders;
+      } else {
+        return null;
       }
     }
   }
