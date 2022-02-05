@@ -1,9 +1,14 @@
+
+
 import 'package:flutter/material.dart';
+import 'package:flutter_application_hive/constants/app_constants.dart';
+import 'package:flutter_application_hive/constants/icon_constans.dart';
 import 'package:flutter_application_hive/core/base/base_state.dart';
 import 'package:flutter_application_hive/core/boxes.dart';
 import 'package:flutter_application_hive/core/view/base_view.dart';
 import 'package:flutter_application_hive/core/widget/cancel_button.dart';
-import 'package:flutter_application_hive/core/widget/ok_button.dart';
+import 'package:flutter_application_hive/core/widget/custom_menu_button.dart';
+import 'package:flutter_application_hive/features/helper/temrinnot_listesi_helper.dart';
 import 'package:flutter_application_hive/features/temrinnot/model/temrinnot_model.dart';
 import 'package:flutter_application_hive/features/temrinnot/store/temrinnot_store.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -14,12 +19,13 @@ class CustomKriterDialog extends StatefulWidget {
   //final int? temrinId;
   final List<int>? parametreler;
   final List<int>? kriterler;
-  final Function(int id) onClickedDone;
+  
+  //final Function() onClickedDone;
 
   const CustomKriterDialog({
     Key? key,
     this.transaction,
-    required this.onClickedDone,
+   // required this.onClickedDone,
     required this.ogrenciId,
     required this.parametreler,
     required this.kriterler,
@@ -40,12 +46,12 @@ class _CustomKriterDialogState extends BaseState<CustomKriterDialog> {
   final _kriter3Controller = TextEditingController();
   final _kriter4Controller = TextEditingController();
   final _kriter5Controller = TextEditingController();
-  //final List<int> _kriterler = [0, 0, 0, 0, 0];
   int _toplam = 0;
 
   @override
   void initState() {
     super.initState();
+    _aciklamaController.text=_getTransactionAciklama().isEmpty?'':_getTransactionAciklama();
     _kriter1Controller.text = widget.kriterler![0].toString();
     _kriter2Controller.text = widget.kriterler![1].toString();
     _kriter3Controller.text = widget.kriterler![2].toString();
@@ -56,9 +62,9 @@ class _CustomKriterDialogState extends BaseState<CustomKriterDialog> {
         int.tryParse(_kriter3Controller.text.isEmpty ? '0' : _kriter3Controller.text)! +
         int.tryParse(_kriter4Controller.text.isEmpty ? '0' : _kriter4Controller.text)! +
         int.tryParse(_kriter5Controller.text.isEmpty ? '0' : _kriter5Controller.text)!;
-    //_viewModel.setToplam(_toplam);
     _viewModel.setKriterler(widget.kriterler!);
-    //print('acışış $_toplam');
+
+    
   }
 
   @override
@@ -81,10 +87,17 @@ class _CustomKriterDialogState extends BaseState<CustomKriterDialog> {
                 children: <Widget>[
                   const Divider(height: 10),
 
-                  Observer(builder: (_) {
-                    _toplam = _viewModel.toplam;
-                    return Text('TOPLAM =$_toplam');
-                  }),
+                  Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Observer(builder: (_) {
+                        _toplam = _viewModel.toplam;
+                        return Text('TOPLAM =$_toplam');
+                      }), myCustomMenuButton(context, (){
+_buildOkButtononPressed(false);
+                      }, Text('Gelmedi'), Icon(Icons.co2_sharp), Color.fromARGB(0, 255, 255, 255)),
+                    ],
+                  ),
+                 
                   const Divider(height: 10),
                   //"buildTemrin(context, transactionsTemrin),
                   TextFormField(
@@ -100,7 +113,7 @@ class _CustomKriterDialogState extends BaseState<CustomKriterDialog> {
                         widget.kriterler![0] = int.tryParse(value.isEmpty ? '0' : value)!;
                         _viewModel.setKriterler(widget.kriterler!);
                       } else {
-                        _kriter1Controller.text = '0';
+                        _kriter1Controller.text = '';
                       }
                     },
                   ),
@@ -119,7 +132,7 @@ class _CustomKriterDialogState extends BaseState<CustomKriterDialog> {
                         widget.kriterler![1] = int.tryParse(value.isEmpty ? '0' : value)!;
                         _viewModel.setKriterler(widget.kriterler!);
                       } else {
-                        _kriter2Controller.text = '0';
+                        _kriter2Controller.text = '';
                       }
                     },
                   ),
@@ -138,7 +151,7 @@ class _CustomKriterDialogState extends BaseState<CustomKriterDialog> {
                         widget.kriterler![2] = int.tryParse(value.isEmpty ? '0' : value)!;
                         _viewModel.setKriterler(widget.kriterler!);
                       } else {
-                        _kriter3Controller.text = '0';
+                        _kriter3Controller.text = '';
                       }
                     },
                   ),
@@ -155,7 +168,7 @@ class _CustomKriterDialogState extends BaseState<CustomKriterDialog> {
                         widget.kriterler![3] = int.tryParse(value.isEmpty ? '0' : value)!;
                         _viewModel.setKriterler(widget.kriterler!);
                       } else {
-                        _kriter4Controller.text = '0';
+                        _kriter4Controller.text = '';
                       }
                     },
                   ),
@@ -172,7 +185,7 @@ class _CustomKriterDialogState extends BaseState<CustomKriterDialog> {
                         widget.kriterler![4] = int.tryParse(value.isEmpty ? '0' : value)!;
                         _viewModel.setKriterler(widget.kriterler!);
                       } else {
-                        _kriter5Controller.text = '0';
+                        _kriter5Controller.text = '';
                       }
                     },
                   ),
@@ -195,7 +208,8 @@ class _CustomKriterDialogState extends BaseState<CustomKriterDialog> {
             children: [
               buildCancelButton(context),
               const SizedBox(width: 10),
-              buildOkButton(context, buildOkButtononPressed),
+              myCustomMenuButton(context, (){_buildOkButtononPressed(true);}, const Text('Kaydet'), IconsConstans.okIcon, Colors.green)
+             // buildOkButton(context, buildOkButtononPressed),
             ],
           ),
         ],
@@ -206,16 +220,27 @@ class _CustomKriterDialogState extends BaseState<CustomKriterDialog> {
     );
   }
 
-  void buildOkButtononPressed() {
-    print('model : $_viewModel ogrenciid:${widget.ogrenciId} temrin id: ${widget.parametreler![2]}');
+ void _buildOkButtononPressed(bool geldi) { 
     String key =
         "${widget.parametreler![0]}-${widget.parametreler![1]}-${widget.parametreler![2]}-${widget.ogrenciId!}";
-    print('key $key');
-    _addTransactionTemrinnot(key, 0, widget.parametreler![2], widget.ogrenciId!, _viewModel.toplam,
+    if (geldi) {
+      _addTransactionTemrinnot(key, 0, widget.parametreler![2], widget.ogrenciId!, _viewModel.toplam,
         _aciklamaController.text, _viewModel.kriterler);
-    Navigator.of(context).pop(_viewModel);
+    } else {
+      _viewModel.setToplam(-1);
+      _addTransactionTemrinnot(key, 0, widget.parametreler![2], widget.ogrenciId!, _viewModel.toplam,"Gelmedi", [0,0,0,0,0]);
+      
+    }
+   Navigator.of(context).pop(_viewModel);
+    //
   }
+String  _getTransactionAciklama(){
+String key =
+        "${widget.parametreler![0]}-${widget.parametreler![1]}-${widget.parametreler![2]}-${widget.ogrenciId!}";
+    final _box = TemrinnotBoxes.getTransactions();
+return TemrinnotListesiHelper(ApplicationConstants.boxTemrinNot).getItem(key,_box)!=null?TemrinnotListesiHelper(ApplicationConstants.boxTemrinNot).getItem(key,_box)!.notlar:"";
 
+}
   Future _addTransactionTemrinnot(
       String key, int id, int temrinId, int ogrenciId, int puan, String notlar, List<int> kriterler) async {
     final transaction = TemrinnotModel(

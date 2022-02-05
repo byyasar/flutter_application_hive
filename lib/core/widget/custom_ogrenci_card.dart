@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_hive/constants/app_constants.dart';
-import 'package:flutter_application_hive/constants/icon_constans.dart';
 import 'package:flutter_application_hive/core/widget/custom_kriternot_dialog.dart';
 import 'package:flutter_application_hive/features/helper/sinif_listesi_helper.dart';
 import 'package:flutter_application_hive/features/ogrenci/model/ogrenci_model.dart';
@@ -9,6 +8,7 @@ class CustomOgrenciCard extends StatefulWidget {
   final OgrenciModel transaction;
   final int index;
   final int temrinId;
+ 
   final TextEditingController? puanController;
   final List<int>? parametreler;
   final List<int>? kriterler;
@@ -79,15 +79,18 @@ class _CustomOgrenciCardState extends State<CustomOgrenciCard> {
                 showDialog(
                     context: context,
                     builder: (context) => CustomKriterDialog(
-                          onClickedDone: addTransaction,
+                          //onClickedDone: addTransaction,
                           ogrenciId: widget.transaction.id,
                           parametreler: widget.parametreler,
                           kriterler: widget.kriterler,
+                          
                         )).then((value) {
-                  //print('Gelen puan ${value.puan}  ogrenci id: ${_viewModelOgrenci.filtreOgrenciId}');
-                  setState(() {
-                    widget.puanController!.text = value.puan.toString();
+                 if (value!=null) {
+                    setState(() {
+                    widget.puanController!.text =value.puan==-1?'G': value.puan.toString();
                   });
+                 } 
+                 
                 });
               },
               subtitle: Text(
@@ -109,7 +112,5 @@ class _CustomOgrenciCardState extends State<CustomOgrenciCard> {
     );
   }
 
-  addTransaction(int id) {
-    // print('Gelen temrinnot $id');
-  }
+  
 }
