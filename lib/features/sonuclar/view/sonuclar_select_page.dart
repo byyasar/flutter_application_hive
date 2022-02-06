@@ -20,7 +20,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 //import 'dart:convert' as convert;
 //import 'package:logger/logger.dart';
 import 'package:flutter_application_hive/core/widget/build_drawer.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 
 class SonuclarSelectPage extends StatefulWidget {
   const SonuclarSelectPage({Key? key}) : super(key: key);

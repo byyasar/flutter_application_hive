@@ -23,7 +23,7 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
   List<TextEditingController> _puanControllers = [];
   List<OgrenciModel> _transactionsOgrenciSinif = [];
   List<TemrinnotModel> _transactionsTemrinnot = [];
-  List<TextEditingController> _aciklamaControllers = [];
+  //List<TextEditingController> _aciklamaControllers = [];
   List<int> _puanlar = [];
   List<List<int>> _kriterler = [];
 
@@ -98,14 +98,14 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
     );
   }
 
-  String _bosKontrol(int index, String kontrollername) {
+/*   String _bosKontrol(int index, String kontrollername) {
     switch (kontrollername) {
       case '_aciklamaControllers':
         return _aciklamaControllers[index].text.isEmpty ? '' : _aciklamaControllers[index].text;
       default:
         return '';
     }
-  }
+  } */
 
   
 
@@ -137,13 +137,13 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
       //_aciklamaControllers[item.id].text = item.notlar;
       _kriterler[item.ogrenciId] = item.kriterler;
       //_kriterler[item.id].addAll(item.kriterler);
-      print(_kriterler[item.id]);
+     // print(_kriterler[item.id]);
     }
   }
 
   Future<void> _buildSinifListesi() async {
     _puanControllers = [];
-    _aciklamaControllers = [];
+   // _aciklamaControllers = [];
     _puanlar = [];
     _kriterler = [];
     _transactionsOgrenciSinif =

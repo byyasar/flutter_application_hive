@@ -92,5 +92,7 @@ class TemrinnotListesiHelper extends IListeHelper<TemrinnotModel> {
   }
 
   @override
-  TemrinnotModel? getItemId(int id) {}
+  TemrinnotModel? getItemId(int id) {
+    return null;
+  }
 }

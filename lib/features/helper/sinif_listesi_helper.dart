@@ -33,6 +33,7 @@ class SinifListesiHelper extends IListeHelper<SinifModel> {
         return sinif;
       }
     }
+    return null;
   }
 
   @override

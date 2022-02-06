@@ -16,7 +16,7 @@ Widget myCustomMenuButto2(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [btnIcon, const SizedBox(width: 10), SizedBox(width: genislik,
-        child: AutoSizeText(btnText, style: TextStyle(fontSize: 18),
+        child: AutoSizeText(btnText, style: const TextStyle(fontSize: 18),
   minFontSize: 18,
   maxLines: 3,),
       )],

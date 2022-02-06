@@ -46,7 +46,7 @@ abstract class _TemrinnotId with Store {
   @action
   void setToplam(int toplam) {
     puan = toplam;
-    print('set toplam $puan');
+   // print('set toplam $puan');
   }
 
   @computed

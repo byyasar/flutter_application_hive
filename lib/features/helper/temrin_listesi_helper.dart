@@ -55,6 +55,8 @@ class TemrinListesiHelper extends IListeHelper<TemrinModel> {
 
   @override
   TemrinModel? getItemId(int id) {
+    return null;
+  
    
   }
 }
