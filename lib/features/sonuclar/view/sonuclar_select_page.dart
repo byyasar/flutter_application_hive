@@ -5,6 +5,7 @@ import 'package:flutter_application_hive/core/boxes.dart';
 import 'package:flutter_application_hive/core/widget/custom_appbar.dart';
 import 'package:flutter_application_hive/core/widget/custom_ders_dialog.dart';
 import 'package:flutter_application_hive/core/widget/custom_menu_button.dart';
+import 'package:flutter_application_hive/core/widget/custom_menu_button2.dart';
 import 'package:flutter_application_hive/core/widget/custom_ogrenci_dialog.dart';
 import 'package:flutter_application_hive/core/widget/custom_sinif_dialog.dart';
 import 'package:flutter_application_hive/features/dersler/model/ders_model.dart';
@@ -19,6 +20,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 //import 'dart:convert' as convert;
 //import 'package:logger/logger.dart';
 import 'package:flutter_application_hive/core/widget/build_drawer.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class SonuclarSelectPage extends StatefulWidget {
   const SonuclarSelectPage({Key? key}) : super(key: key);
@@ -146,7 +148,7 @@ class _SonuclarSelectPageState extends BaseState<SonuclarSelectPage> {
           IconsConstans.sinifIcon,
           null);
   _buildDersSec(BuildContext context) => Observer(builder: (context) {
-        return myCustomMenuButton(
+        return myCustomMenuButto2(
             context,
             _viewModelSinif.filtreSinifId == -1
                 ? null
@@ -168,9 +170,9 @@ class _SonuclarSelectPageState extends BaseState<SonuclarSelectPage> {
                       }
                     });
                   },
-            Text(_viewModelDers.dersAd.isEmpty ? _dersSecText : _viewModelDers.dersAd),
+            (_viewModelDers.dersAd.isEmpty ? _dersSecText : _viewModelDers.dersAd),
             IconsConstans.dersIcon,
-            null);
+            null,dyanmicWidth(.5));
       });
   _buildOgrenciSec(BuildContext context) => Observer(builder: (context) {
         return myCustomMenuButton(
@@ -198,31 +200,7 @@ class _SonuclarSelectPageState extends BaseState<SonuclarSelectPage> {
             IconsConstans.ogrenciIcon,
             null);
       });
-  /* _buildTemrinSec(BuildContext context) => Observer(builder: (context) {
-        return myCustomMenuButton(
-            context,
-            _viewModelDers.filtredersId == -1
-                ? null
-                : () {
-                    showDialog(
-                        context: context,
-                        builder: (context) => CustomTemrinDialog(
-                            gelenDersId: _viewModelDers.filtredersId,
-                            onClickedDone: _addTransactionTemrin)).then((value) {
-                      if (value != null) {
-                        _temrinSecText = value.temrinKonusu;
-                        _viewModelTemrin.setFiltretemrinId(value.temrinId);
-                        if (value.temrinId == -1) {
-                          _temrinSecText = "Temrin Seç";
-                        }
-                        _viewModelTemrin.settemrinKonusu(_temrinSecText);
-                        Logger().i('Seçilen temrin id ${value.temrinId} temrin konusu: ${value.temrinKonusu}');
-                      }
-                    });
-                  },
-            Text(_viewModelTemrin.temrinKonusu.isEmpty ? _temrinSecText : _viewModelTemrin.temrinKonusu),
-            const Icon(Icons.class__outlined));
-      }); */
+ 
 
   void _tumSecimleriSifirla() {
     // Logger().i('tum secimler sıfırlandı');

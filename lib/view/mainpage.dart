@@ -6,6 +6,7 @@ import 'package:flutter_application_hive/core/widget/build_drawer.dart';
 import 'package:flutter_application_hive/core/widget/custom_appbar.dart';
 import 'package:flutter_application_hive/core/widget/custom_ders_dialog.dart';
 import 'package:flutter_application_hive/core/widget/custom_menu_button.dart';
+import 'package:flutter_application_hive/core/widget/custom_menu_button2.dart';
 import 'package:flutter_application_hive/core/widget/custom_sinif_dialog.dart';
 import 'package:flutter_application_hive/core/widget/custom_temrin_dialog.dart';
 import 'package:flutter_application_hive/features/dersler/model/ders_model.dart';
@@ -17,7 +18,6 @@ import 'package:flutter_application_hive/features/temrin/store/temrin_store.dart
 import 'package:flutter_application_hive/features/temrinnot/view/temrinnot_view.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 //import 'package:logger/logger.dart';
-
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
 
@@ -137,31 +137,34 @@ class _MainPageState extends BaseState<MainPage> {
           IconsConstans.sinifIcon,
           null);
   _buildDersSec(BuildContext context) => Observer(builder: (context) {
-        return myCustomMenuButton(
-            context,
-            _viewModelSinif.filtreSinifId == -1
-                ? null
-                : () {
-                    showDialog(
-                        context: context,
-                        builder: (context) => CustomDersDialog(
-                            gelensinifId: _viewModelSinif.filtreSinifId,
-                            onClickedDone: _addTransactionDers)).then((value) {
-                      _temrinSecimiSifirla();
-                      if (value != null) {
-                        _dersSecText = value.dersAd;
-                        _viewModelDers.setFiltreDersId(value.dersId);
-                        if (value.dersId == -1) {
-                          _dersSecText = "Ders Seç";
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: myCustomMenuButto2(
+              context,
+              _viewModelSinif.filtreSinifId == -1
+                  ? null
+                  : () {
+                      showDialog(
+                          context: context,
+                          builder: (context) => CustomDersDialog(
+                              gelensinifId: _viewModelSinif.filtreSinifId,
+                              onClickedDone: _addTransactionDers)).then((value) {
+                        _temrinSecimiSifirla();
+                        if (value != null) {
+                          _dersSecText = value.dersAd;
+                          _viewModelDers.setFiltreDersId(value.dersId);
+                          if (value.dersId == -1) {
+                            _dersSecText = "Ders Seç";
+                          }
+                          _viewModelDers.setDersAd(_dersSecText);
+                          //Logger().i('Seçilen ders id ${value.dersId} ders: ${value.dersAd}');
                         }
-                        _viewModelDers.setDersAd(_dersSecText);
-                        //Logger().i('Seçilen ders id ${value.dersId} ders: ${value.dersAd}');
-                      }
-                    });
-                  },
-            Text(_viewModelDers.dersAd.isEmpty ? _dersSecText : _viewModelDers.dersAd),
-            IconsConstans.dersIcon,
-            null);
+                      });
+                    },
+              (_viewModelDers.dersAd.isEmpty ? _dersSecText : _viewModelDers.dersAd),
+              IconsConstans.dersIcon,
+              null,dyanmicWidth(.5)),
+        );
       });
   _buildTemrinSec(BuildContext context) => Observer(builder: (context) {
         return myCustomMenuButton(
