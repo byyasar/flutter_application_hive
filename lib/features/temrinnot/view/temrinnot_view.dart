@@ -46,8 +46,8 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
           appBar: AppBar(title: const Text('TNS-Temrin Not Girişi'), centerTitle: true),
           body: Column(
             children: [
-              Text(
-                  ' Sınıf:${widget.parametreler![0]} Ders :${widget.parametreler![1]} Temrin: ${widget.parametreler![2]}'),
+            /*   Text(
+                  ' Sınıf:${widget.parametreler![0]} Ders :${widget.parametreler![1]} Temrin: ${widget.parametreler![2]}'), */
               Expanded(
                 child: FutureBuilder(
                     future: TemrinnotListesiHelper(ApplicationConstants.boxTemrinNot)
@@ -67,19 +67,7 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
     );
   }
 
-/*   Widget _buildFlaotingActionButton() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 24),
-      child: FloatingActionButton(
-        heroTag: '2',
-        child: IconsConstans.saveIcon,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        onPressed: () {
-          _buildTemrinNotKaydet();
-        },
-      ),
-    );
-  } */
+
 
   _buildOgrenciListesi(BuildContext context, int filtreSinifId) {
     /* List<TemrinnotModel> _gelentemrinnotListesi = [];
@@ -119,36 +107,7 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
     }
   }
 
-  /* void _buildTemrinNotKaydet() {
-    try {
-      String key = "";
-      for (var i = 0; i < _transactionsOgrenciSinif.length; i++) {
-        key =
-            "${widget.parametreler[0]}-${widget.parametreler[1]}-${widget.parametreler[2]}-${_transactionsOgrenciSinif[i].id}";
-        _addTransactionTemrinnot(
-            key,
-            i,
-            widget.parametreler[2],
-            _transactionsOgrenciSinif[i].id,
-            int.parse(_puanControllers[i].text.isEmpty || _puanControllers[i].text.toUpperCase() == "G"
-                ? '-1'
-                : _puanControllers[i].text),
-            _bosKontrol(i, '_aciklamaControllers'),
-            kriterler);
-        if (i == _transactionsOgrenciSinif.length - 1) {
-          customDialogInfo(context, 'Kayıt işlemi', 'Başarılı', 'Tamam');
-          //setState(() {});
-        } else {
-          //  showLoaderDialog(context);
-
-          //Navigator.pop(context);
-        }
-      }
-    } catch (e) {
-      //Logger().e(e);
-      customDialogInfo(context, 'Kayıt işlemi', 'Hatalı $e', 'Tamam');
-    }
-  } */
+  
 
   showLoaderDialog(BuildContext context) {
     AlertDialog alert = AlertDialog(
@@ -168,19 +127,6 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
     );
   }
 
-/*   Future _addTransactionTemrinnot(
-      String key, int id, int temrinId, int ogrenciId, int puan, String notlar, List<int> kriterler) async {
-    final transaction = TemrinnotModel(
-        id: id,
-        temrinId: temrinId,
-        ogrenciId: ogrenciId,
-        puan: puan,
-        notlar: notlar,
-        gelmedi: false,
-        kriterler: [0, 0, 0, 0, 0]);
-    final box = TemrinnotBoxes.getTransactions();
-    box.put(key, transaction);
-  } */
 
   _gettemrinnotdata() async {
     _transactionsTemrinnot = await TemrinnotListesiHelper(ApplicationConstants.boxTemrinNot)

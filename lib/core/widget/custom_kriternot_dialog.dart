@@ -85,16 +85,18 @@ class _CustomKriterDialogState extends BaseState<CustomKriterDialog> {
               width: dyanmicWidth(.95),
               child: Column(
                 children: <Widget>[
-                  const Divider(height: 10),
+                  const Divider(height: 10),Observer(builder: (_) {
+                        _toplam = _viewModel.toplam;
+                        return Text('TOPLAM =$_toplam');
+                      }),
 
                   Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Observer(builder: (_) {
-                        _toplam = _viewModel.toplam;
-                        return Text('TOPLAM =$_toplam');
-                      }), myCustomMenuButton(context, (){
+                       myCustomMenuButton(context, (){
+_buildAllOkButtononPressed;
+                      }, const Text('Tam'), IconsConstans.fullokIcon, Colors.blueAccent),myCustomMenuButton(context, (){
 _buildOkButtononPressed(false);
-                      }, Text('Gelmedi'), Icon(Icons.co2_sharp), Color.fromARGB(0, 255, 255, 255)),
+                      }, const Text('Gelmedi'), IconsConstans.gelmediIcon,Colors.red),
                     ],
                   ),
                  
@@ -139,7 +141,7 @@ _buildOkButtononPressed(false);
                   TextFormField(
                     style: const TextStyle(fontSize: 24),
                     decoration: const InputDecoration(
-                        labelText: '3-Doğru şekilde uygulama ve çalıştırma -30P',
+                        labelText: '3-Doğru şekilde çalıştırma -30P',
                         focusColor: Colors.blue,
                         labelStyle: TextStyle(fontSize: 18)),
                     controller: _kriter3Controller,
@@ -219,6 +221,21 @@ _buildOkButtononPressed(false);
       },
     );
   }
+  void get _buildAllOkButtononPressed{
+                        
+                        _kriter1Controller.text='20';
+                        _kriter2Controller.text='30';
+                        _kriter3Controller.text='30';
+                        _kriter4Controller.text='10';
+                        _kriter5Controller.text='10';
+                        _aciklamaController.text='';
+                        widget.kriterler![0] = 20;
+                        widget.kriterler![1] = 30;
+                        widget.kriterler![2] = 30;
+                        widget.kriterler![3] = 10;
+                        widget.kriterler![4] = 10;
+                        _viewModel.setKriterler(widget.kriterler!);
+  }
 
  void _buildOkButtononPressed(bool geldi) { 
     String key =
@@ -227,8 +244,14 @@ _buildOkButtononPressed(false);
       _addTransactionTemrinnot(key, 0, widget.parametreler![2], widget.ogrenciId!, _viewModel.toplam,
         _aciklamaController.text, _viewModel.kriterler);
     } else {
-      _viewModel.setToplam(-1);
-      _addTransactionTemrinnot(key, 0, widget.parametreler![2], widget.ogrenciId!, _viewModel.toplam,"Gelmedi", [0,0,0,0,0]);
+     
+       widget.kriterler![0] = 0;
+                        widget.kriterler![1] = 0;
+                        widget.kriterler![2] = 0;
+                        widget.kriterler![3] = 0;
+                        widget.kriterler![4] = 0; 
+                        _viewModel.setKriterler(widget.kriterler!);_viewModel.setToplam(-1);
+      _addTransactionTemrinnot(key, 0, widget.parametreler![2], widget.ogrenciId!, -1,"Gelmedi",widget.kriterler! );
       
     }
    Navigator.of(context).pop(_viewModel);
