@@ -73,7 +73,7 @@ class _CustomOgrenciCardState extends State<CustomOgrenciCard> {
                 ],
               ),
               onLongPress: () {
-                debugPrint('uzun basıldı ${widget.puanController}');
+                debugPrint('uzun basıldı ${widget.index}');
                 // _viewModelOgrenci.setFiltreOgrenciId(widget.transaction.id);
                 // _viewModelTemrin.setFiltretemrinId(widget.temrinId);
                 showDialog(
@@ -83,6 +83,7 @@ class _CustomOgrenciCardState extends State<CustomOgrenciCard> {
                           ogrenciId: widget.transaction.id,
                           parametreler: widget.parametreler,
                           kriterler: widget.kriterler,
+                          index:widget.index,
                           
                         )).then((value) {
                  if (value!=null) {

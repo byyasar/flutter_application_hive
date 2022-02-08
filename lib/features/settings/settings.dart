@@ -19,7 +19,7 @@ import 'package:flutter_application_hive/features/temrinnot/model/temrinnot_mode
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
-//import 'package:logger/logger.dart';
+import 'package:logger/logger.dart';
 
 class SettingsView extends StatefulWidget {
   const SettingsView({Key? key}) : super(key: key);
@@ -78,7 +78,7 @@ class _SettingsViewState extends BaseState<SettingsView> {
     var raw = await http.get(Uri.parse(ApplicationConstants.sinifUrl));
     if (raw.statusCode == 200) {
       var jsonFeedback = convert.jsonDecode(raw.body);
-      //Logger().i('this is json Feedback ${jsonFeedback}');
+      Logger().i('this is json Feedback ${jsonFeedback}');
       SinifListesiHelper sinifListesiHelper = SinifListesiHelper(ApplicationConstants.boxSinif);
 
       for (var sinif in jsonFeedback) {
@@ -93,7 +93,7 @@ class _SettingsViewState extends BaseState<SettingsView> {
     var raw = await http.get(Uri.parse(ApplicationConstants.dersUrl));
     if (raw.statusCode == 200) {
       var jsonFeedback = convert.jsonDecode(raw.body);
-      // Logger().i('this is json Feedback $jsonFeedback');
+      Logger().i('this is json Feedback $jsonFeedback');
       DersListesiHelper dersListesiHelper = DersListesiHelper(ApplicationConstants.boxDers);
 
       for (var ders in jsonFeedback) {
@@ -108,7 +108,7 @@ class _SettingsViewState extends BaseState<SettingsView> {
     var raw = await http.get(Uri.parse(ApplicationConstants.ogrencilerUrl));
     if (raw.statusCode == 200) {
       var jsonFeedback = convert.jsonDecode(raw.body);
-      //Logger().i('this is json Feedback $jsonFeedback');
+      Logger().i('this is json Feedback $jsonFeedback');
       OgrenciListesiHelper ogrenciListesiHelper = OgrenciListesiHelper(ApplicationConstants.boxOgrenci);
 
       for (var ogrenci in jsonFeedback) {
@@ -124,7 +124,7 @@ class _SettingsViewState extends BaseState<SettingsView> {
     var raw = await http.get(Uri.parse(ApplicationConstants.temrinUrl));
     if (raw.statusCode == 200) {
       var jsonFeedback = convert.jsonDecode(raw.body);
-      //Logger().i('this is json Feedback $jsonFeedback');
+      Logger().i('this is json Feedback $jsonFeedback');
       TemrinListesiHelper temrinListesiHelper = TemrinListesiHelper(ApplicationConstants.boxTemrin);
 
       for (var temrin in jsonFeedback) {

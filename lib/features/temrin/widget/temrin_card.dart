@@ -23,7 +23,7 @@ class TemrinCard extends StatelessWidget {
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
         subtitle: Text(
-            "id: ${transaction.id.toString()} Ders:  ${_dersListesiHelper.getItemId(transaction.dersId)!.dersad} "),
+            "id: ${transaction.id.toString()}  Ders:  ${_dersListesiHelper.getItemId(transaction.dersId)!.dersad } "),
         children: [butons],
       ),
     );

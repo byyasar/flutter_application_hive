@@ -133,12 +133,14 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
         .temrinnotFiltreListesiGetir(widget.parametreler![2]);
     for (var item in _transactionsTemrinnot) {
       //print('Tid: ${item.temrinId} id: ${item.id} öğrenci id: ${item.ogrenciId} puan: ${item.puan} ${item.key}');
-      _puanControllers[item.ogrenciId].text = item.puan == -1 ? 'G' : item.puan.toString();
+      _puanControllers[item.id].text = item.puan == -1 ? 'G' : item.puan.toString();
       //_aciklamaControllers[item.id].text = item.notlar;
-      _kriterler[item.ogrenciId] = item.kriterler;
+      _kriterler[item.id] = item.kriterler;
       //_kriterler[item.id].addAll(item.kriterler);
      // print(_kriterler[item.id]);
-    }
+    } 
+
+
   }
 
   Future<void> _buildSinifListesi() async {

@@ -27,11 +27,9 @@ class DersListesiHelper extends IListeHelper {
     for (var ders in transactionsDersListesiGecici) {
       if (ders.id == id) {
         return ders;
-      } else {
-        return null;
-      }
+      } 
     }
-    return null;
+    //return null;
   }
 
   @override

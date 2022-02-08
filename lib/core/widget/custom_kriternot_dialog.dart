@@ -16,7 +16,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 class CustomKriterDialog extends StatefulWidget {
   final TemrinnotModel? transaction;
   final int? ogrenciId;
-  //final int? temrinId;
+  final int? index;
   final List<int>? parametreler;
   final List<int>? kriterler;
   
@@ -29,6 +29,7 @@ class CustomKriterDialog extends StatefulWidget {
     required this.ogrenciId,
     required this.parametreler,
     required this.kriterler,
+    required this.index,
   }) : super(key: key);
 
   @override
@@ -241,7 +242,7 @@ _buildOkButtononPressed(false);
     String key =
         "${widget.parametreler![0]}-${widget.parametreler![1]}-${widget.parametreler![2]}-${widget.ogrenciId!}";
     if (geldi) {
-      _addTransactionTemrinnot(key, 0, widget.parametreler![2], widget.ogrenciId!, _viewModel.toplam,
+      _addTransactionTemrinnot(key, widget.index!, widget.parametreler![2], widget.ogrenciId!, _viewModel.toplam,
         _aciklamaController.text, _viewModel.kriterler);
     } else {
      
@@ -251,7 +252,7 @@ _buildOkButtononPressed(false);
                         widget.kriterler![3] = 0;
                         widget.kriterler![4] = 0; 
                         _viewModel.setKriterler(widget.kriterler!);_viewModel.setToplam(-1);
-      _addTransactionTemrinnot(key, 0, widget.parametreler![2], widget.ogrenciId!, -1,"Gelmedi",widget.kriterler! );
+      _addTransactionTemrinnot(key, widget.index!, widget.parametreler![2], widget.ogrenciId!, -1,"Gelmedi",widget.kriterler! );
       
     }
    Navigator.of(context).pop(_viewModel);

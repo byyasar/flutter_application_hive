@@ -15,6 +15,7 @@ import 'package:flutter_application_hive/features/ogrenci/store/ogrenci_store.da
 import 'package:flutter_application_hive/features/siniflar/model/sinif_model.dart';
 import 'package:flutter_application_hive/features/siniflar/store/sinif_store.dart';
 import 'package:flutter_application_hive/features/sonuclar/view/sonuclar_view.dart';
+import 'package:flutter_application_hive/features/temrin/store/temrin_store.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 //import 'package:http/http.dart' as http;
 //import 'dart:convert' as convert;
@@ -31,7 +32,7 @@ class SonuclarSelectPage extends StatefulWidget {
 class _SonuclarSelectPageState extends BaseState<SonuclarSelectPage> {
   final _viewModelSinif = SinifStore();
   final _viewModelDers = DersStore();
-  //final _viewModelTemrin = TemrinStore();
+  final _viewModelTemrin = TemrinStore();
   final _viewModelOgrenci = OgrenciStore();
 
   String _sinifSecText = "Sınıf Seç";
@@ -41,9 +42,9 @@ class _SonuclarSelectPageState extends BaseState<SonuclarSelectPage> {
 
   @override
   Widget build(BuildContext context) {
-    /* _viewModelDers.setFiltreDersId(4);
-    _viewModelSinif.setFiltreSinifId(2);
-    _viewModelTemrin.setFiltretemrinId(1); */
+    _viewModelDers.setFiltreDersId(1);
+    _viewModelSinif.setFiltreSinifId(0);
+    _viewModelTemrin.setFiltretemrinId(0); 
     return SafeArea(
       child: Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
