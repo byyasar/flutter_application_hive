@@ -32,7 +32,7 @@ class SonuclarSelectPage extends StatefulWidget {
 class _SonuclarSelectPageState extends BaseState<SonuclarSelectPage> {
   final _viewModelSinif = SinifStore();
   final _viewModelDers = DersStore();
-  final _viewModelTemrin = TemrinStore();
+  //final _viewModelTemrin = TemrinStore();
   final _viewModelOgrenci = OgrenciStore();
 
   String _sinifSecText = "Sınıf Seç";
@@ -42,9 +42,9 @@ class _SonuclarSelectPageState extends BaseState<SonuclarSelectPage> {
 
   @override
   Widget build(BuildContext context) {
-    _viewModelDers.setFiltreDersId(1);
+   /*  _viewModelDers.setFiltreDersId(1);
     _viewModelSinif.setFiltreSinifId(0);
-    _viewModelTemrin.setFiltretemrinId(0); 
+    _viewModelTemrin.setFiltretemrinId(0);  */
     return SafeArea(
       child: Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
