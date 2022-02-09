@@ -15,7 +15,6 @@ import 'package:flutter_application_hive/features/ogrenci/store/ogrenci_store.da
 import 'package:flutter_application_hive/features/siniflar/model/sinif_model.dart';
 import 'package:flutter_application_hive/features/siniflar/store/sinif_store.dart';
 import 'package:flutter_application_hive/features/sonuclar/view/sonuclar_view.dart';
-import 'package:flutter_application_hive/features/temrin/store/temrin_store.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 //import 'package:http/http.dart' as http;
 //import 'dart:convert' as convert;

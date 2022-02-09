@@ -19,16 +19,16 @@ Temrin not ekranı geliştirmeleri:
     ☐ Temrin ekranında filtre uygulanmışsa temrin ekle ders seçilmine gerek kalmasın.
 
 Temrin değerlendirme kriterleri:
-    ☐ 1-Bilgi -20P
-    ☐ 2-Çözümü anlama ve aktarma -30P
-    ☐ 3-Doğru şekilde uygulama ve çalıştırma -30P
-    ☐ 4-Tasarım -10P
-    ☐ 5-Süre -10P
+    ✔ 1-Bilgi -20P @done (2/9/2022, 11:38:13 PM)
+    ✔ 2-Çözümü anlama ve aktarma -30P @done (2/9/2022, 11:38:20 PM)
+    ✔ 3-Doğru şekilde uygulama ve çalıştırma -30P @done (2/9/2022, 11:38:23 PM)
+    ✔ 4-Tasarım -10P @done (2/9/2022, 11:38:25 PM)
+    ✔ 5-Süre -10P @done (2/9/2022, 11:38:28 PM)
 
 Sonuçlar ekranı geliştirmeleri:
     ✔ notlar gözükecek @done (1/25/2022, 2:02:34 AM)
     ✔ ortalama gözükecek @done (1/25/2022, 2:02:39 AM)
-    ☐ eksikler gözükecek
+    ✔ eksikler gözükecek @done (2/9/2022, 11:38:41 PM)
     ✔ kaydet çalıştığında toast mesaj bilgilendirme eklenmeli @done (1/27/2022, 2:57:17 AM)
 
 BugFix:
