@@ -1,5 +1,6 @@
 import 'package:flutter_application_hive/constants/hive_constans.dart';
 import 'package:flutter_application_hive/core/boxes.dart';
+import 'package:flutter_application_hive/features/helper/hive_db_helper.dart';
 import 'package:flutter_application_hive/features/helper/liste_helper_interface.dart';
 import 'package:flutter_application_hive/features/ogrenci/model/ogrenci_model.dart';
 import 'package:hive/hive.dart';
@@ -58,6 +59,9 @@ class OgrenciListesiHelper extends IListeHelper {
 
   @override
   Future<void> deleteItem(dynamic model) async {
+    int ogrenciId = (model as OgrenciModel).id;
+    print('silinecek öğrenci id $ogrenciId');
+    temrinNotSilOgrenciId(ogrenciId);
     await model.delete();
   }
 
@@ -67,7 +71,5 @@ class OgrenciListesiHelper extends IListeHelper {
   }
 
   @override
-  getItemId(int id) {
-   
-  }
+  getItemId(int id) {}
 }

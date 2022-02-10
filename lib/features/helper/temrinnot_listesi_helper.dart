@@ -4,6 +4,7 @@ import 'package:flutter_application_hive/features/helper/liste_helper_interface.
 import 'package:flutter_application_hive/features/temrinnot/model/temrinnot_model.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:hive/hive.dart';
+import 'package:logger/logger.dart';
 
 class TemrinnotListesiHelper extends IListeHelper<TemrinnotModel> {
   TemrinnotListesiHelper(String key) : super(key);
@@ -94,5 +95,16 @@ class TemrinnotListesiHelper extends IListeHelper<TemrinnotModel> {
   @override
   TemrinnotModel? getItemId(int id) {
     return null;
+  }
+
+  void deleteItemsOgrenciId(int ogrenciId) {
+    List<TemrinnotModel> transactionsTemrinnot =
+        TemrinnotBoxes.getTransactions().values.toList().cast<TemrinnotModel>();
+    for (var item in transactionsTemrinnot) {
+      if (item.ogrenciId == ogrenciId) {
+        deleteItem(item);
+        Logger().i('silinen kayıt $item');
+      }
+    }
   }
 }

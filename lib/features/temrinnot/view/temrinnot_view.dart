@@ -33,7 +33,6 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
   initState() {
     super.initState();
     _buildSinifListesi();
-    _gettemrinnotdata();
   }
 
   @override
@@ -45,22 +44,19 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
           resizeToAvoidBottomInset: false,
           //floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
           //floatingActionButton: _buildFlaotingActionButton(),
-          appBar: AppBar(
-              title: const Text('TNS-Temrin Not Girişi'), centerTitle: true),
+          appBar: AppBar(title: const Text('TNS-Temrin Not Girişi'), centerTitle: true),
           body: Column(
             children: [
               /*   Text(
                   ' Sınıf:${widget.parametreler![0]} Ders :${widget.parametreler![1]} Temrin: ${widget.parametreler![2]}'), */
-            
+
               Expanded(
                 child: FutureBuilder(
-                    future: TemrinnotListesiHelper(
-                            ApplicationConstants.boxTemrinNot)
+                    future: TemrinnotListesiHelper(ApplicationConstants.boxTemrinNot)
                         .temrinnotFiltreListesiGetir(widget.parametreler![2]),
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
                       if (snapshot.hasData) {
-                        return _buildOgrenciListesi(
-                            context, widget.parametreler![0]);
+                        return _buildOgrenciListesi(context, widget.parametreler![0]);
                       } else {
                         return const Text("Datayok");
                       }
@@ -73,7 +69,6 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
     );
   }
 
-
   _buildOgrenciListesi(BuildContext context, int filtreSinifId) {
     /* List<TemrinnotModel> _gelentemrinnotListesi = [];
     _gelentemrinnotListesi = temrinnotModelList; */
@@ -83,10 +78,10 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
       padding: const EdgeInsets.all(8),
       itemCount: _transactionsOgrenciSinif.length,
       itemBuilder: (BuildContext context, int index) {
-        _puanlar[index] = int.parse(_puanControllers[index].text.isEmpty ||
-                _puanControllers[index].text.toUpperCase() == 'G'
-            ? '-1'
-            : _puanControllers[index].text);
+        _puanlar[index] = int.parse(
+            _puanControllers[index].text.isEmpty || _puanControllers[index].text.toUpperCase() == 'G'
+                ? '-1'
+                : _puanControllers[index].text);
         // _aciklamaControllers[index].text = _bosKontrol(index, '_aciklamaControllers');
 
         final transaction = _transactionsOgrenciSinif[index];
@@ -117,9 +112,7 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
       content: Row(
         children: [
           const CircularProgressIndicator(),
-          Container(
-              margin: const EdgeInsets.only(left: 7),
-              child: const Text("Loading...")),
+          Container(margin: const EdgeInsets.only(left: 7), child: const Text("Loading...")),
         ],
       ),
     );
@@ -132,36 +125,33 @@ class _TemrinNotViewPageState extends BaseState<TemrinNotViewPage> {
     );
   }
 
-  _gettemrinnotdata() async {
-    _transactionsTemrinnot =
-        await TemrinnotListesiHelper(ApplicationConstants.boxTemrinNot)
-            .temrinnotFiltreListesiGetir(widget.parametreler![2]);
-    for (var item in _transactionsTemrinnot) {
-      //print('Tid: ${item.temrinId} id: ${item.id} öğrenci id: ${item.ogrenciId} puan: ${item.puan} ${item.key}');
-      _puanControllers[item.id].text =
-          item.puan == -1 ? 'G' : item.puan.toString();
-      //_aciklamaControllers[item.id].text = item.notlar;
-      _kriterler[item.id] = item.kriterler;
-      //_kriterler[item.id].addAll(item.kriterler);
-      // print(_kriterler[item.id]);
-    }
-  }
 
   Future<void> _buildSinifListesi() async {
+    _transactionsTemrinnot = await TemrinnotListesiHelper(ApplicationConstants.boxTemrinNot)
+        .temrinnotFiltreListesiGetir(widget.parametreler![2]);
+
     _puanControllers = [];
     // _aciklamaControllers = [];
     _puanlar = [];
     _kriterler = [];
     _transactionsOgrenciSinif =
-        OgrenciListesiHelper(ApplicationConstants.boxOgrenci)
-            .getFilteredValues('SinifId', widget.parametreler![0])!;
+        OgrenciListesiHelper(ApplicationConstants.boxOgrenci).getFilteredValues('SinifId', widget.parametreler![0])!;
     for (var i = 0; i < _transactionsOgrenciSinif.length; i++) {
       _puanControllers.add(TextEditingController());
       //_aciklamaControllers.add(TextEditingController());
       _puanlar.add(0);
       _kriterler.add([0, 0, 0, 0, 0]);
-      //_kriterler[i].addAll([0, 0, 0, 0, 0]);
-      //print(_kriterler);
+      _transactionsTemrinnot.map((item) {
+        //print(_transactionsTemrinnot.indexOf(item));
+        //print('Tid: ${item.temrinId} id: ${item.id} öğrenci id: ${item.ogrenciId} puan: ${item.puan} ${item.key}');
+        if (item.ogrenciId == _transactionsOgrenciSinif[i].id) {
+          _puanControllers[i].text = item.puan == -1 ? 'G' : item.puan.toString();
+          //_aciklamaControllers[item.id].text = item.notlar;
+          _kriterler[i] = item.kriterler;
+        } else {}
+      }).toList();
+
+      
     }
   }
 }

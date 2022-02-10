@@ -164,48 +164,7 @@ class _OgrenciDialogState extends State<OgrenciDialog> {
         controller: nuController,
       );
 
-  /* Widget buildCancelButton(BuildContext context) => TextButton(
-        child: Row(
-          children: [
-            Icon(
-              Icons.cancel,
-              color: Colors.red.shade400,
-            ),
-            const Text('İptal'),
-          ],
-        ),
-        onPressed: () => Navigator.of(context).pop(),
-      ); */
-/* 
-  Widget buildAddButton(BuildContext context, int? sonId,
-      {required bool isEditing}) {
-    final text = isEditing ? 'Kaydet' : 'Ekle';
-
-    return TextButton(
-      child: Row(
-        children: [
-          Icon(Icons.add_box, color: Colors.green.shade400),
-          Text(text),
-        ],
-      ),
-      onPressed: () async {
-        final isValid = formKey.currentState!.validate();
-
-        if (isValid) {
-          String? name = nameController.text.toUpperCase();
-          int? nu = int.parse(nuController.text);
-
-          int id = sonId ?? 0;
-          //int sinifId = sId ?? 0;
-
-          widget.onClickedDone(id, name, nu, sinifStore.sinifId);
-
-          Navigator.of(context).pop();
-        }
-      },
-    );
-  } */
-
+  
   List<String> buildItems() {
     List<String> items = SinifBoxes.getTransactions()
         .values
