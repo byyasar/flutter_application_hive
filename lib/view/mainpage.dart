@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_hive/constants/app_constants.dart';
 import 'package:flutter_application_hive/constants/icon_constans.dart';
 import 'package:flutter_application_hive/core/base/base_state.dart';
 import 'package:flutter_application_hive/core/boxes.dart';
@@ -11,13 +12,16 @@ import 'package:flutter_application_hive/core/widget/custom_sinif_dialog.dart';
 import 'package:flutter_application_hive/core/widget/custom_temrin_dialog.dart';
 import 'package:flutter_application_hive/features/dersler/model/ders_model.dart';
 import 'package:flutter_application_hive/features/dersler/store/ders_store.dart';
+import 'package:flutter_application_hive/features/helper/temrinnot_listesi_helper.dart';
 import 'package:flutter_application_hive/features/siniflar/model/sinif_model.dart';
 import 'package:flutter_application_hive/features/siniflar/store/sinif_store.dart';
 import 'package:flutter_application_hive/features/temrin/model/temrin_model.dart';
 import 'package:flutter_application_hive/features/temrin/store/temrin_store.dart';
+import 'package:flutter_application_hive/features/temrinnot/model/temrinnot_model.dart';
 import 'package:flutter_application_hive/features/temrinnot/view/temrinnot_view.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-//import 'package:logger/logger.dart';
+import 'package:logger/logger.dart';
+
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
 
@@ -42,7 +46,7 @@ class _MainPageState extends BaseState<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-   /*  _viewModelDers.setFiltreDersId(0);
+    /*  _viewModelDers.setFiltreDersId(0);
     _viewModelSinif.setFiltreSinifId(0);
     _viewModelTemrin.setFiltretemrinId(0);  */
     return SafeArea(
@@ -60,12 +64,28 @@ class _MainPageState extends BaseState<MainPage> {
               _buildDersSec(context),
               const Text('Temrin:', style: TextStyle(fontSize: 18)),
               _buildTemrinSec(context),
+              myCustomMenuButton(
+                  context,
+                  _kayitlariGetir,
+                  const Text('Kayıtlar'),
+                  IconsConstans.settingsIcon,
+                  Colors.blueAccent),
             ],
           ),
         ),
         drawer: buildDrawer(context),
       ),
     );
+  }
+
+  Future _kayitlariGetir() async {
+    List<TemrinnotModel> liste = [];
+    liste = await TemrinnotListesiHelper(ApplicationConstants.boxTemrinNot)
+        .fetcAlldata();
+    for (var item in liste) {
+      print(
+          'id:${item.id} key:${item.key} ogrid:${item.ogrenciId} puan:${item.puan} kriterler:${item.kriterler} not:${item.notlar} ');
+    }
   }
 
   Widget _buildFloatingActionButton(BuildContext context) {
@@ -77,7 +97,9 @@ class _MainPageState extends BaseState<MainPage> {
           Observer(builder: (_) {
             return FloatingActionButton.extended(
                 icon: IconsConstans.temrinnotIcon,
-                backgroundColor: _viewModelTemrin.filtretemrinId == -1 ? Colors.grey : Colors.green,
+                backgroundColor: _viewModelTemrin.filtretemrinId == -1
+                    ? Colors.grey
+                    : Colors.green,
                 onPressed: _viewModelTemrin.filtretemrinId == -1
                     ? null
                     : () {
@@ -104,19 +126,24 @@ class _MainPageState extends BaseState<MainPage> {
   }
 
   _addTransactionDers(int id, String dersad, int sinifId) async {
-    final dersModel = DersModel(id: id, dersad: dersad, sinifId: _viewModelSinif.filtreSinifId);
+    final dersModel = DersModel(
+        id: id, dersad: dersad, sinifId: _viewModelSinif.filtreSinifId);
     final box = DersBoxes.getTransactions();
     box.add(dersModel);
   }
 
   _addTransactionTemrin(int id, String temrinKonusu, int dersId) async {
-    final transaction = TemrinModel(id: id, temrinKonusu: temrinKonusu, dersId: dersId);
+    final transaction =
+        TemrinModel(id: id, temrinKonusu: temrinKonusu, dersId: dersId);
     final box = TemrinBoxes.getTransactions();
     box.add(transaction);
   }
 
   _buildSinifSec(BuildContext context) => myCustomMenuButton(context, () {
-        showDialog(context: context, builder: (context) => CustomSinifDialog(onClickedDone: _addTransactionSinif))
+        showDialog(
+                context: context,
+                builder: (context) =>
+                    CustomSinifDialog(onClickedDone: _addTransactionSinif))
             .then((value) {
           _tumSecimleriSifirla();
           if (value != null) {
@@ -133,7 +160,9 @@ class _MainPageState extends BaseState<MainPage> {
         });
       },
           Observer(
-              builder: (context) => Text(_viewModelSinif.sinifAd.isEmpty ? _sinifSecText : _viewModelSinif.sinifAd)),
+              builder: (context) => Text(_viewModelSinif.sinifAd.isEmpty
+                  ? _sinifSecText
+                  : _viewModelSinif.sinifAd)),
           IconsConstans.sinifIcon,
           null);
   _buildDersSec(BuildContext context) => Observer(builder: (context) {
@@ -145,10 +174,11 @@ class _MainPageState extends BaseState<MainPage> {
                   ? null
                   : () {
                       showDialog(
-                          context: context,
-                          builder: (context) => CustomDersDialog(
-                              gelensinifId: _viewModelSinif.filtreSinifId,
-                              onClickedDone: _addTransactionDers)).then((value) {
+                              context: context,
+                              builder: (context) => CustomDersDialog(
+                                  gelensinifId: _viewModelSinif.filtreSinifId,
+                                  onClickedDone: _addTransactionDers))
+                          .then((value) {
                         _temrinSecimiSifirla();
                         if (value != null) {
                           _dersSecText = value.dersAd;
@@ -161,9 +191,12 @@ class _MainPageState extends BaseState<MainPage> {
                         }
                       });
                     },
-              (_viewModelDers.dersAd.isEmpty ? _dersSecText : _viewModelDers.dersAd),
+              (_viewModelDers.dersAd.isEmpty
+                  ? _dersSecText
+                  : _viewModelDers.dersAd),
               IconsConstans.dersIcon,
-              null,dyanmicWidth(.5)),
+              null,
+              dyanmicWidth(.5)),
         );
       });
   _buildTemrinSec(BuildContext context) => Observer(builder: (context) {
@@ -173,10 +206,11 @@ class _MainPageState extends BaseState<MainPage> {
                 ? null
                 : () {
                     showDialog(
-                        context: context,
-                        builder: (context) => CustomTemrinDialog(
-                            gelenDersId: _viewModelDers.filtredersId,
-                            onClickedDone: _addTransactionTemrin)).then((value) {
+                            context: context,
+                            builder: (context) => CustomTemrinDialog(
+                                gelenDersId: _viewModelDers.filtredersId,
+                                onClickedDone: _addTransactionTemrin))
+                        .then((value) {
                       if (value != null) {
                         _temrinSecText = value.temrinKonusu;
                         _viewModelTemrin.setFiltretemrinId(value.temrinId);
@@ -188,7 +222,9 @@ class _MainPageState extends BaseState<MainPage> {
                       }
                     });
                   },
-            Text(_viewModelTemrin.temrinKonusu.isEmpty ? _temrinSecText : _viewModelTemrin.temrinKonusu),
+            Text(_viewModelTemrin.temrinKonusu.isEmpty
+                ? _temrinSecText
+                : _viewModelTemrin.temrinKonusu),
             IconsConstans.temrinIcon,
             null);
       });

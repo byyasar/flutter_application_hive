@@ -33,6 +33,13 @@ Sonuçlar ekranı geliştirmeleri:
 
 BugFix:
     ☐ temrin adı güncelleme kaydettikten sonra isim güncellenmiyor yeniden açınca düzeliyor.
+    Öğrenci silindiğinde temrin not listesindende silinecek.silinen öğrencinin id sine göre
+    temrin not listesinden ogrid si o olan öğrenci silinecek
+    güncellemede olacak
+    sınıf silinirse-dersler de silinecek-öğrencilerde silinecek-temrinde silinecek-temrinnotlarda silinecek
+
+
+
 
 Özellikler:
     ☐ Excelden liste çekme eklenecek.
