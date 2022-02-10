@@ -11,4 +11,16 @@ class SinifModel extends HiveObject {
   String sinifAd;
 
   SinifModel({required this.id, required this.sinifAd});
+
+  void fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    sinifAd = json['sinifAd'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['sinifAd'] = sinifAd;
+    return data;
+  }
 }
